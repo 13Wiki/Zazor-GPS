@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "367398385026",
+    "project_id": "zazo-e06a4",
+    "storage_bucket": "zazo-e06a4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367398385026:android:23e92cd54ac48cd4118b9b",
+        "android_client_info": {
+          "package_name": "com.gps.zazor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367398385026-t4gbob9nblnv9cjadf074hhc37f8mmm0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLNheeTai8vN2qePqhdcTcFbP7-iWcrqo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367398385026-t4gbob9nblnv9cjadf074hhc37f8mmm0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

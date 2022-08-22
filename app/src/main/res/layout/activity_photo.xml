@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".ui.photo.PhotoActivity">
+
+        <com.gps.zazor.views.NonSwipeableViewPager
+            android:id="@+id/vpPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/clPhotoPanel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPhotoPanel"
+            android:layout_width="match_parent"
+            android:layout_height="176dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingVertical="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/clCollageGrid"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/ivGridHorizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:src="@drawable/ic_vertical_grid"
+                    app:layout_constraintVertical_bias="1"
+                    app:layout_constraintEnd_toStartOf="@id/ivGridVertical"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivGridVertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_grid_horizontal"
+                    app:layout_constraintVertical_bias="1"
+                    app:layout_constraintEnd_toStartOf="@id/ivGrid"
+                    app:layout_constraintStart_toEndOf="@id/ivGridHorizontal"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/ivGrid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_grid"
+                    app:layout_constraintVertical_bias="1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/ivGridVertical"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.gps.zazor.views.SmartTabsLayout
+                android:id="@+id/tlPhotos"
+                android:layout_width="wrap_content"
+                android:layout_height="48dp"
+                android:clipToPadding="false"
+                android:paddingLeft="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:paddingRight="4dp"
+                app:layout_constraintTop_toBottomOf="@id/clCollageGrid"
+                app:stl_defaultTabTextColor="@color/tab_text_selector"
+                app:stl_defaultTabTextHorizontalPadding="18dp"
+                app:stl_dividerColor="@android:color/transparent"
+                app:stl_dividerThickness="0dp"
+                app:stl_indicatorAlwaysInCenter="true"
+                app:stl_indicatorColor="@color/colorAccent"
+                app:stl_indicatorCornerRadius="18dp"
+                app:stl_indicatorGravity="center"
+                app:stl_indicatorInterpolation="smart"
+                app:stl_indicatorThickness="36dp"
+                app:stl_titleOffset="auto_center"
+                app:stl_underlineColor="@android:color/transparent"
+                app:stl_underlineThickness="0dp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivCapture"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="24dp"
+                android:elevation="4dp"
+                android:src="@drawable/ic_capture"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tlPhotos" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivFlip"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_round"
+                android:elevation="4dp"
+                android:src="@drawable/ic_flip"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivLastPhoto"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_margin="16dp"
+                android:elevation="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/bottom_sheet_add_note"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="275dp"
+    android:background="@color/white"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="0dp"
+    android:paddingBottom="28dp"
+    android:id="@+id/clRoot"
+    app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/notes"
+        android:textColor="@color/colorAccent"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include layout="@layout/include_notes_content"/>
+
+    <include layout="@layout/include_text_content"/>
+
+    <include layout="@layout/include_paint_content"/>
+
+    <TextView
+        android:id="@+id/tvCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cancel"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintEnd_toStartOf="@id/ivNote"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintTop_toBottomOf="@id/tilNote" />
+
+    <ImageView
+        android:id="@+id/ivNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/selector_note"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintEnd_toStartOf="@id/ivPaint"
+        app:layout_constraintStart_toEndOf="@id/tvCancel"
+        app:layout_constraintTop_toTopOf="@id/tvCancel" />
+
+    <ImageView
+        android:id="@+id/ivPaint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/selector_paint"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintEnd_toStartOf="@id/ivText"
+        app:layout_constraintStart_toEndOf="@id/ivNote"
+        app:layout_constraintTop_toTopOf="@id/tvCancel" />
+
+    <ImageView
+        android:id="@+id/ivText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/selector_text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintEnd_toStartOf="@+id/tvDone"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/ivPaint"
+        app:layout_constraintTop_toTopOf="@id/tvCancel" />
+
+    <TextView
+        android:id="@+id/tvDone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/done"
+        android:textColor="@color/colorAccent"
+        android:textSize="16sp"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1"
+        app:layout_constraintStart_toEndOf="@id/ivText"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintTop_toBottomOf="@id/tilNote" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/tvCoordinates"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:text="@string/display_coordinates" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sCoordinates"
+        app:layout_constraintTop_toTopOf="@id/tvCoordinates"
+        app:layout_constraintBottom_toBottomOf="@id/tvCoordinates"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"/>
+
+    <View
+        android:id="@+id/vSeparator1"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/sCoordinates"/>
+
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vSeparator1"
+        android:text="@string/display_date" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sDate"
+        app:layout_constraintTop_toTopOf="@id/tvDate"
+        app:layout_constraintBottom_toBottomOf="@id/tvDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"/>
+
+    <View
+        android:id="@+id/vSeparator2"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/sDate"/>
+
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vSeparator2"
+        android:text="@string/display_time" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sTime"
+        app:layout_constraintTop_toTopOf="@id/tvTime"
+        app:layout_constraintBottom_toBottomOf="@id/tvTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"/>
+
+    <View
+        android:id="@+id/vSeparator3"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/sTime"/>
+
+    <TextView
+        android:id="@+id/tvAccuracy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:textColor="@color/black"
+        android:textSize="17sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vSeparator3"
+        android:text="@string/display_accuracy" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/sAccuracy"
+        app:layout_constraintTop_toTopOf="@id/tvAccuracy"
+        app:layout_constraintBottom_toBottomOf="@id/tvAccuracy"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="24dp"/>
+
+    <View
+        android:id="@+id/vSeparator4"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/sAccuracy"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

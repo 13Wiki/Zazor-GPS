@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/llWordSettings"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="64dp"
+        android:visibility="invisible"
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        app:behavior_hideable="true"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilText"
+            style="@style/Stromee.Widget.Design.TextInputLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/text"
+            android:labelFor="@id/etNote">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:imeOptions="actionGo"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvColorPicker"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:orientation="horizontal"
+            android:weightSum="8">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:text="@string/font"
+                />
+
+            <Spinner
+                android:id="@+id/spFonts"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="6"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</merge>

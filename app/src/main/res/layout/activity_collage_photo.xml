@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".ui.photo.PhotoActivity">
+
+        <FrameLayout
+            android:id="@+id/flContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/clPhotoPanel"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPhotoPanel"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@color/white"
+            android:orientation="horizontal"
+            android:paddingVertical="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivCapture"
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="24dp"
+                android:elevation="4dp"
+                android:src="@drawable/ic_capture"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/ivFlip"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_margin="16dp"
+                android:background="@drawable/bg_round"
+                android:elevation="4dp"
+                android:src="@drawable/ic_flip"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include layout="@layout/bottom_sheet_add_note"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

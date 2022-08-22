@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/flContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        tools:context=".ui.photo.PhotoActivity">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clPreviewContainer"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivPreview"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:adjustViewBounds="true"
+                android:background="@color/white"
+                android:scaleType="centerInside"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.cleveroad.droidart.EditorView
+                android:id="@+id/evDroidArt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible" />
+
+            <com.gps.zazor.views.DrawView
+                android:id="@+id/vDraw"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="invisible" />
+
+            <com.gps.zazor.views.NotesDragView
+                android:id="@+id/dvNotes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        layout="@layout/bottom_sheet_add_note" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

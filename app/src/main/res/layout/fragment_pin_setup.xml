@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="16dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_pin"
+        android:textColor="@color/black"
+        android:id="@+id/tvTitle"
+        android:textSize="24sp"
+        android:textAllCaps="true"
+        android:gravity="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.2"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_verified"
+        android:gravity="center"
+        android:id="@+id/ivIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.35"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilText"
+        style="@style/Stromee.Widget.Design.TextInputLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        app:passwordToggleEnabled="true"
+        app:layout_constraintTop_toBottomOf="@id/ivIcon"
+        android:labelFor="@id/etNote">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etText"
+            android:layout_width="match_parent"
+            android:maxLength="5"
+            android:layout_height="wrap_content"
+            android:imeOptions="actionGo"
+            android:inputType="numberDecimal" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorAccent"
+        android:id="@+id/bOk"
+        android:text="@string/ok"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

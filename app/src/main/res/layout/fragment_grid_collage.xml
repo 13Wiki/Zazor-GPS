@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clCollagePreview"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorAccent">
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/flFirst"
+        android:layout_marginEnd="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintBottom_toTopOf="@id/flThird"
+        app:layout_constraintEnd_toStartOf="@id/flSecond"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivFirst"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:scaleType="centerInside"
+            android:scaleX="1.7"
+            android:scaleY="1.7"
+            android:adjustViewBounds="true" />
+
+        <ImageView
+            android:id="@+id/ivMakeFirst"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_add_a_photo_24"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/flSecond"
+        app:layout_constraintBottom_toTopOf="@id/flFour"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="1dp"
+        android:layout_marginBottom="1dp"
+        app:layout_constraintStart_toEndOf="@id/flFirst"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <ImageView
+            android:id="@+id/ivSecond"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:background="@color/black"
+            android:scaleType="centerInside"
+            android:scaleX="1.7"
+            android:scaleY="1.7" />
+
+
+        <ImageView
+            android:id="@+id/ivMakeSecond"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_add_a_photo_24"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/flThird"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/flFour"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/flFirst">
+
+        <ImageView
+            android:id="@+id/ivThird"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:scaleX="1.7"
+            android:scaleY="1.7" />
+
+        <ImageView
+            android:id="@+id/ivMakeThird"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_add_a_photo_24"
+            android:layout_height="wrap_content" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:id="@+id/flFour"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/flThird"
+        app:layout_constraintTop_toBottomOf="@id/flSecond">
+
+        <ImageView
+            android:id="@+id/ivFour"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="1dp"
+            android:adjustViewBounds="true"
+            android:background="@color/black"
+            android:scaleType="centerInside"
+            android:scaleX="1.7"
+            android:scaleY="1.7" />
+
+        <ImageView
+            android:id="@+id/ivMakeFour"
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_baseline_add_a_photo_24"
+            android:layout_height="wrap_content" />
+
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
