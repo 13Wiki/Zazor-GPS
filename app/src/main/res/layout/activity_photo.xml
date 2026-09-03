@@ -12,7 +12,7 @@
         android:background="@color/black"
         tools:context=".ui.photo.PhotoActivity">
 
-        <com.gps.zazor.views.NonSwipeableViewPager
+        <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vpPhoto"
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -72,29 +72,22 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.gps.zazor.views.SmartTabsLayout
+            <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tlPhotos"
                 android:layout_width="wrap_content"
                 android:layout_height="48dp"
-                android:clipToPadding="false"
-                android:paddingLeft="4dp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:background="@android:color/transparent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:paddingRight="4dp"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/clCollageGrid"
-                app:stl_defaultTabTextColor="@color/tab_text_selector"
-                app:stl_defaultTabTextHorizontalPadding="18dp"
-                app:stl_dividerColor="@android:color/transparent"
-                app:stl_dividerThickness="0dp"
-                app:stl_indicatorAlwaysInCenter="true"
-                app:stl_indicatorColor="@color/colorAccent"
-                app:stl_indicatorCornerRadius="18dp"
-                app:stl_indicatorGravity="center"
-                app:stl_indicatorInterpolation="smart"
-                app:stl_indicatorThickness="36dp"
-                app:stl_titleOffset="auto_center"
-                app:stl_underlineColor="@android:color/transparent"
-                app:stl_underlineThickness="0dp" />
+                app:tabGravity="center"
+                app:tabIndicatorColor="@color/colorAccent"
+                app:tabIndicatorFullWidth="false"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="auto"
+                app:tabRippleColor="@null"
+                app:tabSelectedTextColor="@color/colorAccent"
+                app:tabTextColor="@color/gray" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivCapture"

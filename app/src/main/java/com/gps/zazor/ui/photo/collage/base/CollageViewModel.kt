@@ -10,7 +10,7 @@ import com.gps.zazor.utils.PhotoStorage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import androidx.lifecycle.viewModelScope
-import org.joda.time.DateTime
+import com.gps.zazor.utils.time.PhotoClock
 
 interface CollageViewModel : BaseViewModel<CollageContract.State, CollageContract.Event>
 
@@ -79,7 +79,7 @@ class CollageViewModelImpl(
     private fun saveEdits(bitmap: Bitmap) {
         launchIo {
             photoStorage.save(bitmap)?.let { path ->
-                photoRepository.savePhoto(Photo(path, "", DateTime.now(), address, lat, lng))
+                photoRepository.savePhoto(Photo(path, "", PhotoClock.now(), address, lat, lng))
             }
         }
     }

@@ -16,10 +16,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.withContext
-import org.joda.time.DateTime
-
-const val DATE_PATTERN = "dd.MM.yyyy"
-const val TIME_PATTERN = "HH:mm"
+import com.gps.zazor.utils.time.PhotoClock
+import java.time.Instant
 
 interface BasePhotoViewModel : BaseViewModel<BasePhotoContract.State, BasePhotoContract.Event>
 
@@ -45,7 +43,7 @@ open class BasePhotoViewModelImpl(
     protected var lastLocation: Location? = null
         private set
 
-    private var photoTime: DateTime? = null
+    private var photoTime: Instant? = null
 
     /** Note text typed for the picture currently being edited. */
     private var pendingNote: String? = null
@@ -73,7 +71,7 @@ open class BasePhotoViewModelImpl(
             is BasePhotoContract.Event.ToggleFlash -> handleFlashToggle()
             is BasePhotoContract.Event.PhotoCaptured -> {
                 isPreviewShown = true
-                photoTime = DateTime.now()
+                photoTime = PhotoClock.now()
                 pendingNote = null
                 uiState.value = BasePhotoContract.State.ShowPreview(event.photo, buildNotes())
             }
@@ -165,14 +163,14 @@ open class BasePhotoViewModelImpl(
      */
     private fun buildNotes(): BasePhotoContract.State.AddNotes {
         val location = lastLocation
-        val date = photoTime ?: DateTime.now()
+        val date = photoTime ?: PhotoClock.now()
         val showCoordinates = prefs.isDisplayCoordinates() && location != null
         return BasePhotoContract.State.AddNotes(
             pendingNote,
             location?.latitude?.formatCoordinate().takeIf { showCoordinates },
             location?.longitude?.formatCoordinate().takeIf { showCoordinates },
-            date.toString(DATE_PATTERN).takeIf { prefs.isDisplayDate() },
-            date.toString(TIME_PATTERN).takeIf { prefs.isDisplayTime() },
+            PhotoClock.formatDate(date).takeIf { prefs.isDisplayDate() },
+            PhotoClock.formatTime(date).takeIf { prefs.isDisplayTime() },
             location?.accuracy?.toInt()?.toString().takeIf { prefs.isDisplayAccuracy() && location != null }
         )
     }
@@ -199,7 +197,7 @@ open class BasePhotoViewModelImpl(
                     Photo(
                         path = path,
                         name = "",
-                        date = photoTime ?: DateTime.now(),
+                        date = photoTime ?: PhotoClock.now(),
                         address = resolveAddress().orEmpty(),
                         lat = lastLocation?.latitude,
                         lng = lastLocation?.longitude

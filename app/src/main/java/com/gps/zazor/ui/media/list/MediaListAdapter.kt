@@ -7,8 +7,7 @@ import androidx.core.view.isVisible
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.gps.zazor.data.models.Photo
 import com.gps.zazor.databinding.ItemMediaBinding
-import com.gps.zazor.ui.photo.base.DATE_PATTERN
-import com.gps.zazor.ui.photo.base.TIME_PATTERN
+import com.gps.zazor.utils.time.PhotoClock
 import com.gps.zazor.utils.extensions.loadImage
 
 class MediaListAdapter(
@@ -79,7 +78,7 @@ class MediaListAdapter(
                 )
                 tvAddress.isVisible = photo.address?.isNotBlank() == true
                 tvAddress.text = photo.address
-                tvDate.text = photo.date.toString("$DATE_PATTERN, $TIME_PATTERN")
+                tvDate.text = PhotoClock.formatDateTime(photo.date)
                 ivShare.setOnClickListener { onShareClick(photo) }
                 clPhoto.setOnClickListener { onClick(photo) }
                 clPhoto.setOnLongClickListener {

@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
+import com.google.android.material.tabs.TabLayoutMediator
 import com.gps.zazor.R
 import com.gps.zazor.databinding.ActivityPhotoBinding
 import com.gps.zazor.databinding.BottomSheetAddNoteBinding
@@ -181,10 +182,17 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
     private fun setupViewPager() {
         if (adapter != null) return
-        adapter = PhotoPagerAdapter(this, supportFragmentManager).also {
-            binding.vpPhoto.adapter = it
-            binding.vpPhoto.setCurrentItem(BASIC_PHOTO_ITEM, false)
-            binding.tlPhotos.setViewPager(binding.vpPhoto)
+        adapter = PhotoPagerAdapter(this).also { pagerAdapter ->
+            binding.vpPhoto.run {
+                adapter = pagerAdapter
+                // Tabs switch modes; swiping does not, so a stray finger during a shot cannot
+                // change the mode out from under the user.
+                isUserInputEnabled = false
+                setCurrentItem(BASIC_PHOTO_ITEM, false)
+            }
+            TabLayoutMediator(binding.tlPhotos, binding.vpPhoto) { tab, position ->
+                tab.text = pagerAdapter.titleOf(position)
+            }.attach()
         }
     }
 
@@ -214,8 +222,7 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
     private fun getCurrentPhotoHandler(): PhotoHandler? = currentFragment() as? PhotoHandler
 
-    private fun currentFragment() =
-        adapter?.getAttachedFragment(binding.vpPhoto, binding.vpPhoto.currentItem)
+    private fun currentFragment() = adapter?.currentFragment(binding.vpPhoto)
 }
 
 private const val COLLAPSED_PEEK_HEIGHT = 250

@@ -1,48 +1,48 @@
 package com.gps.zazor.ui.photo
 
-import android.content.Context
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentPagerAdapter
-import androidx.viewpager.widget.ViewPager
-import com.gps.zazor.ui.base.BaseFragment
+import androidx.fragment.app.FragmentActivity
+import androidx.viewpager2.adapter.FragmentStateAdapter
+import androidx.viewpager2.widget.ViewPager2
+import com.gps.zazor.R
 import com.gps.zazor.ui.photo.basic.BasicPhotoFragment
 import com.gps.zazor.ui.photo.collage.container.CollageContainerFragment
 import com.gps.zazor.ui.photo.panorama.PanoramaFragment
 
 /**
- * Kept on the deprecated [FragmentPagerAdapter] because SmartTabLayout only drives a
- * ViewPager 1. `BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT` matters here: it guarantees only the
- * visible tab is resumed, so two tabs never fight over the camera.
+ * Pages of the capture screen.
+ *
+ * [FragmentStateAdapter] keeps only the current page's fragment attached, so exactly one tab
+ * holds the camera at a time - the guarantee the old ViewPager 1 adapter got from
+ * `BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT`, now the default behaviour rather than a flag.
  */
-@Suppress("DEPRECATION")
-class PhotoPagerAdapter(
-    private val context: Context,
-    private val fragmentManager: FragmentManager
-) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+class PhotoPagerAdapter(private val activity: FragmentActivity) : FragmentStateAdapter(activity) {
 
-    private val fragments = listOf<BaseFragment<*, *>>(
-        CollageContainerFragment(), BasicPhotoFragment(), PanoramaFragment()
-    )
+    /** Tabs in display order; the camera sits in the middle and is selected on open. */
+    enum class Page(@StringRes val title: Int) {
+        COLLAGE(R.string.collage),
+        PHOTO(R.string.photo),
+        PANORAMA(R.string.panorama)
+    }
 
-    override fun getCount(): Int = fragments.size
+    override fun getItemCount(): Int = Page.entries.size
 
-    override fun getItem(position: Int): Fragment = fragments[position]
+    override fun createFragment(position: Int): Fragment = when (Page.entries[position]) {
+        Page.COLLAGE -> CollageContainerFragment()
+        Page.PHOTO -> BasicPhotoFragment()
+        Page.PANORAMA -> PanoramaFragment()
+    }
 
-    override fun getPageTitle(position: Int) =
-        fragments[position].screenTitle?.let(context::getString)
+    fun titleOf(position: Int): String = activity.getString(Page.entries[position].title)
 
     /**
-     * Returns the fragment the pager is actually showing.
+     * The fragment the pager is actually showing.
      *
-     * After a process death the FragmentManager restores its own instances and this adapter's
-     * freshly constructed [fragments] are never attached, so calling [getItem] handed callers a
-     * detached fragment - the shutter and the flip button silently stopped working.
+     * Resolved through the FragmentManager rather than from a locally held list, so it stays
+     * correct after a process death restores its own fragment instances - previously the shutter
+     * and flip buttons silently addressed detached objects.
      */
-    fun getAttachedFragment(pager: ViewPager, position: Int): Fragment? =
-        fragmentManager.findFragmentByTag(tagFor(pager, position))
-            ?: fragments.getOrNull(position)?.takeIf { it.isAdded }
-
-    private fun tagFor(pager: ViewPager, position: Int) =
-        "android:switcher:${pager.id}:${getItemId(position)}"
+    fun currentFragment(pager: ViewPager2): Fragment? =
+        activity.supportFragmentManager.findFragmentByTag("f${getItemId(pager.currentItem)}")
 }

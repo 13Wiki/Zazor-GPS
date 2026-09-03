@@ -6,8 +6,7 @@ import com.gps.zazor.data.prefs.AppPreferences
 import com.gps.zazor.data.repositories.PhotoRepository
 import com.gps.zazor.ui.base.BaseViewModel
 import com.gps.zazor.ui.base.BaseViewModelImpl
-import com.gps.zazor.ui.photo.base.DATE_PATTERN
-import com.gps.zazor.ui.photo.base.TIME_PATTERN
+import com.gps.zazor.utils.time.PhotoClock
 import com.gps.zazor.ui.photo.editPhoto.EditPhotoContract
 import com.gps.zazor.utils.PhotoStorage
 import kotlinx.coroutines.Job
@@ -81,8 +80,8 @@ class EditMediaViewModelImpl(
             flowState.note,
             current.lat?.formatCoordinate().takeIf { prefs.isDisplayCoordinates() && hasCoordinates },
             current.lng?.formatCoordinate().takeIf { prefs.isDisplayCoordinates() && hasCoordinates },
-            current.date.toString(DATE_PATTERN).takeIf { prefs.isDisplayDate() },
-            current.date.toString(TIME_PATTERN).takeIf { prefs.isDisplayTime() },
+            PhotoClock.formatDate(current.date).takeIf { prefs.isDisplayDate() },
+            PhotoClock.formatTime(current.date).takeIf { prefs.isDisplayTime() },
             null
         )
     }

@@ -10,7 +10,7 @@ import com.gps.zazor.utils.location.LocationProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.withContext
-import org.joda.time.DateTime
+import com.gps.zazor.utils.time.PhotoClock
 
 interface PanoramaViewModel : BaseViewModel<PanoramaContract.State, PanoramaContract.Event>
 
@@ -47,7 +47,7 @@ class PanoramaViewModelImpl(
                     Photo(
                         path = event.path,
                         name = "",
-                        date = DateTime.now(),
+                        date = PhotoClock.now(),
                         address = withContext(Dispatchers.IO) { addressResolver.resolve(lastLocation) }.orEmpty(),
                         lat = lastLocation?.latitude,
                         lng = lastLocation?.longitude

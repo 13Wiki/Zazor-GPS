@@ -16,10 +16,14 @@ Put the SDK location in `local.properties` (`sdk.dir=/path/to/Android/sdk`) or s
 | | |
 |---|---|
 | Gradle / AGP / Kotlin | 8.11.1 / 8.7.3 / 2.0.21 |
-| min / target / compile SDK | 24 / 35 / 35 |
+| min / target / compile SDK | 24 / 36 / 36 |
 | DI | Koin 3.5 |
 | Camera | CameraX 1.4 |
 | Storage | Room 2.6 (KSP), app-private external files |
+| Dates | `java.time` via core library desugaring |
+| Paging | ViewPager2 + Material TabLayout |
+
+`./gradlew test` runs the unit suite.
 
 ### Signing a real release
 
@@ -57,6 +61,13 @@ data/         Room entity + DAO + repository, SharedPreferences
 utils/        CameraX wrapper, location + geocoding, photo storage, view binding
 views/        DrawView, EditorView (text overlay), NotesDragView, tab and pager views
 ```
+
+## Metadata
+
+The position is drawn onto the picture and never travels inside it. The camera, collage and
+re-edit paths encode with `Bitmap.compress`, which writes no EXIF segment at all - no make, model,
+software tag, timestamp or coordinates. The panorama SDK does copy EXIF from its source frames, so
+its output is scrubbed by `MetadataStripper` before it reaches the gallery.
 
 ## Known limitations
 
