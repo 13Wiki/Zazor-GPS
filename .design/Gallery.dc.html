@@ -7,71 +7,75 @@
 <body>
 <x-dc>
 <helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
   <style>
-    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
-    a { color: #007AFF; } a:hover { color: #0062cc; }
+    body { margin: 0; font-family: Manrope, "Segoe UI", system-ui, sans-serif; }
+    a { color: #2F86F6; } a:hover { color: #1c6ed6; }
   </style>
 </helmet>
 
-<div style="width: 390px; height: 844px; background: #FFFFFF; display: flex; flex-direction: column; overflow: hidden;">
+<div style="width: 390px; height: 844px; background: #0B0F14; display: flex; flex-direction: column; overflow: hidden;">
 
-  <div style="height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0;">
-    <div style="display: flex; align-items: center; gap: 14px;">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#474747" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-      <span style="font-size: 19px; font-weight: 700; color: #000000;">Снимки</span>
+  <div style="padding: 20px 16px 14px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0;">
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="width: 46px; height: 46px; border-radius: 999px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;">
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+      </div>
+      <span style="font-size: 24px; font-weight: 800; color: #FFFFFF; letter-spacing: -.02em;">Снимки</span>
     </div>
-    <div style="display: flex; gap: 20px; align-items: center;">
-      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="m8 6 4 12 4-12"/></svg>
-      <svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#474747" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>
-    </div>
-  </div>
-
-  <div style="display: flex; flex-direction: column; gap: 12px; padding: 4px 16px;">
-
-    <div style="display: flex; gap: 12px; padding: 12px; border-radius: 14px; background: #F7F7FA;">
-      <div style="width: 84px; height: 84px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(160deg, #55634f, #2f3a29); position: relative; overflow: hidden;">
-        <div style="position: absolute; left: 8px; top: 8px; right: 8px; height: 22px; border-radius: 8px; background: rgba(0,0,0,.55);"></div>
+    <div style="display: flex; gap: 8px;">
+      <div style="width: 46px; height: 46px; border-radius: 999px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-6h6v6"/></svg>
       </div>
-      <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0;">
-        <span style="font-size: 14px; font-weight: 600; color: #000000;">03.09.2026, 15:30</span>
-        <span style="font-size: 13px; color: #474747;">Ленинский просп. 32, Москва, RU</span>
-        <span style="font-size: 12px; color: #8E8E93;">55.755826, 37.617300</span>
-        <span style="font-size: 12px; color: #007AFF;">Камень у просеки, 40 м на СВ</span>
+      <div style="width: 46px; height: 46px; border-radius: 999px; background: #2F86F6; display: flex; align-items: center; justify-content: center;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>
       </div>
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>
-    </div>
-
-    <div style="display: flex; gap: 12px; padding: 12px; border-radius: 14px; background: #F7F7FA;">
-      <div style="width: 84px; height: 84px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(160deg, #5c6f80, #333f2a); position: relative;">
-        <div style="position: absolute; right: 6px; bottom: 6px; padding: 2px 6px; border-radius: 6px; background: rgba(0,0,0,.65); color: #fff; font-size: 10px;">214°</div>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0;">
-        <span style="font-size: 14px; font-weight: 600; color: #000000;">03.09.2026, 15:34</span>
-        <span style="font-size: 13px; color: #474747;">Ленинский просп. 32, Москва, RU</span>
-        <span style="font-size: 12px; color: #8E8E93;">55.755826, 37.617300</span>
-        <span style="font-size: 12px; color: #007AFF;">Панорама · Рюкзак у камня</span>
-      </div>
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>
-    </div>
-
-    <div style="display: flex; gap: 12px; padding: 12px; border-radius: 14px; background: #F7F7FA;">
-      <div style="width: 84px; height: 84px; border-radius: 10px; flex-shrink: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px; overflow: hidden;">
-        <div style="background: #4a5a68;"></div><div style="background: #55634f;"></div>
-        <div style="background: #3b4a35;"></div><div style="background: #6b7566;"></div>
-      </div>
-      <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0;">
-        <span style="font-size: 14px; font-weight: 600; color: #000000;">02.09.2026, 11:08</span>
-        <span style="font-size: 13px; color: #474747;">Просека 4-я, Балашиха, RU</span>
-        <span style="font-size: 12px; color: #8E8E93;">55.796410, 37.938220</span>
-        <span style="font-size: 12px; color: #007AFF;">Коллаж · 4 кадра</span>
-      </div>
-      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>
     </div>
   </div>
 
-  <div style="margin: 8px 16px 0; padding: 12px 14px; border-radius: 12px; background: #E8F2FF; display: flex; align-items: center; gap: 10px;">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#007AFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M4 20V10l8-6 8 6v10"/><path d="M9 20v-6h6v6"/></svg>
-    <span style="font-size: 12px; line-height: 17px; color: #0062cc;">Координаты нанесены на снимок. В самом файле метаданных нет.</span>
+  <div style="padding: 0 16px; display: flex; gap: 8px; flex-shrink: 0;">
+    <div style="padding: 9px 16px; border-radius: 999px; background: #FFFFFF;"><span style="font-size: 13px; font-weight: 700; color: #0B0F14;">Все</span></div>
+    <div style="padding: 9px 16px; border-radius: 999px; background: rgba(255,255,255,.09);"><span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.72);">С метками</span></div>
+    <div style="padding: 9px 16px; border-radius: 999px; background: rgba(255,255,255,.09);"><span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.72);">Панорамы</span></div>
+  </div>
+
+  <div style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+
+    <div style="border-radius: 24px; overflow: hidden; background: rgba(255,255,255,.06);">
+      <div style="height: 168px; position: relative; background: linear-gradient(160deg, #55634f, #2f3a29);">
+        <div style="position: absolute; left: 14px; top: 14px; padding: 8px 12px; border-radius: 999px; background: rgba(11,15,20,.55); backdrop-filter: blur(16px);">
+          <span style="font-size: 12px; font-weight: 700; color: #FFFFFF;">55.755826, 37.617300</span>
+        </div>
+        <svg style="position: absolute; left: 132px; top: 74px;" width="60" height="60" viewBox="0 0 60 60" fill="none"><circle cx="30" cy="30" r="22" stroke="#FF5A4E" stroke-width="3.5"/></svg>
+      </div>
+      <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <span style="font-size: 15px; font-weight: 700; color: #FFFFFF;">Камень у просеки, 40 м на СВ</span>
+          <span style="font-size: 12px; font-weight: 500; color: rgba(255,255,255,.5);">03.09.2026 · 15:30 · Ленинский просп. 32</span>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F86F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>
+      </div>
+    </div>
+
+    <div style="border-radius: 24px; overflow: hidden; background: rgba(255,255,255,.06);">
+      <div style="height: 116px; position: relative; background: linear-gradient(180deg, #5c6f80, #333f2a);">
+        <div style="position: absolute; right: 14px; top: 14px; padding: 7px 12px; border-radius: 999px; background: rgba(11,15,20,.55); backdrop-filter: blur(16px);">
+          <span style="font-size: 12px; font-weight: 700; color: #FFFFFF;">214°</span>
+        </div>
+      </div>
+      <div style="padding: 14px 16px; display: flex; align-items: center; justify-content: space-between;">
+        <div style="display: flex; flex-direction: column; gap: 3px;">
+          <span style="font-size: 15px; font-weight: 700; color: #FFFFFF;">Рюкзак у камня</span>
+          <span style="font-size: 12px; font-weight: 500; color: rgba(255,255,255,.5);">03.09.2026 · 15:34 · Панорама</span>
+        </div>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2F86F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin: 0 16px; padding: 14px 16px; border-radius: 18px; background: rgba(47,134,246,.14); display: flex; align-items: center; gap: 11px;">
+    <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#5CA4FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+    <span style="font-size: 12px; line-height: 17px; color: #A8CDFF;">Координаты нанесены на снимок. В самом файле метаданных устройства нет.</span>
   </div>
 </div>
 </x-dc>

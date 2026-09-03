@@ -7,76 +7,94 @@
 <body>
 <x-dc>
 <helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
   <style>
-    body { margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
-    a { color: #007AFF; } a:hover { color: #0062cc; }
+    body { margin: 0; font-family: Manrope, "Segoe UI", system-ui, sans-serif; }
+    a { color: #2F86F6; } a:hover { color: #1c6ed6; }
   </style>
 </helmet>
 
-<div style="width: 390px; height: 844px; background: #FFFFFF; display: flex; flex-direction: column; overflow: hidden;">
+<div style="width: 390px; height: 844px; background: #0B0F14; position: relative; overflow: hidden;">
 
-  <div style="height: 56px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; flex-shrink: 0; z-index: 2;">
-    <div style="display: flex; align-items: center; gap: 14px;">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#474747" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-      <span style="font-size: 19px; font-weight: 700; color: #000000;">Маршрут</span>
+  <!-- Карта в тёмной теме: в поле ночью и на солнце читается лучше -->
+  <div style="position: absolute; inset: 0; background: #16201C;"></div>
+  <div style="position: absolute; left: -50px; top: 90px; width: 320px; height: 270px; border-radius: 46% 54% 60% 40%; background: #1D2A22;"></div>
+  <div style="position: absolute; right: -70px; top: 330px; width: 340px; height: 320px; border-radius: 52% 48% 44% 56%; background: #1D2A22;"></div>
+  <svg style="position: absolute; inset: 0;" width="390" height="844" viewBox="0 0 390 844" fill="none">
+    <path d="M-20 250 C 90 270, 150 390, 300 370 S 400 450, 420 470" stroke="#2C3830" stroke-width="16" fill="none"/>
+    <path d="M40 700 C 90 580, 60 500, 130 430 S 210 290, 190 130" stroke="#1F3340" stroke-width="10" fill="none"/>
+  </svg>
+
+  <!-- Трек между точками съёмки -->
+  <svg style="position: absolute; inset: 0;" width="390" height="844" viewBox="0 0 390 844" fill="none">
+    <path d="M84 560 L146 462 L218 390 L266 286 L318 214" stroke="#2F86F6" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" opacity="0.16"/>
+    <path d="M84 560 L146 462 L218 390 L266 286 L318 214" stroke="#2F86F6" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+
+  <div style="position: absolute; left: 70px; top: 546px; width: 28px; height: 28px; border-radius: 50%; background: #0B0F14; border: 3px solid #2F86F6; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #FFFFFF;">1</div>
+  <div style="position: absolute; left: 132px; top: 448px; width: 28px; height: 28px; border-radius: 50%; background: #0B0F14; border: 3px solid #2F86F6; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #FFFFFF;">2</div>
+  <div style="position: absolute; left: 204px; top: 376px; width: 28px; height: 28px; border-radius: 50%; background: #0B0F14; border: 3px solid #2F86F6; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #FFFFFF;">3</div>
+  <div style="position: absolute; left: 252px; top: 272px; width: 28px; height: 28px; border-radius: 50%; background: #0B0F14; border: 3px solid #2F86F6; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 800; color: #FFFFFF;">4</div>
+
+  <div style="position: absolute; left: 286px; top: 158px; display: flex; flex-direction: column; align-items: center;">
+    <div style="padding: 4px; border-radius: 16px; background: #FF5A4E; box-shadow: 0 6px 18px rgba(0,0,0,.4);">
+      <div style="width: 56px; height: 56px; border-radius: 12px; background: linear-gradient(160deg, #55634f, #2f3a29);"></div>
     </div>
-    <span style="font-size: 15px; color: #007AFF;">3 сент.</span>
+    <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M8 10 0 0h16z" fill="#FF5A4E"/></svg>
   </div>
 
-  <!-- Карта -->
-  <div style="flex-grow: 1; position: relative; background: #EDE9E1; overflow: hidden;">
-    <!-- условная подложка: лес, поле, дорога, река -->
-    <div style="position: absolute; left: -40px; top: 40px; width: 300px; height: 250px; border-radius: 46% 54% 60% 40%; background: #D6E3CB;"></div>
-    <div style="position: absolute; right: -60px; top: 260px; width: 320px; height: 300px; border-radius: 52% 48% 44% 56%; background: #D6E3CB;"></div>
-    <svg style="position: absolute; inset: 0;" width="390" height="600" viewBox="0 0 390 600" fill="none">
-      <path d="M-20 180 C 90 200, 150 320, 300 300 S 400 380, 420 400" stroke="#C9BFAE" stroke-width="14" fill="none"/>
-      <path d="M40 600 C 90 480, 60 400, 130 330 S 210 190, 190 60" stroke="#AFC9DD" stroke-width="9" fill="none"/>
-    </svg>
-
-    <!-- Трек: связь между точками съёмки -->
-    <svg style="position: absolute; inset: 0;" width="390" height="600" viewBox="0 0 390 600" fill="none">
-      <path d="M78 470 L142 372 L214 300 L262 196 L318 132"
-            stroke="#007AFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="1 11"/>
-      <path d="M78 470 L142 372 L214 300 L262 196 L318 132"
-            stroke="#007AFF" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" opacity="0.28"/>
-    </svg>
-
-    <!-- Точки -->
-    <div style="position: absolute; left: 62px; top: 454px; width: 32px; height: 32px; border-radius: 50%; background: #FFFFFF; border: 3px solid #007AFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #007AFF;">1</div>
-    <div style="position: absolute; left: 126px; top: 356px; width: 32px; height: 32px; border-radius: 50%; background: #FFFFFF; border: 3px solid #007AFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #007AFF;">2</div>
-    <div style="position: absolute; left: 198px; top: 284px; width: 32px; height: 32px; border-radius: 50%; background: #FFFFFF; border: 3px solid #007AFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #007AFF;">3</div>
-    <div style="position: absolute; left: 246px; top: 180px; width: 32px; height: 32px; border-radius: 50%; background: #FFFFFF; border: 3px solid #007AFF; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: #007AFF;">4</div>
-
-    <!-- Активная точка с превью -->
-    <div style="position: absolute; left: 288px; top: 96px; display: flex; flex-direction: column; align-items: center;">
-      <div style="padding: 4px; border-radius: 12px; background: #FF3B30; box-shadow: 0 4px 12px rgba(0,0,0,.28);">
-        <div style="width: 54px; height: 54px; border-radius: 9px; background: linear-gradient(160deg, #55634f, #2f3a29);"></div>
-      </div>
-      <svg width="16" height="10" viewBox="0 0 16 10" fill="none"><path d="M8 10 0 0h16z" fill="#FF3B30"/></svg>
+  <!-- Шапка поверх карты -->
+  <div style="position: absolute; left: 16px; right: 16px; top: 20px; display: flex; align-items: center; justify-content: space-between;">
+    <div style="width: 46px; height: 46px; border-radius: 999px; background: rgba(11,15,20,.62); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+    </div>
+    <div style="padding: 12px 18px; border-radius: 999px; background: rgba(11,15,20,.62); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(20px); display: flex; align-items: center; gap: 8px;">
+      <span style="font-size: 14px; font-weight: 700; color: #FFFFFF;">3 сентября</span>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.7)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+    <div style="width: 46px; height: 46px; border-radius: 999px; background: rgba(11,15,20,.62); border: 1px solid rgba(255,255,255,.14); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center;">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v3"/><path d="M12 19v3"/><path d="M2 12h3"/><path d="M19 12h3"/></svg>
     </div>
   </div>
 
-  <!-- Карточка выбранной точки -->
-  <div style="flex-shrink: 0; background: #FFFFFF; padding: 16px 16px 24px; box-shadow: 0 -4px 20px rgba(0,0,0,.08); display: flex; flex-direction: column; gap: 14px;">
-    <div style="display: flex; align-items: center; justify-content: space-between;">
-      <span style="font-size: 17px; font-weight: 700; color: #000000;">Точка 5 из 5</span>
-      <span style="font-size: 13px; color: #8E8E93;">маршрут 2,4 км · 1 ч 12 мин</span>
+  <!-- Сводка маршрута -->
+  <div style="position: absolute; left: 16px; right: 16px; top: 82px; display: flex; gap: 8px;">
+    <div style="flex-grow: 1; padding: 12px 14px; border-radius: 18px; background: rgba(11,15,20,.68); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(20px); display: flex; flex-direction: column; gap: 2px;">
+      <span style="font-size: 18px; font-weight: 800; color: #FFFFFF;">2,4 км</span>
+      <span style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);">маршрут</span>
     </div>
-    <div style="display: flex; gap: 12px;">
-      <div style="width: 64px; height: 64px; border-radius: 10px; flex-shrink: 0; background: linear-gradient(160deg, #55634f, #2f3a29);"></div>
+    <div style="flex-grow: 1; padding: 12px 14px; border-radius: 18px; background: rgba(11,15,20,.68); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(20px); display: flex; flex-direction: column; gap: 2px;">
+      <span style="font-size: 18px; font-weight: 800; color: #FFFFFF;">5</span>
+      <span style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);">точек</span>
+    </div>
+    <div style="flex-grow: 1; padding: 12px 14px; border-radius: 18px; background: rgba(11,15,20,.68); border: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(20px); display: flex; flex-direction: column; gap: 2px;">
+      <span style="font-size: 18px; font-weight: 800; color: #FFFFFF;">1:12</span>
+      <span style="font-size: 11px; font-weight: 600; color: rgba(255,255,255,.5);">в пути</span>
+    </div>
+  </div>
+
+  <!-- Карточка точки -->
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; border-radius: 30px 30px 0 0; background: rgba(20,26,33,.9); border-top: 1px solid rgba(255,255,255,.12); backdrop-filter: blur(30px); padding: 12px 20px 28px; display: flex; flex-direction: column; gap: 16px;">
+    <div style="width: 40px; height: 4px; border-radius: 2px; background: rgba(255,255,255,.28); align-self: center;"></div>
+
+    <div style="display: flex; gap: 14px; align-items: center;">
+      <div style="width: 62px; height: 62px; border-radius: 16px; flex-shrink: 0; background: linear-gradient(160deg, #55634f, #2f3a29);"></div>
       <div style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1;">
-        <span style="font-size: 14px; font-weight: 600; color: #000000;">15:34 · Панорама 214°</span>
-        <span style="font-size: 12px; color: #8E8E93;">55.755826, 37.617300</span>
-        <span style="font-size: 13px; color: #007AFF;">Рюкзак у камня</span>
+        <span style="font-size: 16px; font-weight: 700; color: #FFFFFF;">Точка 5 · Рюкзак у камня</span>
+        <span style="font-size: 12px; font-weight: 500; color: rgba(255,255,255,.5);">15:34 · панорама 214° · ±4 м</span>
+      </div>
+      <div style="padding: 6px 11px; border-radius: 999px; background: rgba(255,255,255,.1);">
+        <span style="font-size: 12px; font-weight: 700; color: #FFFFFF;">5/5</span>
       </div>
     </div>
+
     <div style="display: flex; gap: 12px;">
-      <div style="flex-grow: 1; height: 48px; border-radius: 12px; background: #F2F2F7; display: flex; align-items: center; justify-content: center;">
-        <span style="font-size: 15px; color: #474747;">Открыть снимок</span>
+      <div style="flex-grow: 1; height: 52px; border-radius: 16px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;">
+        <span style="font-size: 15px; font-weight: 600; color: #FFFFFF;">Открыть снимок</span>
       </div>
-      <div style="flex-grow: 1; height: 48px; border-radius: 12px; background: #007AFF; display: flex; align-items: center; justify-content: center; gap: 8px;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>
-        <span style="font-size: 15px; font-weight: 600; color: #FFFFFF;">Отправить трек</span>
+      <div style="flex-grow: 1; height: 52px; border-radius: 16px; background: #2F86F6; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="m8.6 13.5 6.8 4"/><path d="m15.4 6.5-6.8 4"/></svg>
+        <span style="font-size: 15px; font-weight: 700; color: #FFFFFF;">Отправить трек</span>
       </div>
     </div>
   </div>
