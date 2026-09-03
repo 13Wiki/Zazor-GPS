@@ -56,7 +56,7 @@ class ColorPickerAdapter(
         fun setItem(circleProperty: CircleProperty) {
             with(circleProperty) {
                 cvCircle.apply {
-                    setOnClickListener { listener.onClickItem(adapterPosition) }
+                    setOnClickListener { listener.onClickItem(bindingAdapterPosition) }
                     colorLap = colorCircle
                     colorBorderline = colorBorder
                     selection = selected

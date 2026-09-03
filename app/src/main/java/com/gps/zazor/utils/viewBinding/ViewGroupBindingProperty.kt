@@ -8,7 +8,7 @@ import androidx.annotation.MainThread
 import androidx.annotation.RestrictTo
 import androidx.core.view.ViewCompat
 import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.ViewTreeLifecycleOwner
+import androidx.lifecycle.findViewTreeLifecycleOwner
 import androidx.viewbinding.ViewBinding
 import kotlin.reflect.KProperty
 
@@ -22,7 +22,7 @@ class ViewGroupViewBindingProperty<in V : ViewGroup, T : ViewBinding>(
 ) : LifecycleViewBindingProperty<V, T>(viewBinder) {
 
     override fun getLifecycleOwner(thisRef: V): LifecycleOwner {
-        return checkNotNull(ViewTreeLifecycleOwner.get(thisRef)) {
+        return checkNotNull(thisRef.findViewTreeLifecycleOwner()) {
             "Fragment doesn't have view associated with it or the view has been destroyed"
         }
     }
@@ -43,7 +43,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
  * Create new [ViewBinding] associated with the [ViewGroup]
  *
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
- * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
+ * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [findViewTreeLifecycleOwner]
  */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     lifecycleAware: Boolean,
@@ -82,7 +82,7 @@ inline fun <T : ViewBinding> ViewGroup.viewBinding(
  *
  * @param vbFactory Function that create new instance of [ViewBinding]. `MyViewBinding::bind` can be used
  * @param viewBindingRootId Root view's id that will be used as root for the view binding
- * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [ViewTreeLifecycleOwner]
+ * @param lifecycleAware Get [LifecycleOwner] from the [ViewGroup][this] using [findViewTreeLifecycleOwner]
  */
 inline fun <T : ViewBinding> ViewGroup.viewBinding(
     @IdRes viewBindingRootId: Int,

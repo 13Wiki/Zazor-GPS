@@ -60,7 +60,6 @@ class FragmentArgumentDelegate<T : Any> : ReadWriteProperty<Fragment, T?> {
             }
         } ?: args.remove(key)
     }
-    @JvmOverloads
     private fun <T> getExtra(extraName: String,
                      clazz: Class<T>? = null,
                      packageName: String = ""): String {

@@ -9,10 +9,8 @@ import org.koin.dsl.module
 
 val panoramaModule = module {
 
-    viewModel {
-        PanoramaViewModelImpl()
-    }
+    viewModel { PanoramaViewModelImpl(get(), get(), get()) }
 }
 
 fun PanoramaFragment.injectViewModel(): Lazy<PanoramaViewModel> =
-    lazy { getViewModel<PanoramaViewModelImpl>(null) }
+    lazy { getViewModel<PanoramaViewModelImpl>() }

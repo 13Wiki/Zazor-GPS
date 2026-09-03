@@ -20,6 +20,7 @@ open class PinCodeSetupViewModelImpl(protected val prefs: AppPreferences) : Base
     override fun onEventArrived(event: PinCodeSetupContract.Event?) {
         when (event) {
             is PinCodeSetupContract.Event.CodeEntered -> checkPin(event.pin)
+            else -> Unit
         }
     }
 

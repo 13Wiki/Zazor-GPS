@@ -45,13 +45,14 @@ class EditPhotoBottomSheet(val binding: BottomSheetAddNoteBinding)
             is EditPhotoContract.State.ShowOverlay -> {
                 behavior.state = STATE_COLLAPSED
             }
+            else -> Unit
         }
     }
 
     override fun onShown() {
         initDelegates()
         super.onShown()
-        behavior.peekHeight = 120
+        behavior.peekHeight = PEEK_HEIGHT
         with(binding) {
             ivNote.setOnClickListener {
                 viewModel.sendEvent(EditPhotoContract.Event
@@ -78,12 +79,14 @@ class EditPhotoBottomSheet(val binding: BottomSheetAddNoteBinding)
         }
     }
 
+    /** Built once; the old version appended three more delegates on every `show()`. */
     private fun initDelegates() {
+        if (delegates.isNotEmpty()) return
         delegates.add(AddNoteDelegate(binding, viewModel))
         delegates.add(AddOverlayDelegate(binding, viewModel))
         delegates.add(AddPaintDelegate(binding, viewModel))
-        delegates.forEach {
-            it.onShown()
-        }
+        delegates.forEach { it.onShown() }
     }
 }
+
+private const val PEEK_HEIGHT = 120

@@ -9,4 +9,4 @@ val clearCodeSetupModule = module {
 }
 
 fun ClearCodeSetupFragment.injectViewModel(): Lazy<ClearCodeSetupViewModelImpl> =
-    lazy { getViewModel<ClearCodeSetupViewModelImpl>(null) }
+    lazy { getViewModel<ClearCodeSetupViewModelImpl>() }

@@ -1,28 +1,23 @@
 package com.gps.zazor.ui.photo.collage.base
 
-import android.content.Context
 import android.graphics.Bitmap
-import androidx.lifecycle.viewModelScope
 import com.gps.zazor.data.models.Photo
 import com.gps.zazor.data.repositories.PhotoRepository
 import com.gps.zazor.ui.base.BaseViewModel
 import com.gps.zazor.ui.base.BaseViewModelImpl
-import com.gps.zazor.ui.photo.base.BasePhotoViewModelImpl
 import com.gps.zazor.ui.photo.collage.photo.CollagePhoto
-import com.gps.zazor.utils.extensions.toBytes
+import com.gps.zazor.utils.PhotoStorage
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import androidx.lifecycle.viewModelScope
 import org.joda.time.DateTime
-import java.io.BufferedOutputStream
-import java.io.File
-import java.io.IOException
 
 interface CollageViewModel : BaseViewModel<CollageContract.State, CollageContract.Event>
 
-class CollageViewModelImpl(private val context: Context,
-                           private val collagePhotoFlow: MutableStateFlow<CollagePhoto?>,
-                           private val photoRepository: PhotoRepository
+class CollageViewModelImpl(
+    private val collagePhotoFlow: MutableStateFlow<CollagePhoto?>,
+    private val photoRepository: PhotoRepository,
+    private val photoStorage: PhotoStorage
 ) : BaseViewModelImpl<CollageContract.State, CollageContract.Event>(), CollageViewModel {
 
     private var photoCounter = 0
@@ -41,6 +36,8 @@ class CollageViewModelImpl(private val context: Context,
                     address = it.address
                     lat = it.lat
                     lng = it.lng
+                    // Consume the cell so re-collecting after a rotation does not replay it.
+                    collagePhotoFlow.value = null
                 }
             }
         }
@@ -51,70 +48,39 @@ class CollageViewModelImpl(private val context: Context,
     override fun onEventArrived(event: CollageContract.Event?) {
         when (event) {
             is CollageContract.Event.Initial -> {
-                gridSize = event.gridSize
+                // Switching between grid shapes resets progress, otherwise a stale counter can
+                // enable the capture button for a layout that has empty cells.
+                if (gridSize != event.gridSize) {
+                    gridSize = event.gridSize
+                    photoCounter = 0
+                }
             }
-            is CollageContract.Event.Resume -> {
-                handleCaptureState()
-            }
+            is CollageContract.Event.Resume -> handleCaptureState()
             is CollageContract.Event.PreviewShown -> {
                 if (++photoCounter >= gridSize) {
                     uiState.value = CollageContract.State.AllowCollageCapture
                 }
             }
-            is CollageContract.Event.SaveEdits -> {
-                saveEdits(event.bitmap)
-            }
+            is CollageContract.Event.SaveEdits -> saveEdits(event.bitmap)
             is CollageContract.Event.CapturePressed -> {
                 photoCounter = 0
                 uiState.value = CollageContract.State.CaptureCollage
             }
+            else -> Unit
         }
     }
 
     private fun handleCaptureState() {
         uiState.value =
-            if (photoCounter >= gridSize)
-                CollageContract.State.AllowCollageCapture
-            else
-                CollageContract.State.DisallowCollageCapture
+            if (gridSize > 0 && photoCounter >= gridSize) CollageContract.State.AllowCollageCapture
+            else CollageContract.State.DisallowCollageCapture
     }
 
     private fun saveEdits(bitmap: Bitmap) {
-        launch {
-            val localPath = loadToLocalFile(bitmap.toBytes(), null)
-            savePhoto(localPath)
-        }
-    }
-
-    private suspend fun savePhoto(path: String) {
-        photoRepository.savePhoto(
-            Photo(
-                path,
-                "",
-                DateTime.now(),
-                address,
-                lat,
-                lng
-            )
-        )
-    }
-
-    /**
-     * @return absolute path to stored local file.
-     */
-    private fun loadToLocalFile(packet: ByteArray, name: String?): String =
-        File(
-            context.getExternalFilesDir(BasePhotoViewModelImpl.DIR_PHOTOS),
-            (name ?: DateTime.now().millis.toString()) + ".jpg"
-        ).also { file ->
-            saveImage(packet, file.outputStream().buffered())
-        }.absolutePath
-
-    @Throws(IOException::class)
-    private fun saveImage(bytes: ByteArray, outputStream: BufferedOutputStream) {
-        outputStream.use {
-            it.write(bytes)
-            it.flush()
+        launchIo {
+            photoStorage.save(bitmap)?.let { path ->
+                photoRepository.savePhoto(Photo(path, "", DateTime.now(), address, lat, lng))
+            }
         }
     }
 }

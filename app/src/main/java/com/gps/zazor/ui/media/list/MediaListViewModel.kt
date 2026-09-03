@@ -1,19 +1,17 @@
 package com.gps.zazor.ui.media.list
 
-import androidx.lifecycle.viewModelScope
 import com.gps.zazor.data.models.Photo
 import com.gps.zazor.data.repositories.PhotoRepository
 import com.gps.zazor.ui.base.BaseViewModel
 import com.gps.zazor.ui.base.BaseViewModelImpl
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 interface MediaListViewModel : BaseViewModel<MediaListContract.State, MediaListContract.Event> {
 
     fun backPressed(): Boolean
 }
 
-class MediaListViewModelImpl(private val photoRepository: PhotoRepository) : BaseViewModelImpl<MediaListContract.State, MediaListContract.Event>(), MediaListViewModel {
+class MediaListViewModelImpl(private val photoRepository: PhotoRepository) :
+    BaseViewModelImpl<MediaListContract.State, MediaListContract.Event>(), MediaListViewModel {
 
     private var selectedPhotos: MutableList<Photo>? = null
 
@@ -31,31 +29,26 @@ class MediaListViewModelImpl(private val photoRepository: PhotoRepository) : Bas
 
     override fun onEventArrived(event: MediaListContract.Event?) {
         when (event) {
-            is MediaListContract.Event.DeletePhoto -> {
-                deletePhoto(event.photo)
-            }
+            is MediaListContract.Event.DeletePhoto -> deletePhoto(event.photo)
             is MediaListContract.Event.SwitchPhotoSelected -> {
-                if (event.isSelected) {
-                    selectedPhotos?.add(event.photo)
-                } else {
-                    selectedPhotos?.remove(event.photo)
-                }
+                if (event.isSelected) selectedPhotos?.add(event.photo)
+                else selectedPhotos?.remove(event.photo)
             }
             is MediaListContract.Event.SharePhotos -> {
-                selectedPhotos?.let {
-                    uiState.value = MediaListContract.State.ShareSelectedPhotos(it)
+                selectedPhotos?.takeIf { it.isNotEmpty() }?.let {
+                    uiState.value = MediaListContract.State.ShareSelectedPhotos(it.toList())
                 }
             }
             is MediaListContract.Event.TurnOnSelectionMode -> {
-                if (selectedPhotos == null) {
-                    selectedPhotos = mutableListOf()
-                }
+                if (selectedPhotos == null) selectedPhotos = mutableListOf()
             }
+            else -> Unit
         }
     }
 
     private fun deletePhoto(photo: Photo) {
-        viewModelScope.launch(Dispatchers.IO) {
+        launchIo {
+            selectedPhotos?.remove(photo)
             uiState.value = MediaListContract.State.Initial(photoRepository.deletePhoto(photo))
         }
     }

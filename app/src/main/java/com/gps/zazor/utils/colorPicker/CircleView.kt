@@ -50,9 +50,11 @@ class CircleView : View {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        with(Math.min(widthMeasureSpec, heightMeasureSpec)) {
-            setMeasuredDimension(this, this)
-        }
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
+        // Keep the swatch square. The previous version compared the raw MeasureSpec ints - packed
+        // mode+size values - and handed one straight to setMeasuredDimension as a pixel size.
+        val side = minOf(measuredWidth, measuredHeight)
+        setMeasuredDimension(side, side)
     }
 
     override fun onDraw(canvas: Canvas) {

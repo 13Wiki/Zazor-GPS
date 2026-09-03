@@ -16,4 +16,4 @@ val collageContainerModule = module {
 }
 
 fun CollageContainerFragment.injectViewModel(): Lazy<CollageContainerViewModel> =
-    lazy { getViewModel<CollageContainerViewModelImpl>(null) }
+    lazy { getViewModel<CollageContainerViewModelImpl>() }

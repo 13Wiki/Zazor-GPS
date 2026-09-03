@@ -3,9 +3,13 @@ package com.gps.zazor.ui.photo
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 import com.gps.zazor.R
 import com.gps.zazor.databinding.ActivityPhotoBinding
@@ -30,6 +34,12 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
         private const val BASIC_PHOTO_ITEM = 1
 
+        private val REQUIRED_PERMISSIONS = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
         fun newIntent(context: Context) = Intent(context, PhotoActivity::class.java)
     }
 
@@ -39,31 +49,36 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
     private val binding by viewBinding(ActivityPhotoBinding::bind)
 
-    private val sheetBinding by viewBinding(BottomSheetAddNoteBinding::bind) {
-        it.findViewById(R.id.clRoot)
-    }
+    private val sheetBinding by viewBinding(BottomSheetAddNoteBinding::bind, R.id.clRoot)
 
-    private val addNoteSheet by lazy {
-        getCurrentPhotoHandler()?.let {
-            EditPhotoBottomSheet(sheetBinding)
-        } ?: error("Fragments are not initialized")
-    }
+    private val addNoteSheet by lazy { EditPhotoBottomSheet(sheetBinding) }
 
-    private val singlePermission = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { granted ->
-        viewModel.sendEvent(PhotoContract.Event.PermissionResult(granted.values.all { true }))
-    }
+    /** Set once the dialog has been shown so it is not re-launched on every return to the screen. */
+    private var permissionsRequested = false
+
+    private var permissionRationaleShown = false
+
+    private val permissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { result ->
+            // The camera is what the screen cannot work without; a denied location only drops the
+            // coordinates from the stamp. The old check was `granted.values.all { true }`, which is
+            // the constant `true` - permissions were reported granted even when the user refused.
+            val cameraGranted = result[Manifest.permission.CAMERA] ?: hasPermission(Manifest.permission.CAMERA)
+            viewModel.sendEvent(PhotoContract.Event.PermissionResult(cameraGranted))
+        }
 
     override fun observeState(state: PhotoContract.State?) {
         when (state) {
-            is PhotoContract.State.PermissionGranted -> {
-                setupViewPager()
+            is PhotoContract.State.Content -> {
+                when (state.isPermissionGranted) {
+                    true -> setupViewPager()
+                    false -> showPermissionDenied()
+                    null -> Unit
+                }
+                state.photoUri?.let { binding.ivLastPhoto.loadImage(it) }
+                    ?: binding.ivLastPhoto.hide()
             }
-            is PhotoContract.State.PermissionDenied -> showPermissionToast()
-            is PhotoContract.State.Initial -> {
-                state.photoUri?.let { uri ->
-                    binding.ivLastPhoto.loadImage(uri)
-                } ?: binding.ivLastPhoto.hide()
-            }
+            else -> Unit
         }
     }
 
@@ -76,13 +91,13 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
             getCurrentPhotoHandler()?.flipCamera()
         }
         binding.ivGrid.setOnClickListener {
-            (adapter?.getItem(binding.vpPhoto.currentItem) as? CollageContainerListener)?.onGridSelected()
+            currentCollageListener()?.onGridSelected()
         }
         binding.ivGridHorizontal.setOnClickListener {
-            (adapter?.getItem(binding.vpPhoto.currentItem) as? CollageContainerListener)?.onHorizontalSelected()
+            currentCollageListener()?.onHorizontalSelected()
         }
         binding.ivGridVertical.setOnClickListener {
-            (adapter?.getItem(binding.vpPhoto.currentItem) as? CollageContainerListener)?.onVerticalSelected()
+            currentCollageListener()?.onVerticalSelected()
         }
         binding.ivLastPhoto.setOnClickListener {
             openMedia()
@@ -91,12 +106,30 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
     override fun onStart() {
         super.onStart()
-        singlePermission.launch(arrayOf(Manifest.permission.CAMERA,
-            Manifest.permission.ACCESS_FINE_LOCATION))
+        when {
+            hasPermission(Manifest.permission.CAMERA) ->
+                viewModel.sendEvent(PhotoContract.Event.PermissionResult(true))
+            permissionsRequested ->
+                viewModel.sendEvent(PhotoContract.Event.PermissionResult(false))
+            else -> {
+                permissionsRequested = true
+                permissionLauncher.launch(REQUIRED_PERMISSIONS)
+            }
+        }
     }
 
+    override fun onResume() {
+        super.onResume()
+        // Refresh the thumbnail after coming back from the gallery or the collage editor.
+        viewModel.sendEvent(PhotoContract.Event.EditPhotoClosed)
+    }
+
+    @Deprecated("Kept for the existing in-app back handling")
     override fun onBackPressed() {
-        if (!addNoteSheet.collapse()) super.onBackPressed()
+        if (!addNoteSheet.collapse()) {
+            @Suppress("DEPRECATION")
+            super.onBackPressed()
+        }
     }
 
     override fun onCaptured() {
@@ -130,7 +163,7 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
     override fun collapseEditPhoto() {
         addNoteSheet.behavior.run {
-            peekHeight = 250
+            peekHeight = COLLAPSED_PEEK_HEIGHT
             state = STATE_COLLAPSED
         }
     }
@@ -147,9 +180,9 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
     }
 
     private fun setupViewPager() {
-        adapter ?: run {
-            adapter = PhotoPagerAdapter(this, supportFragmentManager)
-            binding.vpPhoto.adapter = adapter
+        if (adapter != null) return
+        adapter = PhotoPagerAdapter(this, supportFragmentManager).also {
+            binding.vpPhoto.adapter = it
             binding.vpPhoto.setCurrentItem(BASIC_PHOTO_ITEM, false)
             binding.tlPhotos.setViewPager(binding.vpPhoto)
         }
@@ -159,10 +192,30 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
         startActivity(MediaActivity.newIntent(this))
     }
 
-    private fun showPermissionToast() {
+    /**
+     * Once "don't ask again" is set the system dialog never appears again, so point the user at
+     * the app settings instead of leaving them on a permanently blank screen. Shown at most once
+     * per visit to the screen.
+     */
+    private fun showPermissionDenied() {
+        if (permissionRationaleShown) return
+        permissionRationaleShown = true
         Toast.makeText(this, R.string.give_permission, Toast.LENGTH_LONG).show()
+        startActivity(
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null))
+        )
     }
 
-    private fun getCurrentPhotoHandler(): PhotoHandler? =
-        adapter?.getItem(binding.vpPhoto.currentItem) as? PhotoHandler
+    private fun hasPermission(permission: String) =
+        ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+
+    private fun currentCollageListener(): CollageContainerListener? =
+        currentFragment() as? CollageContainerListener
+
+    private fun getCurrentPhotoHandler(): PhotoHandler? = currentFragment() as? PhotoHandler
+
+    private fun currentFragment() =
+        adapter?.getAttachedFragment(binding.vpPhoto, binding.vpPhoto.currentItem)
 }
+
+private const val COLLAPSED_PEEK_HEIGHT = 250

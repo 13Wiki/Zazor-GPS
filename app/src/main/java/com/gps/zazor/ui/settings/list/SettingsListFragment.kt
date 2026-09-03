@@ -31,6 +31,7 @@ class SettingsListFragment : BaseFragment<SettingsListContract.State, SettingsLi
                     }
                 }
             }
+            else -> Unit
         }
     }
 
@@ -43,7 +44,7 @@ class SettingsListFragment : BaseFragment<SettingsListContract.State, SettingsLi
         super.onViewCreated(view, savedInstanceState)
         binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
         binding.toolbar.setNavigationOnClickListener {
-            activity?.onBackPressed()
+            requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }
 

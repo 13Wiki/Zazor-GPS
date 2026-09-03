@@ -1,37 +1,43 @@
 package com.gps.zazor.ui.base
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.annotation.LayoutRes
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.flow.collect
+import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
 
-abstract class BaseActivity<STATE : UiState, EVENT : UiEvent>(@LayoutRes private val layoutRes: Int) : FragmentActivity() {
+abstract class BaseActivity<STATE : UiState, EVENT : UiEvent>(@LayoutRes private val layoutRes: Int) :
+    AppCompatActivity() {
 
     abstract fun observeState(state: STATE?)
 
-    abstract val viewModel : BaseViewModel<STATE, EVENT>
+    abstract val viewModel: BaseViewModel<STATE, EVENT>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(layoutRes)
+        // repeatOnLifecycle stops the collector while the activity is stopped instead of leaving
+        // it running against a torn-down view hierarchy.
         lifecycleScope.launch {
-            viewModel.init()
-            viewModel.uiState.collect(::observeState)
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::observeState)
+            }
         }
+        viewModel.init()
     }
 
-    override fun onPause() {
-        resetFlows()
-        super.onPause()
-    }
-
+    @Deprecated("Kept for the existing in-app back handling")
     override fun onBackPressed() {
-        if (supportFragmentManager.fragments.any {
-                (it as? OnBackPressedListener)?.onBackPressed() == true }) {
+        // A listener returning false means it consumed the press, so the activity must not
+        // also pop. The original condition was inverted and popped whenever *any* listener ran.
+        val handled = supportFragmentManager.fragments.any {
+            (it as? OnBackPressedListener)?.onBackPressed() == false
+        }
+        if (!handled) {
+            @Suppress("DEPRECATION")
             super.onBackPressed()
         }
     }
@@ -40,13 +46,5 @@ abstract class BaseActivity<STATE : UiState, EVENT : UiEvent>(@LayoutRes private
         supportFragmentManager.beginTransaction().replace(container, fragment).apply {
             if (addToBackStack) addToBackStack(fragment::class.simpleName)
         }.commit()
-    }
-
-    private fun showNoInternetError() {
-        Toast.makeText(this, "Нет соединения", Toast.LENGTH_SHORT).show()
-    }
-
-    private fun resetFlows() {
-        viewModel.reset()
     }
 }

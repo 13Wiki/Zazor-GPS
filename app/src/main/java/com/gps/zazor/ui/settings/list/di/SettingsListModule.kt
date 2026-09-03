@@ -12,4 +12,4 @@ val settingsListModule = module {
 }
 
 fun SettingsListFragment.injectViewModel(): Lazy<SettingsListViewModel> =
-    lazy { getViewModel<SettingsListViewModelImpl>(null) }
+    lazy { getViewModel<SettingsListViewModelImpl>() }

@@ -12,4 +12,4 @@ val mediaListModule = module {
 }
 
 fun MediaListFragment.injectViewModel(): Lazy<MediaListViewModel> =
-    lazy { getViewModel<MediaListViewModelImpl>(null) }
+    lazy { getViewModel<MediaListViewModelImpl>() }

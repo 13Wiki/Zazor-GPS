@@ -12,4 +12,4 @@ val authPinModule = module {
 }
 
 fun AuthPinFragment.injectViewModel(): Lazy<AuthPinViewModel> =
-    lazy { getViewModel<AuthPinViewModelImpl>(null) }
+    lazy { getViewModel<AuthPinViewModelImpl>() }

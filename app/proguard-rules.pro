@@ -1,21 +1,41 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# Keep line numbers so Crashlytics stack traces stay readable.
+-keepattributes SourceFile,LineNumberTable
+-renamesourcefileattribute SourceFile
+-keepattributes *Annotation*, Signature, InnerClasses, EnclosingMethod
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
+# --- Room ---
+-keep class * extends androidx.room.RoomDatabase { *; }
+-dontwarn androidx.room.paging.**
 
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
+# --- Koin: modules resolve dependencies by type, so constructors must survive ---
+-keep class com.gps.zazor.**ViewModel* { *; }
+-keepclassmembers class * extends androidx.lifecycle.ViewModel {
+    <init>(...);
+}
 
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# --- Custom views inflated by name from XML ---
+-keep class com.gps.zazor.views.** { *; }
+
+# --- Data and state classes read reflectively by Room / the bundle delegate ---
+-keep class com.gps.zazor.data.models.** { *; }
+-keep class com.gps.zazor.data.storage.models.** { *; }
+
+# --- Dermandar panorama SDK (obfuscated third-party jar, uses JNI and reflection) ---
+-keep class com.dermandar.** { *; }
+-dontwarn com.dermandar.**
+
+# --- Glide ---
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule { <init>(...); }
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+    **[] $VALUES;
+    public *;
+}
+
+# --- Joda-Time ships classes it does not need on Android ---
+-dontwarn org.joda.convert.**
+-dontwarn org.joda.time.**
+-keep class org.joda.time.** { *; }
+
+# --- Kotlin coroutines ---
+-dontwarn kotlinx.coroutines.**

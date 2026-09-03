@@ -1,37 +1,36 @@
 package com.gps.zazor.ui.photo
 
-import androidx.lifecycle.viewModelScope
 import com.gps.zazor.data.repositories.PhotoRepository
 import com.gps.zazor.ui.base.BaseViewModel
 import com.gps.zazor.ui.base.BaseViewModelImpl
-import com.gps.zazor.ui.photo.editPhoto.EditPhotoContract
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.launch
 
 interface PhotoViewModel : BaseViewModel<PhotoContract.State, PhotoContract.Event>
 
-class PhotoViewModelImpl(private val editPhotoFlow: SharedFlow<EditPhotoContract.Flow>,
-                         private val photoRepository: PhotoRepository)
-    : BaseViewModelImpl<PhotoContract.State, PhotoContract.Event>(),
-    PhotoViewModel {
+class PhotoViewModelImpl(private val photoRepository: PhotoRepository) :
+    BaseViewModelImpl<PhotoContract.State, PhotoContract.Event>(), PhotoViewModel {
 
-    override suspend fun initialState(): PhotoContract.State =
-        PhotoContract.State.Initial(photoRepository.getLastPhoto()?.path)
+    private var isPermissionGranted: Boolean? = null
+
+    private var lastPhotoPath: String? = null
+
+    override suspend fun initialState(): PhotoContract.State {
+        lastPhotoPath = photoRepository.getLastPhoto()?.path
+        return content()
+    }
 
     override fun onEventArrived(event: PhotoContract.Event?) {
         when (event) {
-            is PhotoContract.Event.PermissionResult -> handlePermission(event.granted)
-            is PhotoContract.Event.EditPhotoClosed -> {
-                viewModelScope.launch(Dispatchers.IO) {
-                    uiState.value = initialState()
-                }
+            is PhotoContract.Event.PermissionResult -> {
+                isPermissionGranted = event.granted
+                uiState.value = content()
             }
+            is PhotoContract.Event.EditPhotoClosed -> launchIo {
+                lastPhotoPath = photoRepository.getLastPhoto()?.path
+                uiState.value = content()
+            }
+            else -> Unit
         }
     }
 
-    private fun handlePermission(granted: Boolean) {
-        uiState.value = if (granted) PhotoContract.State.PermissionGranted
-        else PhotoContract.State.PermissionDenied
-    }
+    private fun content() = PhotoContract.State.Content(lastPhotoPath, isPermissionGranted)
 }

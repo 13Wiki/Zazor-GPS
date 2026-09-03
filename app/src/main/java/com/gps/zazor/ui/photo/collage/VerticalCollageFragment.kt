@@ -5,7 +5,6 @@ import com.gps.zazor.R
 import com.gps.zazor.databinding.FragmentVerticalCollageBinding
 import com.gps.zazor.ui.photo.collage.base.CollageFragment
 import com.gps.zazor.utils.viewBinding.viewBinding
-import io.fotoapparat.view.CameraView
 
 class VerticalCollageFragment : CollageFragment(R.layout.fragment_vertical_collage) {
 

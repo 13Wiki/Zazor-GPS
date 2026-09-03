@@ -20,6 +20,7 @@ class TrialCodeFragment : BaseFragment<TrialCodeContract.State, TrialCodeContrac
             is TrialCodeContract.State.CodeIncorrect -> {
                 binding.tilText.error = getString(R.string.code_trial_incorrect)
             }
+            else -> Unit
         }
     }
 

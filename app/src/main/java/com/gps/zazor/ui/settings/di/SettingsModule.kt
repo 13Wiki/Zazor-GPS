@@ -12,4 +12,4 @@ val settingsModule = module {
 }
 
 fun SettingsActivity.injectViewModel(): Lazy<SettingsViewModel> =
-    lazy { getViewModel<SettingsViewModelImpl>(null) }
+    lazy { getViewModel<SettingsViewModelImpl>() }

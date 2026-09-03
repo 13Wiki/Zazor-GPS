@@ -14,6 +14,7 @@ class TrialCodeViewModelImpl(private val prefs: AppPreferences) : BaseViewModelI
     override fun onEventArrived(event: TrialCodeContract.Event?) {
         when (event) {
             is TrialCodeContract.Event.CodeEntered -> checkCode(event.code)
+            else -> Unit
         }
     }
 

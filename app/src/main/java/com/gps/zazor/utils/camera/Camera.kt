@@ -1,45 +1,14 @@
 package com.gps.zazor.utils.camera
 
-import io.fotoapparat.configuration.CameraConfiguration
-import io.fotoapparat.selector.*
+import androidx.camera.core.CameraSelector
 
-sealed class Camera(
-        val lensPosition: LensPositionSelector,
-        val configuration: CameraConfiguration
-) {
+/**
+ * Which physical camera the preview is bound to.
+ */
+enum class Camera(val selector: CameraSelector) {
 
-    object Back : Camera(
-            lensPosition = back(),
-            configuration = CameraConfiguration(
-                    previewResolution = firstAvailable(
-                            wideRatio(highestResolution()),
-                            standardRatio(highestResolution())
-                    ),
-                    previewFpsRange = highestFps(),
-                    flashMode = off(),
-                    focusMode = firstAvailable(
-                            continuousFocusPicture(),
-                            autoFocus()
-                    ),
-                    frameProcessor = {
-                        // Do something with the preview frame
-                    }
-            )
-    )
+    BACK(CameraSelector.DEFAULT_BACK_CAMERA),
+    FRONT(CameraSelector.DEFAULT_FRONT_CAMERA);
 
-    object Front : Camera(
-            lensPosition = front(),
-            configuration = CameraConfiguration(
-                    previewResolution = firstAvailable(
-                            wideRatio(highestResolution()),
-                            standardRatio(highestResolution())
-                    ),
-                    previewFpsRange = highestFps(),
-                    flashMode = off(),
-                    focusMode = firstAvailable(
-                            fixed(),
-                            autoFocus()
-                    )
-            )
-    )
+    fun flipped() = if (this == BACK) FRONT else BACK
 }

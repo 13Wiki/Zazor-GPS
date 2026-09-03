@@ -22,6 +22,7 @@ class NotesSettingsViewModelImpl(private val prefs: AppPreferences) : BaseViewMo
             is NotesSettingsContract.Event.DateSwitched -> prefs.putDisplayDate(event.isChecked)
             is NotesSettingsContract.Event.TimeSwitched -> prefs.putDisplayTime(event.isChecked)
             is NotesSettingsContract.Event.AccuracySwitched -> prefs.putDisplayAccuracy(event.isChecked)
+            else -> Unit
         }
     }
 }

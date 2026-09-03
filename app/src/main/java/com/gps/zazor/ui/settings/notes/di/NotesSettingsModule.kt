@@ -12,4 +12,4 @@ val notesSettingsModule = module {
 }
 
 fun NotesSettingsFragment.injectViewModel(): Lazy<NotesSettingsViewModel> =
-    lazy { getViewModel<NotesSettingsViewModelImpl>(null) }
+    lazy { getViewModel<NotesSettingsViewModelImpl>() }

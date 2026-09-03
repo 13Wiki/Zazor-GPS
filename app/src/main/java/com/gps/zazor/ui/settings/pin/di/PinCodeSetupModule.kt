@@ -12,4 +12,4 @@ val pinCodeSetupModule = module {
 }
 
 fun PinCodeSetupFragment.injectViewModel(): Lazy<PinCodeSetupViewModel> =
-    lazy { getViewModel<PinCodeSetupViewModelImpl>(null) }
+    lazy { getViewModel<PinCodeSetupViewModelImpl>() }

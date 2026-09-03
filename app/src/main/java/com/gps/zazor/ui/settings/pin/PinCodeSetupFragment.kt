@@ -27,6 +27,7 @@ open class PinCodeSetupFragment : BaseFragment<PinCodeSetupContract.State, PinCo
             is PinCodeSetupContract.State.CodeIncorrect -> {
                 binding.tilText.error = getString(errorRes)
             }
+            else -> Unit
         }
     }
 

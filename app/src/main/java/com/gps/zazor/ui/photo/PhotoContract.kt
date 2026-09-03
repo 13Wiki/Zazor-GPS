@@ -13,10 +13,16 @@ class PhotoContract {
     }
 
     sealed class State : UiState {
-        data class Initial(val photoUri: String?) : State()
 
-        object PermissionGranted : State()
-
-        object PermissionDenied : State()
+        /**
+         * One conflatable state carrying everything the screen renders.
+         *
+         * Splitting the thumbnail and the permission result into separate states meant a
+         * [kotlinx.coroutines.flow.StateFlow] update could conflate one away and leave the screen
+         * either without its camera pager or without its gallery thumbnail.
+         *
+         * @param isPermissionGranted `null` while the request is still pending.
+         */
+        data class Content(val photoUri: String?, val isPermissionGranted: Boolean?) : State()
     }
 }

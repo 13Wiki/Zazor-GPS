@@ -12,13 +12,6 @@ import com.gps.zazor.ui.base.BaseFragment
 import com.gps.zazor.ui.photo.PhotoHandler
 import com.gps.zazor.ui.photo.collage.di.injectViewModel
 import com.gps.zazor.utils.extensions.*
-import io.fotoapparat.Fotoapparat
-import io.fotoapparat.configuration.CameraConfiguration
-import io.fotoapparat.parameter.ScaleType
-import io.fotoapparat.selector.back
-import io.fotoapparat.selector.continuousFocusPicture
-import io.fotoapparat.selector.highestResolution
-import io.fotoapparat.view.CameraView
 
 abstract class CollageFragment(layoutRes: Int) : BaseFragment<CollageContract.State, CollageContract.Event>(layoutRes),
     PhotoHandler {
@@ -54,6 +47,7 @@ abstract class CollageFragment(layoutRes: Int) : BaseFragment<CollageContract.St
             is CollageContract.State.DisallowCollageCapture -> {
                 callback?.switchEnabledCapture(false)
             }
+            else -> Unit
         }
     }
 

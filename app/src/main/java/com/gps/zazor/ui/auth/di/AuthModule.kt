@@ -12,4 +12,4 @@ val authModule = module {
 }
 
 fun AuthActivity.injectViewModel(): Lazy<AuthViewModel> =
-    lazy { getViewModel<AuthViewModelImpl>(null) }
+    lazy { getViewModel<AuthViewModelImpl>() }

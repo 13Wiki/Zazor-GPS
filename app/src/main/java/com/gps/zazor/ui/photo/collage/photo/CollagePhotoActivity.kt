@@ -55,8 +55,12 @@ class CollagePhotoActivity : AppCompatActivity(R.layout.activity_collage_photo),
         }
     }
 
+    @Deprecated("Kept for the existing in-app back handling")
     override fun onBackPressed() {
-        if (!addNoteSheet.collapse()) super.onBackPressed()
+        if (!addNoteSheet.collapse()) {
+            @Suppress("DEPRECATION")
+            super.onBackPressed()
+        }
     }
 
     override fun onCaptured() {

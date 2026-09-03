@@ -33,6 +33,7 @@ class AuthPinFragment : BaseFragment<AuthPinContract.State, AuthPinContract.Even
             AuthPinContract.State.DataCleared -> {
                 Toast.makeText(requireContext(), getString(R.string.data_was_cleared), Toast.LENGTH_LONG).show()
             }
+            else -> Unit
         }
     }
 
@@ -68,7 +69,7 @@ class AuthPinFragment : BaseFragment<AuthPinContract.State, AuthPinContract.Even
 
     private fun initBiometricPrompt(onSuccess: () -> Unit): BiometricPrompt {
         // 1
-        val executor = ContextCompat.getMainExecutor(activity)
+        val executor = ContextCompat.getMainExecutor(requireContext())
 
         // 2
         val callback = object : BiometricPrompt.AuthenticationCallback() {

@@ -69,19 +69,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <io.fotoapparat.view.CameraView
+    <androidx.camera.view.PreviewView
         android:id="@+id/vCamera"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        app:implementationMode="compatible"
+        app:scaleType="fillCenter"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clSettingsPanel">
-
-        <io.fotoapparat.view.FocusView
-            android:id="@+id/focusView"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </io.fotoapparat.view.CameraView>
+        app:layout_constraintTop_toBottomOf="@id/clSettingsPanel" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -97,15 +92,12 @@
             android:layout_height="0dp"
             android:adjustViewBounds="true"
             android:background="@color/white"
-            android:rotation="90"
             android:scaleType="centerInside"
-            android:scaleX="2"
-            android:scaleY="2"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <com.cleveroad.droidart.EditorView
+        <com.gps.zazor.views.EditorView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="invisible"

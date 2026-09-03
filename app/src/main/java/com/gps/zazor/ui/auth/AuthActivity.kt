@@ -21,6 +21,7 @@ class AuthActivity : BaseActivity<AuthContract.State, AuthContract.Event>(R.layo
                     finish()
                 }
             }
+            else -> Unit
         }
     }
 }

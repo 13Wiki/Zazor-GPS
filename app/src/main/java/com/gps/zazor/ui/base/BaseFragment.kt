@@ -9,15 +9,16 @@ import android.view.ViewGroup
 import androidx.annotation.CallSuper
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.gps.zazor.ui.photo.PhotoCallback
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
-abstract class BaseFragment<STATE : UiState, EVENT : UiEvent>(@LayoutRes private val layoutRes: Int) : Fragment(),
-    OnBackPressedListener {
+abstract class BaseFragment<STATE : UiState, EVENT : UiEvent>(@LayoutRes private val layoutRes: Int) :
+    Fragment(), OnBackPressedListener {
 
-    abstract val viewModel : BaseViewModel<STATE, EVENT>
+    abstract val viewModel: BaseViewModel<STATE, EVENT>
 
     open val screenTitle: Int? = null
 
@@ -35,15 +36,14 @@ abstract class BaseFragment<STATE : UiState, EVENT : UiEvent>(@LayoutRes private
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        lifecycleScope.launch {
-            viewModel.uiState.collect(::observeState)
+        // The collector is tied to the *view* lifecycle: the previous code used the fragment
+        // lifecycle, so after the view was destroyed the collector kept touching dead bindings.
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect(::observeState)
+            }
         }
         viewModel.init()
-    }
-
-    override fun onPause() {
-        resetFlows()
-        super.onPause()
     }
 
     override fun onDetach() {
@@ -51,19 +51,14 @@ abstract class BaseFragment<STATE : UiState, EVENT : UiEvent>(@LayoutRes private
         super.onDetach()
     }
 
-    override fun onBackPressed(): Boolean {
-        return childFragmentManager.fragments.takeIf { it.isNotEmpty() }?.any {
-            (it as? OnBackPressedListener)?.onBackPressed() == true
+    override fun onBackPressed(): Boolean =
+        childFragmentManager.fragments.takeIf { it.isNotEmpty() }?.all {
+            (it as? OnBackPressedListener)?.onBackPressed() ?: true
         } ?: true
-    }
 
     protected open fun navigateTo(fragment: Fragment, container: Int, addToBackStack: Boolean = false) {
         childFragmentManager.beginTransaction().replace(container, fragment).apply {
             if (addToBackStack) addToBackStack(fragment::class.simpleName)
         }.commit()
-    }
-
-    private fun resetFlows() {
-        viewModel.reset()
     }
 }

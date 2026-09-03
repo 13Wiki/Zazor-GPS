@@ -23,6 +23,7 @@ class NotesSettingsFragment:
                 binding.sTime.isChecked = state.displayTime
                 binding.sAccuracy.isChecked = state.displayAccuracy
             }
+            else -> Unit
         }
     }
 

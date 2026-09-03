@@ -5,8 +5,6 @@ import com.gps.zazor.ui.base.UiEvent
 import com.gps.zazor.ui.base.UiState
 import com.gps.zazor.utils.camera.Camera
 import com.gps.zazor.views.Mode
-import io.fotoapparat.configuration.UpdateConfiguration
-import io.fotoapparat.result.BitmapPhoto
 
 const val TRIAL_COUNT = 5
 
@@ -18,7 +16,7 @@ class BasePhotoContract {
 
         object Resume : Event()
 
-        class PhotoCaptured(val photo: BitmapPhoto) : Event()
+        class PhotoCaptured(val photo: Bitmap) : Event()
 
         class SaveEdits(val bitmap: Bitmap) : Event()
 
@@ -37,11 +35,11 @@ class BasePhotoContract {
 
         data class Initial(val isTrial: Boolean) : State()
 
-        class FlipCamera(val configuration: Camera) : State()
+        class FlipCamera(val camera: Camera) : State()
 
-        class ToggleFlash(val config: UpdateConfiguration) : State()
+        class ToggleFlash(val isOn: Boolean) : State()
 
-        class ShowPreview(val photo: BitmapPhoto, val notes: AddNotes) : State()
+        class ShowPreview(val bitmap: Bitmap, val notes: AddNotes) : State()
 
         object SaveNotes : State()
 

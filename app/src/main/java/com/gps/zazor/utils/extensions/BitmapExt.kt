@@ -10,7 +10,7 @@ fun Bitmap.toBytes(quality: Int = 90): ByteArray =
       }
 
 fun Bitmap.drawText(text: String): Bitmap =
-      copy(config, true).let { bmp ->
+      copy(config ?: Bitmap.Config.ARGB_8888, true).let { bmp ->
           Canvas(bmp).let { canvas ->
               Paint(Paint.ANTI_ALIAS_FLAG).apply {
                   color = Color.RED

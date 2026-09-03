@@ -12,4 +12,4 @@ val trialCodeModule = module {
 }
 
 fun TrialCodeFragment.injectViewModel(): Lazy<TrialCodeViewModel> =
-    lazy { getViewModel<TrialCodeViewModelImpl>(null) }
+    lazy { getViewModel<TrialCodeViewModelImpl>() }

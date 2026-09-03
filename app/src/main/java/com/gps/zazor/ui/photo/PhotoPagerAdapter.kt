@@ -4,16 +4,26 @@ import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.gps.zazor.ui.base.BaseFragment
-import com.gps.zazor.ui.photo.base.BasePhotoFragment
 import com.gps.zazor.ui.photo.basic.BasicPhotoFragment
 import com.gps.zazor.ui.photo.collage.container.CollageContainerFragment
 import com.gps.zazor.ui.photo.panorama.PanoramaFragment
 
-class PhotoPagerAdapter(private val context: Context,
-                        fragmentManager: FragmentManager) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+/**
+ * Kept on the deprecated [FragmentPagerAdapter] because SmartTabLayout only drives a
+ * ViewPager 1. `BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT` matters here: it guarantees only the
+ * visible tab is resumed, so two tabs never fight over the camera.
+ */
+@Suppress("DEPRECATION")
+class PhotoPagerAdapter(
+    private val context: Context,
+    private val fragmentManager: FragmentManager
+) : FragmentPagerAdapter(fragmentManager, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
-    private val fragments = listOf<BaseFragment<*, *>>(CollageContainerFragment(), BasicPhotoFragment(), PanoramaFragment())
+    private val fragments = listOf<BaseFragment<*, *>>(
+        CollageContainerFragment(), BasicPhotoFragment(), PanoramaFragment()
+    )
 
     override fun getCount(): Int = fragments.size
 
@@ -21,4 +31,18 @@ class PhotoPagerAdapter(private val context: Context,
 
     override fun getPageTitle(position: Int) =
         fragments[position].screenTitle?.let(context::getString)
+
+    /**
+     * Returns the fragment the pager is actually showing.
+     *
+     * After a process death the FragmentManager restores its own instances and this adapter's
+     * freshly constructed [fragments] are never attached, so calling [getItem] handed callers a
+     * detached fragment - the shutter and the flip button silently stopped working.
+     */
+    fun getAttachedFragment(pager: ViewPager, position: Int): Fragment? =
+        fragmentManager.findFragmentByTag(tagFor(pager, position))
+            ?: fragments.getOrNull(position)?.takeIf { it.isAdded }
+
+    private fun tagFor(pager: ViewPager, position: Int) =
+        "android:switcher:${pager.id}:${getItemId(position)}"
 }

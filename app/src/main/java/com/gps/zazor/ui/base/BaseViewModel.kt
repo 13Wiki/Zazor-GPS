@@ -3,15 +3,20 @@ package com.gps.zazor.ui.base
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 interface BaseViewModel<STATE : UiState, EVENT : UiEvent> {
 
     val uiState: StateFlow<STATE?>
 
-    val eventFlow : SharedFlow<EVENT?>
+    val eventFlow: SharedFlow<EVENT?>
 
     fun init()
 
@@ -20,11 +25,18 @@ interface BaseViewModel<STATE : UiState, EVENT : UiEvent> {
     fun reset()
 }
 
-abstract class BaseViewModelImpl<STATE : UiState, EVENT : UiEvent> : ViewModel(), BaseViewModel<STATE, EVENT> {
+abstract class BaseViewModelImpl<STATE : UiState, EVENT : UiEvent> : ViewModel(),
+    BaseViewModel<STATE, EVENT> {
 
     override val uiState = MutableStateFlow<STATE?>(null)
 
-    override val eventFlow = MutableSharedFlow<EVENT?>()
+    // A buffer keeps events sent before the collector is attached from being dropped.
+    override val eventFlow = MutableSharedFlow<EVENT?>(extraBufferCapacity = EVENT_BUFFER)
+
+    companion object {
+
+        private const val EVENT_BUFFER = 64
+    }
 
     protected abstract suspend fun initialState(): STATE?
 
@@ -38,7 +50,7 @@ abstract class BaseViewModelImpl<STATE : UiState, EVENT : UiEvent> : ViewModel()
 
     @CallSuper
     override fun init() {
-        viewModelScope.launch(Dispatchers.IO) {
+        launchIo {
             uiState.value = initialState()
         }
     }
@@ -52,12 +64,15 @@ abstract class BaseViewModelImpl<STATE : UiState, EVENT : UiEvent> : ViewModel()
 
     @CallSuper
     override fun reset() {
-        sendEvent(null)
         uiState.value = null
     }
 
-    protected fun launch(remoteCall: suspend () -> Unit) =
-        viewModelScope.launch {
-            remoteCall()
-        }
+    protected fun launch(block: suspend () -> Unit): Job =
+        viewModelScope.launch { block() }
+
+    /** Runs [block] off the main thread - use it for disk, database and network work. */
+    protected fun launchIo(
+        dispatcher: CoroutineDispatcher = Dispatchers.IO,
+        block: suspend () -> Unit
+    ): Job = viewModelScope.launch(dispatcher) { block() }
 }

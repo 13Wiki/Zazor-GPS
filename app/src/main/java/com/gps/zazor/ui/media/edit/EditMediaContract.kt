@@ -11,30 +11,30 @@ class EditMediaContract {
 
         data class Initial(val path: String) : Event()
 
-        class SaveEdits(val bitmap: Bitmap) : EditMediaContract.Event()
+        class SaveEdits(val bitmap: Bitmap) : Event()
     }
 
     sealed class State : UiState {
 
-        object SaveNotes : EditMediaContract.State()
+        object SaveNotes : State()
 
-        class AddNotes(val notes: String,
+        class AddNotes(val notes: String?,
                        val lat: String?,
                        val long: String?,
                        val date: String?,
                        val time: String?,
-                       val accuracy: String?) : EditMediaContract.State()
+                       val accuracy: String?) : State()
 
         class AddOverlay(val text: String?,
                          val color: Int?,
-                         val fontId: Int?) : EditMediaContract.State()
+                         val fontId: Int?) : State()
 
-        data class AllowDraw(val color: Int?, val mode: Mode) : EditMediaContract.State()
+        data class AllowDraw(val color: Int?, val mode: Mode) : State()
 
         object Done : State()
 
-        object DisallowDraw : EditMediaContract.State()
+        object DisallowDraw : State()
 
-        object ClearDraw : EditMediaContract.State()
+        object ClearDraw : State()
     }
 }

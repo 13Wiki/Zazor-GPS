@@ -12,4 +12,4 @@ val mediaModule = module {
 }
 
 fun MediaActivity.injectViewModel(): Lazy<MediaViewModel> =
-    lazy { getViewModel<MediaViewModelImpl>(null) }
+    lazy { getViewModel<MediaViewModelImpl>() }

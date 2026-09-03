@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Zazor</string>
+    <string name="share">Поделиться</string>
+    <string name="no_photos">Пока нет ни одного снимка</string>
+    <string name="panorama_unavailable">Панорама недоступна на этом устройстве</string>
     <string name="photo">Фото</string>
     <string name="give_permission">Для дальнейшей работы, предоставьте разрешения</string>
     <string name="notes">Добавить заметку</string>

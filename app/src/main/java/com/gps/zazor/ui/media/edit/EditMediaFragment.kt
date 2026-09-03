@@ -6,17 +6,22 @@ import android.graphics.DashPathEffect
 import android.os.Bundle
 import android.view.View
 import androidx.core.view.isVisible
-import com.cleveroad.droidart.ShowButtonOnSelector
 import com.gps.zazor.R
 import com.gps.zazor.databinding.BottomSheetAddNoteBinding
 import com.gps.zazor.databinding.FragmentEditPhotoBinding
 import com.gps.zazor.ui.base.BaseFragment
 import com.gps.zazor.ui.media.edit.di.injectViewModel
-import com.gps.zazor.ui.photo.editPhoto.*
+import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_OFF_DISTANCE
+import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_ON_DISTANCE
+import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_PHASE
+import com.gps.zazor.ui.photo.editPhoto.EditPhotoBottomSheet
+import com.gps.zazor.ui.photo.editPhoto.SELECTOR_BUTTON_COLOR_DEFAULT
+import com.gps.zazor.ui.photo.editPhoto.STROKE_WIDTH_FOR_DASH_LINE
 import com.gps.zazor.utils.FragmentArgumentDelegate
-import com.gps.zazor.utils.extensions.*
+import com.gps.zazor.utils.extensions.getBitmap
+import com.gps.zazor.utils.extensions.show
 import com.gps.zazor.utils.viewBinding.viewBinding
-import kotlinx.android.synthetic.main.fragment_basic_photo.*
+import com.gps.zazor.views.ShowButtonOnSelector
 
 class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContract.Event>(R.layout.fragment_edit_photo) {
 
@@ -33,92 +38,63 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
 
     private val binding by viewBinding(FragmentEditPhotoBinding::bind)
 
-    private val sheetBinding by viewBinding(BottomSheetAddNoteBinding::bind) {
-        it.requireView().findViewById(R.id.clRoot)
-    }
+    private val sheetBinding by viewBinding(BottomSheetAddNoteBinding::bind, R.id.clRoot)
 
-    private val addNoteSheet by lazy {
-        EditPhotoBottomSheet(sheetBinding)
-    }
+    private val addNoteSheet by lazy { EditPhotoBottomSheet(sheetBinding) }
 
     override fun observeState(state: EditMediaContract.State?) {
         when (state) {
-            is EditMediaContract.State.AddNotes -> {
-                binding.run {
-                    clPreviewContainer.show()
-                    dvNotes.elevation = 5F
-                    evDroidArt.elevation = 0F
-                    vDraw.elevation = 0F
-                    dvNotes.addNotes(state.notes, state.lat, state.long, state.date, state.time, state.accuracy)
-                }
+            is EditMediaContract.State.AddNotes -> binding.run {
+                clPreviewContainer.show()
+                dvNotes.elevation = 5F
+                evDroidArt.elevation = 0F
+                vDraw.elevation = 0F
+                dvNotes.addNotes(state.notes, state.lat, state.long, state.date, state.time, state.accuracy)
             }
-            is EditMediaContract.State.AddOverlay -> {
-                binding.run {
-                    dvNotes.elevation = 0F
-                    evDroidArt.elevation = 5F
-                    vDraw.elevation = 0F
-                }
-                if (binding.evDroidArt.text != state.text) {
+            is EditMediaContract.State.AddOverlay -> binding.run {
+                dvNotes.elevation = 0F
+                evDroidArt.elevation = 5F
+                vDraw.elevation = 0F
+                if (evDroidArt.text != state.text) {
                     callback?.collapseEditPhoto()
                 }
-                binding.evDroidArt.run {
-                    show()
-                    state.text?.let {
-                        text = it
-                    }
-                    state.fontId?.let {
-                        fontId = it
-                    }
-                    state.color?.let {
-                        textColor = it
-                    }
-                }
+                evDroidArt.show()
+                state.text?.let { evDroidArt.text = it }
+                state.fontId?.let { evDroidArt.fontId = it }
+                state.color?.let { evDroidArt.textColor = it }
             }
-            is EditMediaContract.State.AllowDraw -> {
-                binding.run {
-                    dvNotes.elevation = 0F
-                    evDroidArt.elevation = 0F
-                    vDraw.elevation = 5F
-                }
-                binding.vDraw.run {
-                    isVisible = true
-                    isPaintAllowed = true
-                    state.color?.let {
-                        colorRes = it
-                    }
-                    mode = state.mode
-                }
+            is EditMediaContract.State.AllowDraw -> binding.run {
+                dvNotes.elevation = 0F
+                evDroidArt.elevation = 0F
+                vDraw.elevation = 5F
+                vDraw.isVisible = true
+                vDraw.isPaintAllowed = true
+                state.color?.let { vDraw.colorRes = it }
+                vDraw.mode = state.mode
             }
-            is EditMediaContract.State.DisallowDraw -> {
-                binding.vDraw.isPaintAllowed = false
+            is EditMediaContract.State.DisallowDraw -> binding.vDraw.isPaintAllowed = false
+            is EditMediaContract.State.SaveNotes -> binding.clPreviewContainer.getBitmap()?.let {
+                viewModel.sendEvent(EditMediaContract.Event.SaveEdits(it))
             }
-            is EditMediaContract.State.SaveNotes -> {
-                clPreviewContainer.getBitmap()?.let {
-                    viewModel.sendEvent(EditMediaContract.Event.SaveEdits(it))
-                }
-            }
-            is EditMediaContract.State.ClearDraw -> {
-                binding.vDraw.clear()
-            }
-            is EditMediaContract.State.Done -> {
-                activity?.onBackPressed()
-            }
+            is EditMediaContract.State.ClearDraw -> binding.vDraw.clear()
+            is EditMediaContract.State.Done -> requireActivity().onBackPressedDispatcher.onBackPressed()
+            else -> Unit
         }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.sendEvent(EditMediaContract.Event.Initial(photoPath!!))
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupDroidArt()
-        binding.ivPreview.setImageBitmap(BitmapFactory.decodeFile(photoPath!!))
+        setupOverlayEditor()
+        // decodeFile returns null for a missing or corrupted file; leave the preview empty rather
+        // than blowing up on a photo whose file was deleted outside the app.
+        photoPath?.let { path ->
+            BitmapFactory.decodeFile(path)?.let(binding.ivPreview::setImageBitmap)
+            viewModel.sendEvent(EditMediaContract.Event.Initial(path))
+        }
         addNoteSheet.show()
     }
 
-    private fun setupDroidArt() {
+    private fun setupOverlayEditor() {
         with(binding.evDroidArt) {
             setPathEffectForSelector(
                 DashPathEffect(

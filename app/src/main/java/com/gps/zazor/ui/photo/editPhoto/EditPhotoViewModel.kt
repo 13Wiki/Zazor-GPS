@@ -67,6 +67,7 @@ class EditPhotoViewModelImpl(private val editPhotoFlow: MutableSharedFlow<EditPh
                     editPhotoFlow.emit(EditPhotoContract.Flow.ClearPaint)
                 }
             }
+            else -> Unit
         }
     }
 
