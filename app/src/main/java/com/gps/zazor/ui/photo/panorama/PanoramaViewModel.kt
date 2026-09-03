@@ -4,6 +4,7 @@ import com.gps.zazor.data.models.Photo
 import com.gps.zazor.data.repositories.PhotoRepository
 import com.gps.zazor.ui.base.BaseViewModel
 import com.gps.zazor.ui.base.BaseViewModelImpl
+import com.gps.zazor.utils.MetadataStripper
 import com.gps.zazor.utils.location.AddressResolver
 import com.gps.zazor.utils.location.LocationProvider
 import kotlinx.coroutines.Dispatchers
@@ -39,6 +40,9 @@ class PanoramaViewModelImpl(
             // Panoramas used to be stitched to disk and then forgotten - they never reached the
             // gallery because nothing wrote them to the database.
             is PanoramaContract.Event.PanoramaSaved -> launchIo {
+                // The stitching SDK copies Make / Model / Software / GPS EXIF from the source
+                // frames into the result. Scrub it before the file becomes shareable.
+                MetadataStripper.strip(event.path)
                 photoRepository.savePhoto(
                     Photo(
                         path = event.path,

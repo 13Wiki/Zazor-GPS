@@ -27,6 +27,13 @@ class PhotoStorage(private val context: Context) {
             .also { if (!it.exists()) it.mkdirs() }
 
     /**
+     * Writes [bitmap] as a JPEG.
+     *
+     * `Bitmap.compress` emits no EXIF segment, so a photo saved here carries no camera make,
+     * model, software tag, timestamp or GPS coordinates - the position the user wants is drawn
+     * into the pixels by the note overlay instead. Do not swap this for a path that copies the
+     * original capture bytes, or the device metadata comes back with them.
+     *
      * @param path absolute path of an existing photo to overwrite, or `null` to create a new file.
      * @return absolute path of the stored file, or `null` when it could not be written.
      */
