@@ -1,0 +1,198 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, "Segoe UI", system-ui, sans-serif; }
+    a { color: #2F86F6; } a:hover { color: #1c6ed6; }
+  </style>
+</helmet>
+
+<div style="width: 1440px; height: 980px; background: #0B0F14; padding: 28px 32px; box-sizing: border-box; display: flex; flex-direction: column; gap: 22px;">
+
+  <!-- Шапка -->
+  <div style="display: flex; align-items: center; justify-content: space-between;">
+    <div style="display: flex; flex-direction: column; gap: 4px;">
+      <span style="font-size: 24px; font-weight: 800; color: #FFFFFF; letter-spacing: -.02em;">Zazor · панель владельца</span>
+      <span style="font-size: 13px; font-weight: 500; color: rgba(255,255,255,.45);">Только обезличенные счётчики. Ни одного снимка, ни одной координаты, ни одного пользователя поимённо.</span>
+    </div>
+    <div style="display: flex; gap: 8px;">
+      <div style="padding: 10px 16px; border-radius: 12px; background: rgba(255,255,255,.07);"><span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.65);">7 дней</span></div>
+      <div style="padding: 10px 16px; border-radius: 12px; background: #FFFFFF;"><span style="font-size: 13px; font-weight: 700; color: #0B0F14;">30 дней</span></div>
+      <div style="padding: 10px 16px; border-radius: 12px; background: rgba(255,255,255,.07);"><span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.65);">90 дней</span></div>
+    </div>
+  </div>
+
+  <!-- Показатели -->
+  <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+    <div style="padding: 20px 22px; border-radius: 20px; background: rgba(255,255,255,.05); display: flex; flex-direction: column; gap: 8px;">
+      <span style="font-size: 12px; font-weight: 700; letter-spacing: .04em; color: rgba(255,255,255,.5);">УСТАНОВОК ЗА 30 ДНЕЙ</span>
+      <span style="font-size: 38px; font-weight: 800; color: #FFFFFF; letter-spacing: -.03em; line-height: 42px;">12 480</span>
+      <span style="font-size: 13px; font-weight: 600; color: #34D07F;">+18% к прошлому месяцу</span>
+    </div>
+    <div style="padding: 20px 22px; border-radius: 20px; background: rgba(255,255,255,.05); display: flex; flex-direction: column; gap: 8px;">
+      <span style="font-size: 12px; font-weight: 700; letter-spacing: .04em; color: rgba(255,255,255,.5);">АКТИВНЫХ В ДЕНЬ</span>
+      <span style="font-size: 38px; font-weight: 800; color: #FFFFFF; letter-spacing: -.03em; line-height: 42px;">3 140</span>
+      <span style="font-size: 13px; font-weight: 600; color: #34D07F;">+6% за неделю</span>
+    </div>
+    <div style="padding: 20px 22px; border-radius: 20px; background: rgba(255,255,255,.05); display: flex; flex-direction: column; gap: 8px;">
+      <span style="font-size: 12px; font-weight: 700; letter-spacing: .04em; color: rgba(255,255,255,.5);">АКТИВНЫХ В МЕСЯЦ</span>
+      <span style="font-size: 38px; font-weight: 800; color: #FFFFFF; letter-spacing: -.03em; line-height: 42px;">18 902</span>
+      <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.45);">липкость 16,6%</span>
+    </div>
+    <div style="padding: 20px 22px; border-radius: 20px; background: rgba(255,255,255,.05); display: flex; flex-direction: column; gap: 8px;">
+      <span style="font-size: 12px; font-weight: 700; letter-spacing: .04em; color: rgba(255,255,255,.5);">СЕАНСОВ БЕЗ СБОЕВ</span>
+      <span style="font-size: 38px; font-weight: 800; color: #FFFFFF; letter-spacing: -.03em; line-height: 42px;">99,4%</span>
+      <span style="font-size: 13px; font-weight: 600; color: #E8A13A;">3 сбоя в панораме</span>
+    </div>
+  </div>
+
+  <!-- Графики -->
+  <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px;">
+
+    <!-- Активные в день -->
+    <div style="padding: 22px 24px; border-radius: 20px; background: rgba(255,255,255,.05); display: flex; flex-direction: column; gap: 18px;">
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <span style="font-size: 15px; font-weight: 700; color: #FFFFFF;">Активные пользователи в день</span>
+        <span style="font-size: 12px; color: rgba(255,255,255,.45);">последние 14 дней</span>
+      </div>
+      <div style="display: flex; align-items: flex-end; gap: 8px; height: 190px;">
+        <div style="flex-grow: 1; height: 52%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 58%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 47%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 62%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 70%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 66%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 55%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 73%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 79%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 74%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 84%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 88%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="flex-grow: 1; height: 81%; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 6px; flex-grow: 1;">
+          <span style="font-size: 12px; font-weight: 700; color: #FFFFFF;">3 140</span>
+          <div style="width: 100%; height: 174px; border-radius: 4px 4px 0 0; background: #2F86F6;"></div>
+        </div>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <span style="font-size: 11px; font-weight: 500; color: rgba(255,255,255,.35);">21 авг</span>
+        <span style="font-size: 11px; font-weight: 500; color: rgba(255,255,255,.35);">28 авг</span>
+        <span style="font-size: 11px; font-weight: 500; color: rgba(255,255,255,.35);">3 сен</span>
+      </div>
+    </div>
+
+    <!-- Удержание -->
+    <div style="padding: 22px 24px; border-radius: 20px; background: rgba(255,255,255,.05); display: flex; flex-direction: column; gap: 18px;">
+      <div style="display: flex; flex-direction: column; gap: 3px;">
+        <span style="font-size: 15px; font-weight: 700; color: #FFFFFF;">Удержание после установки</span>
+        <span style="font-size: 12px; color: rgba(255,255,255,.45);">доля вернувшихся, когорта августа</span>
+      </div>
+      <svg width="100%" height="190" viewBox="0 0 420 190" fill="none" preserveAspectRatio="none">
+        <line x1="0" y1="12" x2="420" y2="12" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+        <line x1="0" y1="67" x2="420" y2="67" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+        <line x1="0" y1="122" x2="420" y2="122" stroke="rgba(255,255,255,.07)" stroke-width="1"/>
+        <line x1="0" y1="177" x2="420" y2="177" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+        <path d="M8 14 L74 78 L140 112 L206 133 L272 146 L338 154 L404 159" stroke="#2F86F6" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="8" cy="14" r="5" fill="#2F86F6" stroke="#0B0F14" stroke-width="2"/>
+        <circle cx="140" cy="112" r="5" fill="#2F86F6" stroke="#0B0F14" stroke-width="2"/>
+        <circle cx="404" cy="159" r="5" fill="#2F86F6" stroke="#0B0F14" stroke-width="2"/>
+      </svg>
+      <div style="display: flex; justify-content: space-between;">
+        <div style="display: flex; flex-direction: column; gap: 2px;">
+          <span style="font-size: 15px; font-weight: 800; color: #FFFFFF;">100%</span>
+          <span style="font-size: 11px; color: rgba(255,255,255,.35);">день 0</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px; align-items: center;">
+          <span style="font-size: 15px; font-weight: 800; color: #FFFFFF;">39%</span>
+          <span style="font-size: 11px; color: rgba(255,255,255,.35);">день 7</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 2px; align-items: flex-end;">
+          <span style="font-size: 15px; font-weight: 800; color: #FFFFFF;">11%</span>
+          <span style="font-size: 11px; color: rgba(255,255,255,.35);">день 30</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Нижний ряд -->
+  <div style="display: grid; grid-template-columns: 1.35fr 1fr; gap: 16px; flex-grow: 1;">
+
+    <div style="padding: 22px 24px; border-radius: 20px; background: rgba(255,255,255,.05); display: flex; flex-direction: column; gap: 18px;">
+      <span style="font-size: 15px; font-weight: 700; color: #FFFFFF;">Чем пользуются</span>
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); width: 120px; flex-shrink: 0;">Съёмка фото</span>
+          <div style="flex-grow: 1; height: 12px; border-radius: 4px; background: rgba(255,255,255,.06);"><div style="width: 96%; height: 12px; border-radius: 4px; background: #2F86F6;"></div></div>
+          <span style="font-size: 13px; font-weight: 700; color: #FFFFFF; width: 44px; text-align: right;">96%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); width: 120px; flex-shrink: 0;">Отметки на кадре</span>
+          <div style="flex-grow: 1; height: 12px; border-radius: 4px; background: rgba(255,255,255,.06);"><div style="width: 71%; height: 12px; border-radius: 4px; background: #2F86F6;"></div></div>
+          <span style="font-size: 13px; font-weight: 700; color: #FFFFFF; width: 44px; text-align: right;">71%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); width: 120px; flex-shrink: 0;">Передача</span>
+          <div style="flex-grow: 1; height: 12px; border-radius: 4px; background: rgba(255,255,255,.06);"><div style="width: 64%; height: 12px; border-radius: 4px; background: #2F86F6;"></div></div>
+          <span style="font-size: 13px; font-weight: 700; color: #FFFFFF; width: 44px; text-align: right;">64%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); width: 120px; flex-shrink: 0;">Серия подхода</span>
+          <div style="flex-grow: 1; height: 12px; border-radius: 4px; background: rgba(255,255,255,.06);"><div style="width: 38%; height: 12px; border-radius: 4px; background: #2F86F6;"></div></div>
+          <span style="font-size: 13px; font-weight: 700; color: #FFFFFF; width: 44px; text-align: right;">38%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); width: 120px; flex-shrink: 0;">Карта маршрута</span>
+          <div style="flex-grow: 1; height: 12px; border-radius: 4px; background: rgba(255,255,255,.06);"><div style="width: 27%; height: 12px; border-radius: 4px; background: #2F86F6;"></div></div>
+          <span style="font-size: 13px; font-weight: 700; color: #FFFFFF; width: 44px; text-align: right;">27%</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 14px;">
+          <span style="font-size: 13px; font-weight: 600; color: rgba(255,255,255,.7); width: 120px; flex-shrink: 0;">Панорама</span>
+          <div style="flex-grow: 1; height: 12px; border-radius: 4px; background: rgba(255,255,255,.06);"><div style="width: 19%; height: 12px; border-radius: 4px; background: #2F86F6;"></div></div>
+          <span style="font-size: 13px; font-weight: 700; color: #FFFFFF; width: 44px; text-align: right;">19%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Граница сбора -->
+    <div style="padding: 22px 24px; border-radius: 20px; background: rgba(255,90,78,.08); border: 1px solid rgba(255,90,78,.22); display: flex; flex-direction: column; gap: 16px;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF7A70" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+        <span style="font-size: 15px; font-weight: 700; color: #FFFFFF;">Чего здесь нет и не появится</span>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 11px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF7A70" stroke-width="2.6" stroke-linecap="round" style="flex-shrink:0;"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <span style="font-size: 13px; color: rgba(255,255,255,.8);">Снимки и панорамы</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF7A70" stroke-width="2.6" stroke-linecap="round" style="flex-shrink:0;"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <span style="font-size: 13px; color: rgba(255,255,255,.8);">Координаты и маршруты</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF7A70" stroke-width="2.6" stroke-linecap="round" style="flex-shrink:0;"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <span style="font-size: 13px; color: rgba(255,255,255,.8);">Заметки и отметки</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF7A70" stroke-width="2.6" stroke-linecap="round" style="flex-shrink:0;"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <span style="font-size: 13px; color: rgba(255,255,255,.8);">Рекламный идентификатор</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FF7A70" stroke-width="2.6" stroke-linecap="round" style="flex-shrink:0;"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          <span style="font-size: 13px; color: rgba(255,255,255,.8);">Список отдельных пользователей</span>
+        </div>
+      </div>
+      <div style="height: 1px; background: rgba(255,255,255,.1);"></div>
+      <p style="margin: 0; font-size: 12px; line-height: 18px; color: rgba(255,255,255,.55);">Строка в базе — это счётчик события, а не человек. Развернуть её обратно в пользователя нельзя ни вам, ни нам.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

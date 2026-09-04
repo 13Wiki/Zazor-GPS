@@ -1,0 +1,83 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, "Segoe UI", system-ui, sans-serif; }
+    a { color: #2F86F6; } a:hover { color: #1c6ed6; }
+  </style>
+</helmet>
+
+<div style="width: 390px; height: 844px; background: #0B0F14; display: flex; flex-direction: column; overflow: hidden; position: relative;">
+
+  <div style="position: absolute; left: -60px; top: -140px; width: 400px; height: 360px; border-radius: 50%; background: radial-gradient(circle, rgba(52,208,127,.22) 0%, rgba(52,208,127,0) 68%);"></div>
+
+  <div style="padding: 20px 16px; display: flex; justify-content: flex-end; flex-shrink: 0; position: relative;">
+    <div style="width: 40px; height: 40px; border-radius: 999px; background: rgba(255,255,255,.09); display: flex; align-items: center; justify-content: center;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,.72)" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+    </div>
+  </div>
+
+  <div style="padding: 8px 20px; display: flex; flex-direction: column; gap: 24px; position: relative;">
+
+    <div style="display: flex; flex-direction: column; gap: 12px; align-items: center; text-align: center;">
+      <div style="width: 62px; height: 62px; border-radius: 22px; background: rgba(52,208,127,.18); display: flex; align-items: center; justify-content: center;">
+        <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="#34D07F" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m4 12 5 5L20 6"/></svg>
+      </div>
+      <span style="font-size: 24px; font-weight: 800; color: #FFFFFF; letter-spacing: -.02em;">Ссылка готова</span>
+      <span style="font-size: 14px; line-height: 20px; color: rgba(255,255,255,.55);">Отправьте её в любой мессенджер. Кто откроет — увидит снимки и координаты, но не вас.</span>
+    </div>
+
+    <!-- Сама ссылка -->
+    <div style="padding: 16px 18px; border-radius: 20px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); display: flex; align-items: center; gap: 12px;">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 19px; color: #FFFFFF; flex-grow: 1; word-break: break-all;">zzr.link/a8f2<span style="color: rgba(255,255,255,.35);">#k7Qw...</span></span>
+      <div style="width: 40px; height: 40px; border-radius: 13px; background: #2F86F6; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+      </div>
+    </div>
+
+    <!-- Срок жизни -->
+    <div style="display: flex; flex-direction: column; gap: 11px;">
+      <span style="font-size: 13px; font-weight: 700; color: rgba(255,255,255,.55);">КОГДА СГОРИТ</span>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px;">
+        <div style="padding: 14px; border-radius: 16px; background: rgba(255,255,255,.06); display: flex; align-items: center; justify-content: center;">
+          <span style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,.72);">Через час</span>
+        </div>
+        <div style="padding: 14px; border-radius: 16px; background: rgba(47,134,246,.16); border: 1.5px solid #2F86F6; display: flex; align-items: center; justify-content: center;">
+          <span style="font-size: 14px; font-weight: 700; color: #FFFFFF;">Через сутки</span>
+        </div>
+        <div style="padding: 14px; border-radius: 16px; background: rgba(255,255,255,.06); display: flex; align-items: center; justify-content: center;">
+          <span style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,.72);">Через неделю</span>
+        </div>
+        <div style="padding: 14px; border-radius: 16px; background: rgba(255,255,255,.06); display: flex; align-items: center; justify-content: center;">
+          <span style="font-size: 14px; font-weight: 600; color: rgba(255,255,255,.72);">После открытия</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Как это устроено -->
+    <div style="padding: 15px 16px; border-radius: 18px; background: rgba(52,208,127,.1); display: flex; gap: 11px; align-items: flex-start;">
+      <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#34D07F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0; margin-top:1px;"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      <span style="font-size: 12px; line-height: 18px; color: #9BE3BE;">Содержимое шифруется на телефоне. Ключ живёт в хвосте ссылки после решётки и на сервер не уходит — без ссылки файлы не прочитать даже нам.</span>
+    </div>
+
+    <div style="display: flex; gap: 12px;">
+      <div style="flex-grow: 1; height: 54px; border-radius: 18px; background: rgba(255,255,255,.1); display: flex; align-items: center; justify-content: center;">
+        <span style="font-size: 15px; font-weight: 600; color: #FFFFFF;">Удалить</span>
+      </div>
+      <div style="flex-grow: 2; height: 54px; border-radius: 18px; background: #2F86F6; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H7l-3 3z"/></svg>
+        <span style="font-size: 15px; font-weight: 700; color: #FFFFFF;">Отправить</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
