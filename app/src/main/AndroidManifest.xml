@@ -5,6 +5,9 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
+    <!-- Voice notes: requested only when the user taps record, never at startup. -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
     <!-- Photos live in the app-private external directory, so no storage permission is needed on
          API 29+. The legacy grant is kept only for API 24-28. -->
     <uses-permission
@@ -27,6 +30,9 @@
         android:required="false" />
     <uses-feature
         android:name="android.hardware.location.gps"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.microphone"
         android:required="false" />
 
     <application

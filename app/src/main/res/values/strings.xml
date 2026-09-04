@@ -1,5 +1,24 @@
 <resources>
     <string name="app_name">Zazor</string>
+    <string name="setting_wait_fix">Предупреждать о слабом сигнале</string>
+    <string name="voice_note_record">Записать голосовую заметку</string>
+    <string name="voice_note_recording">Идёт запись… нажмите, чтобы остановить</string>
+    <string name="voice_note_saved">Голосовая заметка сохранена</string>
+    <string name="voice_note_empty">Запись не получилась</string>
+    <string name="voice_note_denied">Без доступа к микрофону записать нельзя</string>
+    <string name="signal_waiting">Ищем спутники…</string>
+    <string name="signal_good">Сигнал ±%1$d м</string>
+    <string name="signal_weak">Слабый сигнал ±%1$d м</string>
+    <string name="signal_weak_title">Сигнал слабый</string>
+    <string name="signal_weak_message">Точность около ±%1$d м — точка на снимке может быть заметно смещена. Подождать несколько секунд или снять как есть?</string>
+    <string name="signal_none_message">Координаты ещё не определены. Снимок сохранится без них.</string>
+    <string name="signal_shoot_anyway">Снять как есть</string>
+    <string name="signal_wait">Подождать</string>
+    <string name="export_gpx">Экспорт GPX</string>
+    <string name="export_kml">Экспорт KML</string>
+    <string name="export_empty">Нет снимков с координатами</string>
+    <string name="export_failed">Не удалось создать файл</string>
+    <string name="addresses_filled">Адреса дозаполнены: %1$d</string>
     <string name="share">Поделиться</string>
     <string name="no_photos">Пока нет ни одного снимка</string>
     <string name="panorama_unavailable">Панорама недоступна на этом устройстве</string>

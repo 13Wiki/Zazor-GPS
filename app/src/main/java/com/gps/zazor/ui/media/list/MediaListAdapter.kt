@@ -15,7 +15,8 @@ class MediaListAdapter(
     private val onClick: (Photo) -> Unit,
     private val onCheckListener: (Photo, Boolean) -> Unit,
     private val onShareClick: (Photo) -> Unit,
-    private val onLongPressListener: () -> Unit
+    private val onLongPressListener: () -> Unit,
+    private val onVoiceNoteClick: (Photo) -> Unit
 ) : DragDropSwipeAdapter<Photo, MediaListAdapter.MediaHolder>(photos) {
 
     var isSelectableMode: Boolean = false
@@ -79,6 +80,9 @@ class MediaListAdapter(
                 tvAddress.isVisible = photo.address?.isNotBlank() == true
                 tvAddress.text = photo.address
                 tvDate.text = PhotoClock.formatDateTime(photo.date)
+                // The voice button appears only for photos that actually carry a recording.
+                ivVoiceNote.isVisible = photo.voiceNotePath != null
+                ivVoiceNote.setOnClickListener { onVoiceNoteClick(photo) }
                 ivShare.setOnClickListener { onShareClick(photo) }
                 clPhoto.setOnClickListener { onClick(photo) }
                 clPhoto.setOnLongClickListener {

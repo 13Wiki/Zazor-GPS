@@ -55,6 +55,21 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tvSignal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:padding="8dp"
+            android:textSize="12sp"
+            android:textColor="@color/colorAccent"
+            android:visibility="gone"
+            tools:text="Сигнал ±4 м"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivSettings"
+            app:layout_constraintStart_toEndOf="@id/ivFlash"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/tvClearAll"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

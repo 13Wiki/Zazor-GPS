@@ -45,6 +45,16 @@ interface AppPreferences {
 
     fun getFont(): Int?
 
+    /** Warn before shooting while the fix is worse than [getAccuracyThresholdMeters]. */
+    fun isWaitForAccurateFix(): Boolean
+
+    fun putWaitForAccurateFix(wait: Boolean)
+
+    /** Accuracy in metres above which a fix counts as too rough to stamp. */
+    fun getAccuracyThresholdMeters(): Int
+
+    fun putAccuracyThresholdMeters(meters: Int)
+
     fun clear()
 }
 
@@ -64,6 +74,11 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
         private const val DRAW_COLOR_KEY = "drawColor"
         private const val TEXT_COLOR_KEY = "textColor"
         private const val FONT_KEY = "font"
+        private const val WAIT_FIX_KEY = "waitForAccurateFix"
+        private const val ACCURACY_THRESHOLD_KEY = "accuracyThresholdMeters"
+
+        /** A phone in the open reaches 3-5 m; beyond 10 m the point is no longer worth stamping. */
+        const val DEFAULT_ACCURACY_THRESHOLD_M = 10
 
         private const val NO_VALUE = -1
     }
@@ -148,6 +163,20 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
 
     override fun getFont(): Int? {
         return preferences.getInt(FONT_KEY, NO_VALUE).takeUnless { it == NO_VALUE }
+    }
+
+    override fun isWaitForAccurateFix(): Boolean =
+        preferences.getBoolean(WAIT_FIX_KEY, true)
+
+    override fun putWaitForAccurateFix(wait: Boolean) {
+        preferences.edit().putBoolean(WAIT_FIX_KEY, wait).commit()
+    }
+
+    override fun getAccuracyThresholdMeters(): Int =
+        preferences.getInt(ACCURACY_THRESHOLD_KEY, DEFAULT_ACCURACY_THRESHOLD_M)
+
+    override fun putAccuracyThresholdMeters(meters: Int) {
+        preferences.edit().putInt(ACCURACY_THRESHOLD_KEY, meters).commit()
     }
 
     override fun clear() {

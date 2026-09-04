@@ -11,6 +11,7 @@ class NotesSettingsContract {
         data class DateSwitched(val isChecked: Boolean): Event()
         data class TimeSwitched(val isChecked: Boolean): Event()
         data class AccuracySwitched(val isChecked: Boolean): Event()
+        data class WaitForFixSwitched(val isChecked: Boolean): Event()
     }
 
     sealed class State : UiState {
@@ -18,6 +19,7 @@ class NotesSettingsContract {
         data class Initial(val displayCoordinates: Boolean,
                            val displayDate: Boolean,
                            val displayTime: Boolean,
-                           val displayAccuracy: Boolean) : State()
+                           val displayAccuracy: Boolean,
+                           val waitForAccurateFix: Boolean) : State()
     }
 }

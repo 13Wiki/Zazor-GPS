@@ -10,6 +10,10 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
 import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListener
 import com.gps.zazor.BuildConfig
@@ -19,7 +23,10 @@ import com.gps.zazor.databinding.FragmentMediaListBinding
 import com.gps.zazor.ui.base.BaseFragment
 import com.gps.zazor.ui.media.MediaCallback
 import com.gps.zazor.ui.media.list.di.injectViewModel
+import com.gps.zazor.utils.audio.VoiceNotePlayer
+import com.gps.zazor.utils.export.TrackFormat
 import com.gps.zazor.utils.viewBinding.viewBinding
+import androidx.appcompat.widget.PopupMenu
 import java.io.File
 
 class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContract.Event>(R.layout.fragment_media_list) {
@@ -31,6 +38,8 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
     private var mediaCallback: MediaCallback? = null
 
     private var adapter: MediaListAdapter? = null
+
+    private val voicePlayer = VoiceNotePlayer()
 
     private val onItemSwipeListener = object : OnItemSwipeListener<Photo> {
         override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection, item: Photo): Boolean {
@@ -66,11 +75,31 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         binding.ivShare.setOnClickListener {
             viewModel.sendEvent(MediaListContract.Event.SharePhotos)
         }
+        binding.ivExport.setOnClickListener(::showExportMenu)
+        observeEffects()
+    }
+
+    override fun onPause() {
+        voicePlayer.stop()
+        super.onPause()
     }
 
     override fun onDestroyView() {
+        voicePlayer.stop()
         adapter = null
         super.onDestroyView()
+    }
+
+    /** Tapping the playing note stops it; tapping another switches to it. */
+    private fun toggleVoiceNote(photo: Photo) {
+        val path = photo.voiceNotePath ?: return
+        if (voicePlayer.playingPath == path) {
+            voicePlayer.stop()
+            return
+        }
+        if (!voicePlayer.play(path)) {
+            Toast.makeText(requireContext(), R.string.voice_note_empty, Toast.LENGTH_SHORT).show()
+        }
     }
 
     override fun onDetach() {
@@ -91,7 +120,8 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
             return
         }
         adapter = MediaListAdapter(
-            photos, ::openEditPhoto, ::onMediaSelected, ::shareMedia, ::turnOnSelectionMode
+            photos, ::openEditPhoto, ::onMediaSelected, ::shareMedia, ::turnOnSelectionMode,
+            ::toggleVoiceNote
         ).also {
             binding.rvPhotos.run {
                 adapter = it
@@ -142,6 +172,66 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
                 Intent(ACTION_SEND_MULTIPLE).apply {
                     putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
                     type = MIME_IMAGE
+                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                },
+                getString(R.string.share)
+            )
+        )
+    }
+
+    /** One-shot results, delivered once each - never replayed when the screen comes back. */
+    private fun observeEffects() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.effects.collect { effect ->
+                    when (effect) {
+                        is MediaListContract.Effect.TrackExported ->
+                            shareTrack(effect.file, effect.format)
+                        is MediaListContract.Effect.ExportEmpty ->
+                            toast(getString(R.string.export_empty))
+                        is MediaListContract.Effect.ExportFailed ->
+                            toast(getString(R.string.export_failed))
+                        is MediaListContract.Effect.AddressesFilled ->
+                            toast(getString(R.string.addresses_filled, effect.count))
+                    }
+                }
+            }
+        }
+    }
+
+    private fun toast(text: String) {
+        Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
+    }
+
+    /** GPX opens in navigators, KML in Google Earth - let the user pick rather than guessing. */
+    private fun showExportMenu(anchor: View) {
+        PopupMenu(requireContext(), anchor).apply {
+            menu.add(0, 0, 0, R.string.export_gpx)
+            menu.add(0, 1, 1, R.string.export_kml)
+            setOnMenuItemClickListener { item ->
+                val format = if (item.itemId == 0) TrackFormat.GPX else TrackFormat.KML
+                viewModel.sendEvent(MediaListContract.Event.ExportTrack(format))
+                true
+            }
+        }.show()
+    }
+
+    private fun shareTrack(file: File, format: TrackFormat) {
+        val uri = try {
+            FileProvider.getUriForFile(
+                requireContext(),
+                "${BuildConfig.APPLICATION_ID}.fileprovider",
+                file
+            )
+        } catch (e: IllegalArgumentException) {
+            Toast.makeText(requireContext(), R.string.export_failed, Toast.LENGTH_SHORT).show()
+            return
+        }
+        startActivity(
+            Intent.createChooser(
+                Intent(ACTION_SEND).apply {
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    type = format.mimeType
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 },
                 getString(R.string.share)

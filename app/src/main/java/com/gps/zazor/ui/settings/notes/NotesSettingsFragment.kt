@@ -22,6 +22,7 @@ class NotesSettingsFragment:
                 binding.sDate.isChecked = state.displayDate
                 binding.sTime.isChecked = state.displayTime
                 binding.sAccuracy.isChecked = state.displayAccuracy
+                binding.sWaitFix.isChecked = state.waitForAccurateFix
             }
             else -> Unit
         }
@@ -40,6 +41,9 @@ class NotesSettingsFragment:
         }
         binding.sAccuracy.setOnCheckedChangeListener { _, isChecked ->
             viewModel.sendEvent(NotesSettingsContract.Event.AccuracySwitched(isChecked))
+        }
+        binding.sWaitFix.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.sendEvent(NotesSettingsContract.Event.WaitForFixSwitched(isChecked))
         }
     }
 }

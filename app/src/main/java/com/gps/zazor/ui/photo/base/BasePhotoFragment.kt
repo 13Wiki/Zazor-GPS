@@ -6,6 +6,11 @@ import android.graphics.DashPathEffect
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import kotlinx.coroutines.launch
 import androidx.core.view.isVisible
 import com.gps.zazor.R
 import com.gps.zazor.databinding.FragmentBasicPhotoBinding
@@ -18,6 +23,7 @@ import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_PHASE
 import com.gps.zazor.ui.photo.editPhoto.SELECTOR_BUTTON_COLOR_DEFAULT
 import com.gps.zazor.ui.photo.editPhoto.STROKE_WIDTH_FOR_DASH_LINE
 import com.gps.zazor.utils.camera.CameraController
+import com.gps.zazor.utils.location.SignalQuality
 import com.gps.zazor.utils.extensions.getBitmap
 import com.gps.zazor.utils.extensions.hide
 import com.gps.zazor.utils.extensions.show
@@ -38,6 +44,8 @@ abstract class BasePhotoFragment :
 
     /** True while the shutter request is in flight, so a double tap cannot queue two captures. */
     private var isCapturing = false
+
+    private var lastSignal: SignalQuality? = null
 
     abstract fun onPhotoReady(bitmap: Bitmap)
 
@@ -102,6 +110,29 @@ abstract class BasePhotoFragment :
             }
         }
         setupOverlayEditor()
+        observeSignal()
+    }
+
+    /**
+     * Shows how good the fix is, and warns before a shot that would carry a rough one.
+     * Collected apart from the screen state so a position update cannot displace a capture.
+     */
+    private fun observeSignal() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.signal.collect { quality ->
+                    lastSignal = quality
+                    binding.tvSignal.text = when {
+                        !quality.hasFix -> getString(R.string.signal_waiting)
+                        quality.isAcceptable ->
+                            getString(R.string.signal_good, quality.accuracyMeters?.toInt() ?: 0)
+                        else ->
+                            getString(R.string.signal_weak, quality.accuracyMeters?.toInt() ?: 0)
+                    }
+                    binding.tvSignal.isVisible = true
+                }
+            }
+        }
     }
 
     override fun onResume() {
@@ -130,8 +161,29 @@ abstract class BasePhotoFragment :
         super.onDestroyView()
     }
 
+    /**
+     * A rough fix means the stamped coordinate can be tens of metres out, which defeats the point
+     * of the photo. Confirm before spending the shot rather than discovering it later.
+     */
     override fun onCapturePhoto() {
-        capturePhoto()
+        val quality = lastSignal
+        if (quality?.shouldWarn == true) {
+            confirmWeakSignal(quality)
+        } else {
+            capturePhoto()
+        }
+    }
+
+    private fun confirmWeakSignal(quality: SignalQuality) {
+        val message = quality.accuracyMeters
+            ?.let { getString(R.string.signal_weak_message, it.toInt()) }
+            ?: getString(R.string.signal_none_message)
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.signal_weak_title)
+            .setMessage(message)
+            .setPositiveButton(R.string.signal_shoot_anyway) { _, _ -> capturePhoto() }
+            .setNegativeButton(R.string.signal_wait, null)
+            .show()
     }
 
     override fun flipCamera() {

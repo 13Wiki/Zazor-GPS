@@ -41,5 +41,7 @@ fun ImageView.loadImage(uri: String?, circle: Boolean = true, @DrawableRes place
 fun ImageView.toggle(isSelected: Boolean) {
     val color =
         ContextCompat.getColor(context, if (isSelected) R.color.colorAccent else R.color.gray)
-    drawable?.setTint(color)
+    // mutate() before tinting: resource drawables share a ConstantState, so tinting one view's
+    // drawable silently recolours every other view showing the same icon.
+    drawable?.mutate()?.setTint(color)
 }

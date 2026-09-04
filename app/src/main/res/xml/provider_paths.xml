@@ -1,10 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <paths>
-    <!-- Matches PhotoStorage: getExternalFilesDir("photos") with a filesDir fallback. -->
+    <!-- Matches PhotoStorage and VoiceNoteRecorder: getExternalFilesDir(...) with a filesDir fallback. -->
     <external-files-path
         name="external_photos"
         path="photos/" />
+    <external-files-path
+        name="external_voice"
+        path="voice/" />
+    <external-files-path
+        name="external_tracks"
+        path="tracks/" />
     <files-path
         name="internal_photos"
         path="photos/" />
+    <files-path
+        name="internal_voice"
+        path="voice/" />
+    <files-path
+        name="internal_tracks"
+        path="tracks/" />
 </paths>

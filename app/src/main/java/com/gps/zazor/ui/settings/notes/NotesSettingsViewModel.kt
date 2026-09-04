@@ -13,7 +13,8 @@ class NotesSettingsViewModelImpl(private val prefs: AppPreferences) : BaseViewMo
             prefs.isDisplayCoordinates(),
             prefs.isDisplayDate(),
             prefs.isDisplayTime(),
-            prefs.isDisplayAccuracy()
+            prefs.isDisplayAccuracy(),
+            prefs.isWaitForAccurateFix()
         )
 
     override fun onEventArrived(event: NotesSettingsContract.Event?) {
@@ -22,6 +23,7 @@ class NotesSettingsViewModelImpl(private val prefs: AppPreferences) : BaseViewMo
             is NotesSettingsContract.Event.DateSwitched -> prefs.putDisplayDate(event.isChecked)
             is NotesSettingsContract.Event.TimeSwitched -> prefs.putDisplayTime(event.isChecked)
             is NotesSettingsContract.Event.AccuracySwitched -> prefs.putDisplayAccuracy(event.isChecked)
+            is NotesSettingsContract.Event.WaitForFixSwitched -> prefs.putWaitForAccurateFix(event.isChecked)
             else -> Unit
         }
     }

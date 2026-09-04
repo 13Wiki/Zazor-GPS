@@ -51,7 +51,7 @@
             android:textColor="@color/black"
             android:textSize="17sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/ivShare"
+            app:layout_constraintEnd_toStartOf="@id/ivVoiceNote"
             app:layout_constraintStart_toEndOf="@id/cvImage"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="31 January 2021 year" />
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tvDate"
             app:layout_constraintStart_toStartOf="@id/tvDate"
             app:layout_constraintTop_toBottomOf="@id/tvDate"
             tools:text="Dnipropetrovsk distrinct, Dniproptrovsk, Lazaryana street, 22" />
@@ -75,12 +75,24 @@
             android:drawableStart="@drawable/ic_baseline_location_24"
             android:textColor="@color/black"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tvDate"
             app:layout_constraintStart_toStartOf="@id/tvAddress"
             app:layout_constraintTop_toBottomOf="@id/tvAddress"
             tools:text="25.2525325435345345, 23.234234234234" />
 
         <ImageView
+                android:id="@+id/ivVoiceNote"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:padding="6dp"
+                android:src="@drawable/ic_note"
+                android:visibility="gone"
+                android:contentDescription="@string/voice_note_record"
+                app:layout_constraintBottom_toBottomOf="@id/tvDate"
+                app:layout_constraintEnd_toStartOf="@id/ivShare"
+                app:layout_constraintTop_toTopOf="@id/tvDate" />
+
+            <ImageView
             android:id="@+id/ivShare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

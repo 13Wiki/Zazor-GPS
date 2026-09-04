@@ -24,6 +24,9 @@ class EditMediaViewModelImpl(
 
     private var photo: Photo? = null
 
+    /** Kept separately: the row may not have loaded yet, but the path is known from the start. */
+    private var photoPath: String? = null
+
     private var noteJob: Job? = null
 
     override suspend fun initialState(): EditMediaContract.State? = null
@@ -31,12 +34,15 @@ class EditMediaViewModelImpl(
     override fun onEventArrived(event: EditMediaContract.Event?) {
         when (event) {
             is EditMediaContract.Event.Initial -> {
+                photoPath = event.path
                 subscribeToAddNoteFlow()
                 launchIo {
                     photo = photosRepository.getPhoto(event.path)
+                    uiState.value = EditMediaContract.State.VoiceNote(photo?.voiceNotePath)
                 }
             }
             is EditMediaContract.Event.SaveEdits -> saveEdits(event.bitmap)
+            is EditMediaContract.Event.SaveVoiceNote -> attachVoiceNote(event.path)
             else -> Unit
         }
     }
@@ -84,6 +90,23 @@ class EditMediaViewModelImpl(
             PhotoClock.formatTime(current.date).takeIf { prefs.isDisplayTime() },
             null
         )
+    }
+
+    /**
+     * Attaches by path rather than by the loaded row: the row may still be loading, and dropping
+     * the recording here would leave the file orphaned on disk after the screen said it saved.
+     */
+    private fun attachVoiceNote(path: String?) {
+        val target = photoPath ?: photo?.path
+        if (target == null) {
+            path?.let { orphan -> launchIo { photoStorage.delete(orphan) } }
+            return
+        }
+        launchIo {
+            photosRepository.attachVoiceNote(target, path)
+            photo = photosRepository.getPhoto(target)
+            uiState.value = EditMediaContract.State.VoiceNote(path)
+        }
     }
 
     private fun saveEdits(bitmap: Bitmap) {

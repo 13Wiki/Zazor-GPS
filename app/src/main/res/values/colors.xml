@@ -17,6 +17,7 @@
     <color name="black_20">#33000000</color>
     <color name="black_70">#B3000000</color>
     <color name="gray">#474747</color>
+    <color name="recording">#FF3B30</color>
 
     <array name="material_colors">
         <item>@color/material_color_grey_50</item>

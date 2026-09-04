@@ -12,6 +12,9 @@ class EditMediaContract {
         data class Initial(val path: String) : Event()
 
         class SaveEdits(val bitmap: Bitmap) : Event()
+
+        /** Attaches a finished recording to the photo, or clears it when null. */
+        data class SaveVoiceNote(val path: String?) : Event()
     }
 
     sealed class State : UiState {
@@ -36,5 +39,8 @@ class EditMediaContract {
         object DisallowDraw : State()
 
         object ClearDraw : State()
+
+        /** Whether this photo currently carries a voice note. */
+        data class VoiceNote(val path: String?) : State()
     }
 }

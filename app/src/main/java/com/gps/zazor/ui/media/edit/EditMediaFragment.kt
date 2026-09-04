@@ -1,10 +1,15 @@
 package com.gps.zazor.ui.media.edit
 
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.gps.zazor.R
 import com.gps.zazor.databinding.BottomSheetAddNoteBinding
@@ -21,6 +26,7 @@ import com.gps.zazor.utils.FragmentArgumentDelegate
 import com.gps.zazor.utils.extensions.getBitmap
 import com.gps.zazor.utils.extensions.show
 import com.gps.zazor.utils.viewBinding.viewBinding
+import com.gps.zazor.utils.audio.VoiceNoteRecorder
 import com.gps.zazor.views.ShowButtonOnSelector
 
 class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContract.Event>(R.layout.fragment_edit_photo) {
@@ -41,6 +47,14 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
     private val sheetBinding by viewBinding(BottomSheetAddNoteBinding::bind, R.id.clRoot)
 
     private val addNoteSheet by lazy { EditPhotoBottomSheet(sheetBinding) }
+
+    private val recorder by lazy { VoiceNoteRecorder(requireContext()) }
+
+    private val micPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (granted) startRecording()
+            else Toast.makeText(requireContext(), R.string.voice_note_denied, Toast.LENGTH_LONG).show()
+        }
 
     override fun observeState(state: EditMediaContract.State?) {
         when (state) {
@@ -77,6 +91,7 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
                 viewModel.sendEvent(EditMediaContract.Event.SaveEdits(it))
             }
             is EditMediaContract.State.ClearDraw -> binding.vDraw.clear()
+            is EditMediaContract.State.VoiceNote -> renderVoiceNote(state.path != null)
             is EditMediaContract.State.Done -> requireActivity().onBackPressedDispatcher.onBackPressed()
             else -> Unit
         }
@@ -91,7 +106,70 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
             BitmapFactory.decodeFile(path)?.let(binding.ivPreview::setImageBitmap)
             viewModel.sendEvent(EditMediaContract.Event.Initial(path))
         }
+        binding.ivVoiceNote.setOnClickListener { toggleRecording() }
         addNoteSheet.show()
+    }
+
+    override fun onPause() {
+        // Leaving mid-recording must not keep the microphone open or leave a stub file behind.
+        if (recorder.isRecording) {
+            recorder.cancel()
+            showRecording(false)
+        }
+        super.onPause()
+    }
+
+    /**
+     * Typing in the field is often impossible - gloves, rain, one hand busy - so the same remark
+     * is spoken instead. The permission is requested here, on the tap, never at startup.
+     */
+    private fun toggleRecording() {
+        when {
+            recorder.isRecording -> stopRecording()
+            ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) ==
+                PackageManager.PERMISSION_GRANTED -> startRecording()
+            else -> micPermission.launch(Manifest.permission.RECORD_AUDIO)
+        }
+    }
+
+    private fun startRecording() {
+        val started = recorder.start(onMaxDurationReached = { if (isAdded) stopRecording() })
+        if (started) {
+            showRecording(true)
+            Toast.makeText(requireContext(), R.string.voice_note_recording, Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), R.string.voice_note_empty, Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun stopRecording() {
+        val file = recorder.stop()
+        showRecording(false)
+        if (file == null) {
+            Toast.makeText(requireContext(), R.string.voice_note_empty, Toast.LENGTH_SHORT).show()
+            return
+        }
+        viewModel.sendEvent(EditMediaContract.Event.SaveVoiceNote(file.absolutePath))
+        Toast.makeText(requireContext(), R.string.voice_note_saved, Toast.LENGTH_SHORT).show()
+    }
+
+    /**
+     * `isSelected` did nothing here - the icon is a plain drawable, not a state list - so the tint
+     * is what actually shows that the microphone is live.
+     */
+    private fun showRecording(isRecording: Boolean) {
+        val color = ContextCompat.getColor(
+            requireContext(),
+            if (isRecording) R.color.recording else R.color.colorAccent
+        )
+        // mutate() first: a drawable inflated from resources shares its ConstantState, so tinting
+        // it directly would also repaint the same icon in the gallery rows.
+        binding.ivVoiceNote.drawable?.mutate()?.setTint(color)
+    }
+
+    private fun renderVoiceNote(hasNote: Boolean) {
+        showRecording(false)
+        binding.ivVoiceNote.alpha = if (hasNote) 1F else 0.6F
     }
 
     private fun setupOverlayEditor() {

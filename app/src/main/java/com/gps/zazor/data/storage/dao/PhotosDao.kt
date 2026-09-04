@@ -22,6 +22,16 @@ interface PhotosDao {
     @Query("SELECT * FROM photos ORDER BY date DESC LIMIT 1")
     suspend fun getLast(): PhotoDb?
 
+    /** Rows saved with a fix but no address - the ones taken while offline. */
+    @Query("SELECT * FROM photos WHERE (address IS NULL OR address = '') AND NOT (lat = 0.0 AND lng = 0.0)")
+    suspend fun getWithoutAddress(): List<PhotoDb>
+
+    @Query("UPDATE photos SET address = :address WHERE path = :path")
+    suspend fun updateAddress(path: String, address: String)
+
+    @Query("UPDATE photos SET voice_note_path = :voiceNotePath WHERE path = :path")
+    suspend fun updateVoiceNote(path: String, voiceNotePath: String?)
+
     @Delete
     suspend fun delete(photo: PhotoDb)
 

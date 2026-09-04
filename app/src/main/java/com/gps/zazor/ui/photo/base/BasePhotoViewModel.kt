@@ -2,6 +2,7 @@ package com.gps.zazor.ui.photo.base
 
 import android.graphics.Bitmap
 import android.location.Location
+import android.os.SystemClock
 import com.gps.zazor.data.models.Photo
 import com.gps.zazor.data.prefs.AppPreferences
 import com.gps.zazor.data.repositories.PhotoRepository
@@ -12,14 +13,25 @@ import com.gps.zazor.utils.PhotoStorage
 import com.gps.zazor.utils.camera.Camera
 import com.gps.zazor.utils.location.AddressResolver
 import com.gps.zazor.utils.location.LocationProvider
-import kotlinx.coroutines.Dispatchers
+import com.gps.zazor.utils.location.SignalQuality
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.withContext
 import com.gps.zazor.utils.time.PhotoClock
 import java.time.Instant
 
-interface BasePhotoViewModel : BaseViewModel<BasePhotoContract.State, BasePhotoContract.Event>
+interface BasePhotoViewModel : BaseViewModel<BasePhotoContract.State, BasePhotoContract.Event> {
+
+    /**
+     * Quality of the current fix, updated every couple of seconds.
+     *
+     * Deliberately a separate flow from `uiState`: a conflated state carrying both would let a
+     * position update swallow a capture or preview state.
+     */
+    val signal: StateFlow<SignalQuality>
+}
 
 open class BasePhotoViewModelImpl(
     private val editPhotoFlow: MutableSharedFlow<EditPhotoContract.Flow>,
@@ -44,6 +56,12 @@ open class BasePhotoViewModelImpl(
         private set
 
     private var photoTime: Instant? = null
+
+    private val signalState = MutableStateFlow(
+        SignalQuality.waiting(prefs.getAccuracyThresholdMeters(), prefs.isWaitForAccurateFix())
+    )
+
+    override val signal: StateFlow<SignalQuality> = signalState.asStateFlow()
 
     /** Note text typed for the picture currently being edited. */
     private var pendingNote: String? = null
@@ -99,14 +117,30 @@ open class BasePhotoViewModelImpl(
         }
     }
 
-    protected suspend fun resolveAddress(): String? =
-        withContext(Dispatchers.IO) { addressResolver.resolve(lastLocation) }
+    protected suspend fun resolveAddress(): String? = addressResolver.resolve(lastLocation)
 
     private fun observeLocation() {
         if (locationJob?.isActive == true) return
         locationJob = launch {
-            locationProvider.locations().collect { lastLocation = it }
+            locationProvider.locations().collect { location ->
+                lastLocation = location
+                signalState.value = SignalQuality(
+                    accuracyMeters = location.accuracy.takeIf { location.isFresh() },
+                    thresholdMeters = prefs.getAccuracyThresholdMeters(),
+                    warnBeforeCapture = prefs.isWaitForAccurateFix()
+                )
+            }
         }
+    }
+
+    /**
+     * Age is measured on the monotonic clock, so a wall-clock change cannot make a stale fix look
+     * recent. A position without a reported accuracy is treated as no fix at all.
+     */
+    private fun Location.isFresh(): Boolean {
+        if (!hasAccuracy()) return false
+        val ageMs = (SystemClock.elapsedRealtimeNanos() - elapsedRealtimeNanos) / 1_000_000
+        return ageMs in 0..SignalQuality.MAX_FIX_AGE_MS
     }
 
     private fun stopObservingLocation() {
