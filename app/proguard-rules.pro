@@ -20,10 +20,6 @@
 -keep class com.gps.zazor.data.models.** { *; }
 -keep class com.gps.zazor.data.storage.models.** { *; }
 
-# --- Dermandar panorama SDK (obfuscated third-party jar, uses JNI and reflection) ---
--keep class com.dermandar.** { *; }
--dontwarn com.dermandar.**
-
 # --- Glide ---
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep class * extends com.bumptech.glide.module.AppGlideModule { <init>(...); }

@@ -13,7 +13,6 @@ import com.gps.zazor.ui.photo.base.di.basicPhotoModule
 import com.gps.zazor.ui.photo.collage.container.di.collageContainerModule
 import com.gps.zazor.ui.photo.collage.di.collageModule
 import com.gps.zazor.ui.photo.collage.photo.di.collagePhotoModule
-import com.gps.zazor.ui.photo.panorama.di.panoramaModule
 import com.gps.zazor.ui.settings.clearCode.clearCodeSetupModule
 import com.gps.zazor.ui.settings.di.settingsModule
 import com.gps.zazor.ui.settings.list.di.settingsListModule
@@ -29,7 +28,7 @@ object DependencyInjection {
         startKoin {
             androidContext(application)
             modules(prefsModule, repositoriesModule, authModule, authPinModule, photoModule, collagePhotoModule,
-                basicPhotoModule, panoramaModule, collageContainerModule,
+                basicPhotoModule, collageContainerModule,
                 collageModule, mediaModule, mediaListModule, editMediaModule, settingsModule, settingsListModule,
                 pinCodeSetupModule, clearCodeSetupModule, notesSettingsModule, trialCodeModule)
         }

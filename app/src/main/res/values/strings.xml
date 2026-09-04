@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Zazor</string>
+    <string name="back">Назад</string>
+    <string name="flash">Вспышка</string>
     <string name="setting_wait_fix">Предупреждать о слабом сигнале</string>
     <string name="voice_note_record">Записать голосовую заметку</string>
     <string name="voice_note_recording">Идёт запись… нажмите, чтобы остановить</string>

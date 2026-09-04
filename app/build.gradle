@@ -95,6 +95,7 @@ dependencies {
 
     implementation "androidx.camera:camera-core:$camerax_version"
     implementation "androidx.camera:camera-camera2:$camerax_version"
+    // Camera2 interop: CameraX has no "ultra-wide" concept, so the lenses are inspected directly.
     implementation "androidx.camera:camera-lifecycle:$camerax_version"
     implementation "androidx.camera:camera-view:$camerax_version"
 
@@ -113,8 +114,6 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     ksp "androidx.room:room-compiler:$room_version"
-
-    implementation files('libs/dmd_pano_library_2.jar')
 
     coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.1.3'
 

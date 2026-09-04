@@ -10,6 +10,10 @@ import android.provider.Settings
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gps.zazor.R
@@ -85,6 +89,7 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        drawEdgeToEdge()
         binding.ivCapture.setOnClickListener {
             getCurrentPhotoHandler()?.onCapturePhoto()
         }
@@ -180,6 +185,19 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
         addNoteSheet.clearAll()
     }
 
+    /**
+     * The viewfinder runs under the system bars; the floating controls take the insets instead,
+     * so nothing important hides behind the status bar or the gesture handle.
+     */
+    private fun drawEdgeToEdge() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.flContainer) { _, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.clPhotoPanel.updatePadding(bottom = bars.bottom + PANEL_BOTTOM_PADDING)
+            insets
+        }
+    }
+
     private fun setupViewPager() {
         if (adapter != null) return
         adapter = PhotoPagerAdapter(this).also { pagerAdapter ->
@@ -226,3 +244,6 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 }
 
 private const val COLLAPSED_PEEK_HEIGHT = 250
+
+/** Breathing room under the shutter, added on top of whatever the gesture bar takes. */
+private const val PANEL_BOTTOM_PADDING = 28

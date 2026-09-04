@@ -20,3 +20,6 @@ local.properties
 # Seeded design canvas — 2.5 MB of generated editor payload, rebuilt from the .dc.html sources
 /.design/*.html
 !/.design/*.dc.html
+
+# Kotlin compiler scratch output
+/.kotlin/

@@ -1,148 +1,150 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Capture screen. The frame runs edge to edge and every control floats over it: the white bars
+  that used to squeeze the viewfinder into a strip are what dated the app.
+-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/flContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black"
+    android:background="@color/ds_background"
     tools:context=".ui.photo.PhotoActivity">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clSettingsPanel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="horizontal"
-        android:elevation="6dp"
-        android:paddingVertical="4dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/ivFlash"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:padding="16dp"
-            android:src="@drawable/ic_flash"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/ivSettings"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:padding="16dp"
-            android:src="@drawable/ic_settings"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/ivBack"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:padding="16dp"
-            android:visibility="invisible"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvSignal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:padding="8dp"
-            android:textSize="12sp"
-            android:textColor="@color/colorAccent"
-            android:visibility="gone"
-            tools:text="Сигнал ±4 м"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ivSettings"
-            app:layout_constraintStart_toEndOf="@id/ivFlash"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tvClearAll"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:textColor="@color/colorAccent"
-            android:padding="16dp"
-            android:text="@string/clear_all"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.camera.view.PreviewView
         android:id="@+id/vCamera"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         app:implementationMode="compatible"
-        app:scaleType="fillCenter"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clSettingsPanel" />
+        app:scaleType="fillCenter" />
+
+    <!-- Fix quality: the one thing worth reading before pressing the shutter. -->
+    <TextView
+        android:id="@+id/tvSignal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/ds_space_4"
+        android:background="@drawable/ds_glass_pill"
+        android:drawablePadding="@dimen/ds_space_2"
+        android:paddingHorizontal="@dimen/ds_space_4"
+        android:paddingVertical="10dp"
+        android:textColor="@color/ds_text_primary"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Сигнал ±4 м"
+        tools:visibility="visible" />
+
+    <ImageView
+        android:id="@+id/ivFlash"
+        android:layout_width="@dimen/ds_icon_button"
+        android:layout_height="@dimen/ds_icon_button"
+        android:layout_marginTop="@dimen/ds_space_4"
+        android:layout_marginEnd="@dimen/ds_space_2"
+        android:background="@drawable/ds_glass_pill"
+        android:contentDescription="@string/flash"
+        android:padding="12dp"
+        android:src="@drawable/ic_flash"
+        app:layout_constraintEnd_toStartOf="@id/ivSettings"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/ds_text_primary" />
+
+    <ImageView
+        android:id="@+id/ivSettings"
+        android:layout_width="@dimen/ds_icon_button"
+        android:layout_height="@dimen/ds_icon_button"
+        android:layout_marginTop="@dimen/ds_space_4"
+        android:layout_marginEnd="@dimen/ds_space_4"
+        android:background="@drawable/ds_glass_pill"
+        android:contentDescription="@string/settings"
+        android:padding="12dp"
+        android:src="@drawable/ic_settings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/ds_text_primary" />
+
+    <!-- Editing controls take the same corner once a shot is on screen. -->
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="@dimen/ds_icon_button"
+        android:layout_height="@dimen/ds_icon_button"
+        android:layout_margin="@dimen/ds_space_4"
+        android:background="@drawable/ds_glass_pill"
+        android:contentDescription="@string/back"
+        android:padding="12dp"
+        android:src="@drawable/ic_baseline_arrow_back_24"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/ds_text_primary" />
+
+    <TextView
+        android:id="@+id/tvClearAll"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/ds_space_4"
+        android:background="@drawable/ds_glass_pill"
+        android:paddingHorizontal="@dimen/ds_space_4"
+        android:paddingVertical="12dp"
+        android:text="@string/clear_all"
+        android:textColor="@color/ds_text_primary"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
         android:id="@+id/clPreviewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clSettingsPanel">
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/ivPreview"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:adjustViewBounds="true"
-            android:background="@color/white"
+            android:layout_height="match_parent"
+            android:background="@color/ds_background"
+            android:contentDescription="@string/photo"
             android:scaleType="centerInside"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:visibility="invisible" />
 
         <com.gps.zazor.views.EditorView
+            android:id="@+id/evDroidArt"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="invisible"
-            android:id="@+id/evDroidArt"/>
+            android:visibility="invisible" />
 
         <com.gps.zazor.views.DrawView
+            android:id="@+id/vDraw"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:focusable="true"
             android:clickable="true"
-            android:visibility="invisible"
-            android:id="@+id/vDraw"/>
+            android:focusable="true"
+            android:visibility="invisible" />
 
         <com.gps.zazor.views.NotesDragView
             android:id="@+id/dvNotes"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
         <TextView
             android:id="@+id/tvTrial"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/label"
+            android:gravity="center"
             android:lineHeight="32sp"
-            android:textSize="12sp"
+            android:rotation="330"
             android:scaleX="2"
             android:scaleY="2"
+            android:text="@string/label"
             android:textColor="@color/black_20"
-            android:rotation="330"
-            android:gravity="center"/>
+            android:textSize="12sp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

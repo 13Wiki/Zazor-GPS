@@ -1,16 +1,57 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Theme.Chesed" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">#007AFF</item>
-        <item name="colorSecondaryVariant">#007AFF</item>
-        <item name="colorOnSecondary">@color/black</item>
-        <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">@android:color/white</item>
-        <!-- Customize your theme here. -->
+
+    <!--
+      Dark throughout: a field tool must not blind at night, and it costs less battery on OLED.
+      Not DayNight - a light variant would need its own pass over every surface, and a half-done
+      one looks worse than a committed dark theme.
+    -->
+    <style name="Theme.Zazor" parent="Theme.MaterialComponents.NoActionBar">
+        <item name="colorPrimary">@color/ds_accent</item>
+        <item name="colorPrimaryVariant">@color/ds_accent_pressed</item>
+        <item name="colorOnPrimary">@color/ds_on_accent</item>
+        <item name="colorSecondary">@color/ds_accent</item>
+        <item name="colorSecondaryVariant">@color/ds_accent_pressed</item>
+        <item name="colorOnSecondary">@color/ds_on_accent</item>
+
+        <item name="android:colorBackground">@color/ds_background</item>
+        <item name="colorSurface">@color/ds_surface</item>
+        <item name="colorOnSurface">@color/ds_text_primary</item>
+        <item name="colorError">@color/ds_danger</item>
+
+        <item name="android:textColorPrimary">@color/ds_text_primary</item>
+        <item name="android:textColorSecondary">@color/ds_text_secondary</item>
+        <item name="android:textColorHint">@color/ds_text_muted</item>
+
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@color/ds_background</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="bottomSheetDialogTheme">@style/Theme.Zazor.BottomSheet</item>
     </style>
+
+    <!-- The capture screen draws under the status bar: the frame runs edge to edge. -->
+    <style name="Theme.Zazor.Camera" parent="Theme.Zazor">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+    </style>
+
+    <style name="Theme.Zazor.BottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.Zazor.BottomSheet</item>
+        <item name="android:navigationBarColor">@color/ds_surface</item>
+    </style>
+
+    <style name="Widget.Zazor.BottomSheet" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@color/ds_surface</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.Zazor.Sheet</item>
+    </style>
+
+    <style name="ShapeAppearance.Zazor.Sheet" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/ds_radius_sheet</item>
+        <item name="cornerSizeTopRight">@dimen/ds_radius_sheet</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+
+    <!-- Kept so older layouts still resolve while screens are migrated one by one. -->
+    <style name="Theme.Chesed" parent="Theme.Zazor" />
 </resources>

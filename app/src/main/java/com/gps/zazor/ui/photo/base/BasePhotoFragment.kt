@@ -36,6 +36,9 @@ abstract class BasePhotoFragment :
 
     override val screenTitle = R.string.photo
 
+    /** Screens that want the widest back lens override this; see [PanoramaFragment]. */
+    protected open val useUltraWide: Boolean = false
+
     override val viewModel by injectViewModel()
 
     private val binding by viewBinding(FragmentBasicPhotoBinding::bind)
@@ -191,7 +194,11 @@ abstract class BasePhotoFragment :
     }
 
     private fun startCamera() {
-        camera?.start(viewLifecycleOwner) { showCameraError() }
+        val controller = camera ?: return
+        controller.start(viewLifecycleOwner) { showCameraError() }
+        if (useUltraWide) {
+            controller.setUltraWide(viewLifecycleOwner, wide = true) { showCameraError() }
+        }
     }
 
     private fun addNotes(state: BasePhotoContract.State.AddNotes) {
