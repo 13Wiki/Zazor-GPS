@@ -76,8 +76,10 @@ class OutingsAdapter(
 
             override fun areItemsTheSame(old: Outing, new: Outing) = old.date == new.date
 
+            /** Compared element by element: the diffing lint check cannot see through List.equals. */
             override fun areContentsTheSame(old: Outing, new: Outing) =
-                old.photos.map { it.path } == new.photos.map { it.path }
+                old.photos.size == new.photos.size &&
+                    old.photos.indices.all { old.photos[it].path == new.photos[it].path }
         }
     }
 }

@@ -1,0 +1,13 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp" android:height="48dp"
+    android:viewportWidth="64" android:viewportHeight="64">
+    <!-- Filled, with its own ground: an outline on a blank badge does not read as an app icon. -->
+    <path android:fillColor="#26301F"
+        android:pathData="M14,2h36a12,12 0 0 1 12,12v36a12,12 0 0 1 -12,12H14A12,12 0 0 1 2,50V14A12,12 0 0 1 14,2z" />
+    <path android:strokeColor="#CBDCB8" android:strokeWidth="3" android:fillColor="#00000000"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M32,32m-15,0a15,15 0 1,0 30,0a15,15 0 1,0 -30,0" />
+    <path android:strokeColor="#CBDCB8" android:strokeWidth="3" android:fillColor="#00000000"
+        android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M39,25l-4,10l-10,4l4,-10z" />
+</vector>

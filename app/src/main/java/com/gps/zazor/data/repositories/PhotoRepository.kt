@@ -6,6 +6,8 @@ import com.gps.zazor.data.models.toDb
 import com.gps.zazor.data.storage.dao.PhotosDao
 import com.gps.zazor.data.storage.models.toDomain
 import com.gps.zazor.utils.PhotoStorage
+import com.gps.zazor.utils.export.BundleWriter
+import com.gps.zazor.utils.export.TrackFileWriter
 import com.gps.zazor.utils.location.AddressResolver
 
 interface PhotoRepository {
@@ -35,7 +37,9 @@ interface PhotoRepository {
 class PhotoRepositoryImpl(
     private val dao: PhotosDao,
     private val storage: PhotoStorage,
-    private val addressResolver: AddressResolver
+    private val addressResolver: AddressResolver,
+    private val bundleWriter: BundleWriter,
+    private val trackFileWriter: TrackFileWriter
 ) : PhotoRepository {
 
     override suspend fun savePhoto(photo: Photo) = dao.savePhoto(photo.toDb())
@@ -79,11 +83,20 @@ class PhotoRepositoryImpl(
         return getPhotos()
     }
 
+    /**
+     * Everything the wipe code has to remove.
+     *
+     * Exported tracks and share archives count: a bundle holds the photos, the voice notes and a
+     * report carrying the coordinates. Leaving those behind would make the wipe a gesture rather
+     * than a wipe.
+     */
     override suspend fun clear() {
         getPhotos().forEach { photo ->
             storage.delete(photo.path)
             photo.voiceNotePath?.let { storage.delete(it) }
         }
         dao.clear()
+        bundleWriter.clear()
+        trackFileWriter.clear()
     }
 }

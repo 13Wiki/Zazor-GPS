@@ -9,6 +9,7 @@ import com.gps.zazor.ui.media.di.injectViewModel
 import com.gps.zazor.ui.media.edit.EditMediaFragment
 import com.gps.zazor.ui.media.list.MediaListFragment
 import com.gps.zazor.ui.outings.OutingsFragment
+import com.gps.zazor.ui.share.ShareFragment
 
 class MediaActivity : BaseActivity<MediaContract.State, MediaContract.Event>(R.layout.activity_media), MediaCallback {
 
@@ -32,5 +33,9 @@ class MediaActivity : BaseActivity<MediaContract.State, MediaContract.Event>(R.l
 
     override fun openOutings() {
         navigateTo(OutingsFragment(), R.id.flContainer, true)
+    }
+
+    override fun openShare(paths: List<String>) {
+        navigateTo(ShareFragment.newInstance(paths), R.id.flContainer, true)
     }
 }

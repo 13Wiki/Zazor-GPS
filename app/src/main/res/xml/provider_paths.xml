@@ -10,6 +10,12 @@
     <external-files-path
         name="external_tracks"
         path="tracks/" />
+    <external-files-path
+        name="external_bundles"
+        path="bundles/" />
+    <files-path
+        name="internal_bundles"
+        path="bundles/" />
     <files-path
         name="internal_photos"
         path="photos/" />

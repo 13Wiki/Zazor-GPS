@@ -29,7 +29,6 @@ class MediaListContract {
 
         object ClearSelectedMode : State()
 
-        data class ShareSelectedPhotos(val photos: List<Photo>) : State()
     }
 
     /**
@@ -47,5 +46,8 @@ class MediaListContract {
 
         /** Addresses resolved after the fact for photos taken offline. */
         data class AddressesFilled(val count: Int) : Effect()
+
+        /** Hands the chosen photos to the transfer screen. */
+        data class OpenShare(val paths: List<String>) : Effect()
     }
 }

@@ -6,4 +6,7 @@ interface MediaCallback {
 
     /** Opens the outings log: the days walked, with each day's track. */
     fun openOutings()
+
+    /** Opens the transfer screen for the given photos. */
+    fun openShare(paths: List<String>)
 }

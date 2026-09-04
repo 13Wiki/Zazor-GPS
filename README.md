@@ -53,13 +53,19 @@ back from its own activity) goes through shared flows registered in Koin.
 
 ```
 ui/
-  auth/       PIN + biometric entry, and the "clear code" that wipes the gallery
-  photo/      camera tab, collage tabs, panorama tab, edit-photo bottom sheet
-  media/      gallery list, share, per-photo re-edit
-  settings/   PIN / clear code / which stamp fields to show / trial code
+  auth/       PIN + biometric entry, and the "clear code" that wipes everything
+  privacy/    first run: what never leaves the phone, and the analytics switch
+  photo/      camera, collage, wide-angle, approach series, edit sheet
+  media/      gallery, per-photo re-edit, voice notes
+  outings/    days walked, each day's track drawn from its photos
+  share/      what travels and how: messenger, archive, plain text
+  settings/   PIN, wipe code, stamp fields, launcher appearance, Pro
 data/         Room entity + DAO + repository, SharedPreferences
-utils/        CameraX wrapper, location + geocoding, photo storage, view binding
-views/        DrawView, EditorView (text overlay), NotesDragView, tab and pager views
+analytics/    anonymous counters, behind an interface that cannot carry personal data
+billing/      Play Billing behind a ProStatus interface
+ads/          one slot, in the photo feed and nowhere else
+utils/        CameraX, location, geocoding, storage, GPX/KML, zip bundles, launcher aliases
+views/        DrawView, EditorView, NotesDragView, RouteView
 ```
 
 ## Metadata
@@ -69,11 +75,34 @@ re-edit paths encode with `Bitmap.compress`, which writes no EXIF segment at all
 software tag, timestamp or coordinates. The panorama SDK does copy EXIF from its source frames, so
 its output is scrubbed by `MetadataStripper` before it reaches the gallery.
 
+## Maps and panorama, and why neither uses an SDK
+
+**The route is drawn, not a tile map.** Google Maps would mean an API key with a billing account
+behind it, a network connection, and about 3 MB of library — for a screen whose job is "which point
+is which, and how far apart". `RouteView` draws it: no key, no cost, and it works with no signal in
+the middle of a field. Whoever wants real streets taps through to their own map app via a `geo:`
+intent.
+
+**Panorama is the phone's own ultra-wide lens**, found by inspecting focal lengths through the
+Camera2 interop. A modern phone covers ~120 degrees in one frame: instant, nothing to stitch,
+nothing added to the download. It goes through the same pipeline as an ordinary photo, so it gets
+the stamp, the marks and the metadata scrub for free — the proprietary Camera1 SDK it replaced
+bypassed all three.
+
+## Before publishing
+
+- Replace the debug signing config with a real keystore (see above).
+- Create the in-app product `zazor_pro_remove_ads` in Play Console; until it exists the Pro button
+  says so rather than failing silently.
+- Choose an ad network if ads are wanted: `AdSlot` has a no-op implementation, so the current build
+  simply shows none.
+- Fill in the Data safety form: the app collects anonymous usage counters only, and the advertising
+  ID is removed from the merged manifest.
+
 ## Known limitations
 
-- **Panorama** relies on `libs/dmd_pano_library_2.jar`, a proprietary Camera1 SDK with no source
-  and no upstream. It is wrapped in error handling and degrades to a message when the device
-  rejects it, but it cannot be maintained or ported. Replacing it is the next larger piece of work.
 - **The PIN and clear code are stored in plain `SharedPreferences`.** They gate the UI, not the
   files on disk. Anything stronger needs a KeyStore-backed hash.
 - Photos live in the app-private external directory, so uninstalling the app deletes them.
+- Nothing has yet been run on a device or emulator: the build, the tests and lint are green, but
+  the camera, the Room migrations and the audio recorder are unverified against real hardware.

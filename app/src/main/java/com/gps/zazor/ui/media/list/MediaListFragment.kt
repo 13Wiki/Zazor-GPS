@@ -56,7 +56,6 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
                 adapter?.clearSelection()
                 binding.ivShare.isVisible = false
             }
-            is MediaListContract.State.ShareSelectedPhotos -> shareMedias(state.photos)
             else -> Unit
         }
     }
@@ -149,36 +148,12 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         binding.ivShare.isVisible = true
     }
 
+    /** One photo still goes through the transfer screen, so the same choices apply to it. */
     private fun shareMedia(photo: Photo) {
-        uriFor(photo)?.let { uri ->
-            startActivity(
-                Intent.createChooser(
-                    Intent(ACTION_SEND).apply {
-                        putExtra(Intent.EXTRA_STREAM, uri)
-                        type = MIME_IMAGE
-                        // Without this flag the receiving app gets a SecurityException.
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                    },
-                    getString(R.string.share)
-                )
-            )
-        }
+        mediaCallback?.openShare(listOf(photo.path))
     }
 
-    private fun shareMedias(photos: List<Photo>) {
-        val uris = ArrayList(photos.mapNotNull(::uriFor))
-        if (uris.isEmpty()) return
-        startActivity(
-            Intent.createChooser(
-                Intent(ACTION_SEND_MULTIPLE).apply {
-                    putParcelableArrayListExtra(Intent.EXTRA_STREAM, uris)
-                    type = MIME_IMAGE
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                },
-                getString(R.string.share)
-            )
-        )
-    }
+
 
     /** One-shot results, delivered once each - never replayed when the screen comes back. */
     private fun observeEffects() {
@@ -188,6 +163,8 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
                     when (effect) {
                         is MediaListContract.Effect.TrackExported ->
                             shareTrack(effect.file, effect.format)
+                        is MediaListContract.Effect.OpenShare ->
+                            mediaCallback?.openShare(effect.paths)
                         is MediaListContract.Effect.ExportEmpty ->
                             toast(getString(R.string.export_empty))
                         is MediaListContract.Effect.ExportFailed ->

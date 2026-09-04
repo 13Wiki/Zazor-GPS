@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ds_background"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/ds_space_6">
+
+        <ImageView
+            android:id="@+id/ivClose"
+            android:layout_width="@dimen/ds_icon_button"
+            android:layout_height="@dimen/ds_icon_button"
+            android:layout_margin="@dimen/ds_space_4"
+            android:background="@drawable/ds_ghost_button"
+            android:contentDescription="@string/cancel_action"
+            android:padding="13dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/ds_text_primary" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_3"
+            android:text="@string/share_title"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/ivClose"
+            app:layout_constraintStart_toEndOf="@id/ivClose"
+            app:layout_constraintTop_toTopOf="@id/ivClose" />
+
+        <TextView
+            android:id="@+id/tvSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/ds_space_4"
+            android:background="@drawable/ds_surface_card"
+            android:padding="@dimen/ds_space_4"
+            android:textColor="@color/ds_text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivClose"
+            tools:text="4 снимка · 3,8 МБ" />
+
+        <TextView
+            android:id="@+id/tvIncludeLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_2"
+            android:text="@string/share_include"
+            android:textAllCaps="true"
+            android:textColor="@color/ds_text_muted"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSummary" />
+
+        <LinearLayout
+            android:id="@+id/llOptions"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/ds_space_4"
+            android:background="@drawable/ds_surface_card"
+            android:orientation="vertical"
+            android:paddingHorizontal="@dimen/ds_space_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvIncludeLabel">
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swCoordinates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/ds_touch_min"
+                android:text="@string/share_include_coordinates"
+                android:textColor="@color/ds_text_primary"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swTrack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/ds_touch_min"
+                android:text="@string/share_include_track"
+                android:textColor="@color/ds_text_primary"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swVoice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/ds_touch_min"
+                android:text="@string/share_include_voice"
+                android:textColor="@color/ds_text_primary"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+        <include
+            android:id="@+id/optMessenger"
+            layout="@layout/item_share_option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/ds_space_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llOptions" />
+
+        <include
+            android:id="@+id/optBundle"
+            layout="@layout/item_share_option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/optMessenger" />
+
+        <include
+            android:id="@+id/optReport"
+            layout="@layout/item_share_option"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/optBundle" />
+
+        <ProgressBar
+            android:id="@+id/pbPreparing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ds_space_4"
+            android:indeterminateTint="@color/ds_accent"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/optReport" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

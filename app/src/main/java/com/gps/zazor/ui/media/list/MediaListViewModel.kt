@@ -63,8 +63,10 @@ class MediaListViewModelImpl(
                 else selectedPhotos?.remove(event.photo)
             }
             is MediaListContract.Event.SharePhotos -> {
-                selectedPhotos?.takeIf { it.isNotEmpty() }?.let {
-                    uiState.value = MediaListContract.State.ShareSelectedPhotos(it.toList())
+                selectedPhotos?.takeIf { it.isNotEmpty() }?.let { chosen ->
+                    launchIo {
+                        effectFlow.emit(MediaListContract.Effect.OpenShare(chosen.map { it.path }))
+                    }
                 }
             }
             is MediaListContract.Event.TurnOnSelectionMode -> {

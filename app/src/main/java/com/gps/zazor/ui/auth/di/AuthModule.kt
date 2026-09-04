@@ -8,7 +8,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.dsl.module
 
 val authModule = module {
-    viewModel { AuthViewModelImpl(get()) }
+    viewModel { AuthViewModelImpl(get(), get()) }
 }
 
 fun AuthActivity.injectViewModel(): Lazy<AuthViewModel> =

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -7,6 +8,20 @@
 
     <!-- Voice notes: requested only when the user taps record, never at startup. -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!--
+      Analytics pulls these in by default. They exist to follow a person between apps, which is the
+      opposite of what this app is for, so they are removed from the merged manifest.
+    -->
+    <uses-permission
+        android:name="com.google.android.gms.permission.AD_ID"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.ACCESS_ADSERVICES_ATTRIBUTION"
+        tools:node="remove" />
+    <uses-permission
+        android:name="android.permission.ACCESS_ADSERVICES_AD_ID"
+        tools:node="remove" />
 
     <!-- Photos live in the app-private external directory, so no storage permission is needed on
          API 29+. The legacy grant is kept only for API 24-28. -->
@@ -58,6 +73,57 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!--
+          Alternate launcher appearances. Exactly one alias is enabled at a time; the app is never
+          hidden from the launcher, which Google reads as deceptive behaviour.
+        -->
+        <activity-alias
+            android:name=".Alias.Notes"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_appearance_notes"
+            android:label="@string/appearance_notes"
+            android:targetActivity=".ui.auth.AuthActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".Alias.Clock"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_appearance_clock"
+            android:label="@string/appearance_clock"
+            android:targetActivity=".ui.auth.AuthActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <activity-alias
+            android:name=".Alias.Compass"
+            android:enabled="false"
+            android:exported="true"
+            android:icon="@drawable/ic_appearance_compass"
+            android:label="@string/appearance_compass"
+            android:targetActivity=".ui.auth.AuthActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity-alias>
+
+        <!-- Analytics stays off until the person has seen what is and is not collected. -->
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="google_analytics_adid_collection_enabled"
+            android:value="false" />
 
         <activity
             android:name=".ui.photo.PhotoActivity"

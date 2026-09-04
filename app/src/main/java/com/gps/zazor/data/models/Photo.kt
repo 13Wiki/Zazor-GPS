@@ -11,7 +11,11 @@ data class Photo(val path: String,
                  val lat: Double? = null,
                  val lng: Double? = null,
                  /** Absolute path of the recorded voice note, or null when there is none. */
-                 val voiceNotePath: String? = null)
+                 val voiceNotePath: String? = null,
+                 /** Fix radius in metres at the moment of the shot. */
+                 val accuracyMeters: Float? = null,
+                 /** Set on every frame of one approach series. */
+                 val seriesId: String? = null)
 
 val Photo.location get() = Location("").apply {
     latitude = lat ?: 0.0
@@ -24,4 +28,14 @@ val Photo.time get() = date.toEpochMilli()
 val Photo.needsAddress get() = address.isNullOrBlank() && lat != null && lng != null
 
 fun Photo.toDb(): PhotoDb =
-      PhotoDb(path, name, date.toEpochMilli(), address.orEmpty(), lat ?: 0.0, lng ?: 0.0, voiceNotePath)
+      PhotoDb(
+          path,
+          name,
+          date.toEpochMilli(),
+          address.orEmpty(),
+          lat ?: 0.0,
+          lng ?: 0.0,
+          voiceNotePath,
+          accuracyMeters,
+          seriesId
+      )

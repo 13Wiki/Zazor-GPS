@@ -55,6 +55,21 @@ interface AppPreferences {
 
     fun putAccuracyThresholdMeters(meters: Int)
 
+    /** Mirror of the Play entitlement, so ads stay off while offline. The store stays authority. */
+    fun isPro(): Boolean
+
+    fun setPro(pro: Boolean)
+
+    /** False until the person has seen what the app does and does not collect. */
+    fun isPrivacyAccepted(): Boolean
+
+    fun setPrivacyAccepted(accepted: Boolean)
+
+    /** Whether anonymous counters may be sent at all. */
+    fun isAnalyticsEnabled(): Boolean
+
+    fun setAnalyticsEnabled(enabled: Boolean)
+
     fun clear()
 }
 
@@ -76,6 +91,9 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
         private const val FONT_KEY = "font"
         private const val WAIT_FIX_KEY = "waitForAccurateFix"
         private const val ACCURACY_THRESHOLD_KEY = "accuracyThresholdMeters"
+        private const val PRO_KEY = "pro"
+        private const val PRIVACY_KEY = "privacyAccepted"
+        private const val ANALYTICS_KEY = "analyticsEnabled"
 
         /** A phone in the open reaches 3-5 m; beyond 10 m the point is no longer worth stamping. */
         const val DEFAULT_ACCURACY_THRESHOLD_M = 10
@@ -179,6 +197,28 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
         preferences.edit().putInt(ACCURACY_THRESHOLD_KEY, meters).commit()
     }
 
+    override fun isPro(): Boolean = preferences.getBoolean(PRO_KEY, false)
+
+    override fun setPro(pro: Boolean) {
+        preferences.edit().putBoolean(PRO_KEY, pro).commit()
+    }
+
+    override fun isPrivacyAccepted(): Boolean = preferences.getBoolean(PRIVACY_KEY, false)
+
+    override fun setPrivacyAccepted(accepted: Boolean) {
+        preferences.edit().putBoolean(PRIVACY_KEY, accepted).commit()
+    }
+
+    override fun isAnalyticsEnabled(): Boolean = preferences.getBoolean(ANALYTICS_KEY, true)
+
+    override fun setAnalyticsEnabled(enabled: Boolean) {
+        preferences.edit().putBoolean(ANALYTICS_KEY, enabled).commit()
+    }
+
+    /**
+     * Wipes everything the app remembers - including the entitlement mirror, which Play restores
+     * on the next query. The wipe code must not leave a trace of who used this phone.
+     */
     override fun clear() {
         preferences.edit().clear().commit()
     }

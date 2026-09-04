@@ -111,6 +111,9 @@ abstract class BasePhotoFragment :
             ivSettings.setOnClickListener {
                 callback?.openSettings()
             }
+            tvSeries.setOnClickListener {
+                viewModel.sendEvent(BasePhotoContract.Event.ToggleSeries)
+            }
         }
         setupOverlayEditor()
         observeSignal()
@@ -123,6 +126,9 @@ abstract class BasePhotoFragment :
     private fun observeSignal() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                launch {
+                    viewModel.series.collect(::renderSeries)
+                }
                 viewModel.signal.collect { quality ->
                     lastSignal = quality
                     binding.tvSignal.text = when {
@@ -191,6 +197,23 @@ abstract class BasePhotoFragment :
 
     override fun flipCamera() {
         viewModel.sendEvent(BasePhotoContract.Event.FlipCamera)
+    }
+
+    /**
+     * Shows how many frames the open series holds and how good its best fix is.
+     * An open series with no frames yet must read differently from no series at all.
+     */
+    private fun renderSeries(progress: SeriesProgress) {
+        val best = progress.bestAccuracy?.toInt()
+        binding.tvSeries.text = when {
+            !progress.isOpen -> getString(R.string.series_start)
+            best == null -> getString(R.string.series_active, progress.frameCount)
+            else -> getString(R.string.series_active_accuracy, progress.frameCount, best)
+        }
+        // A plain shape ignores isSelected, so the active state is a different background.
+        binding.tvSeries.setBackgroundResource(
+            if (progress.isOpen) R.drawable.ds_accent_pill else R.drawable.ds_glass_pill
+        )
     }
 
     private fun startCamera() {

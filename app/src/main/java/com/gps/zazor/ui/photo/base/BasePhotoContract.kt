@@ -29,6 +29,9 @@ class BasePhotoContract {
         object Pause : Event()
 
         object Stop : Event()
+
+        /** Starts a new approach series, or closes the open one. */
+        object ToggleSeries : Event()
     }
 
     sealed class State : UiState {

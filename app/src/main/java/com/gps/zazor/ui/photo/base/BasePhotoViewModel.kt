@@ -21,6 +21,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
 import com.gps.zazor.utils.time.PhotoClock
 import java.time.Instant
+import java.util.UUID
 
 interface BasePhotoViewModel : BaseViewModel<BasePhotoContract.State, BasePhotoContract.Event> {
 
@@ -31,6 +32,9 @@ interface BasePhotoViewModel : BaseViewModel<BasePhotoContract.State, BasePhotoC
      * position update swallow a capture or preview state.
      */
     val signal: StateFlow<SignalQuality>
+
+    /** Progress of the open approach series; separate from `uiState` for the same reason. */
+    val series: StateFlow<SeriesProgress>
 }
 
 open class BasePhotoViewModelImpl(
@@ -63,8 +67,17 @@ open class BasePhotoViewModelImpl(
 
     override val signal: StateFlow<SignalQuality> = signalState.asStateFlow()
 
+    private val seriesState = MutableStateFlow(SeriesProgress())
+
+    override val series: StateFlow<SeriesProgress> = seriesState.asStateFlow()
+
     /** Note text typed for the picture currently being edited. */
     private var pendingNote: String? = null
+
+    /** Non-null while an approach series is open; every shot taken joins it. */
+    private var openSeriesId: String? = null
+
+    private var seriesFrames = mutableListOf<Float?>()
 
     open fun onSaveEdits(edits: BasePhotoContract.Event.SaveEdits) {
         saveEdits(edits.bitmap)
@@ -97,6 +110,7 @@ open class BasePhotoViewModelImpl(
             is BasePhotoContract.Event.BackPressed -> handleBackPressed()
             is BasePhotoContract.Event.Pause -> unSubscribeFromAddNoteFlow()
             is BasePhotoContract.Event.Stop -> stopObservingLocation()
+            is BasePhotoContract.Event.ToggleSeries -> toggleSeries()
             else -> Unit
         }
     }
@@ -224,7 +238,30 @@ open class BasePhotoViewModelImpl(
         uiState.value = BasePhotoContract.State.ToggleFlash(isFlashOn)
     }
 
+    /**
+     * Opens a series, or closes the open one.
+     *
+     * A series is several frames of the same spot from far to near: the wide one says which
+     * clearing, the last says which stone. Whoever receives it walks in by the pictures.
+     */
+    private fun toggleSeries() {
+        openSeriesId = if (openSeriesId == null) UUID.randomUUID().toString() else null
+        seriesFrames = mutableListOf()
+        emitSeriesState()
+    }
+
+    private fun emitSeriesState() {
+        seriesState.value = SeriesProgress(
+            isOpen = openSeriesId != null,
+            frameCount = seriesFrames.size,
+            bestAccuracy = seriesFrames.filterNotNull().minOrNull()
+        )
+    }
+
     private fun saveEdits(bitmap: Bitmap) {
+        val seriesId = openSeriesId
+        // Captured before the coroutine: the fix can move on while the file is being written.
+        val accuracy = signalState.value.accuracyMeters
         launchIo {
             photoStorage.save(bitmap)?.let { path ->
                 photoRepository.savePhoto(
@@ -234,11 +271,15 @@ open class BasePhotoViewModelImpl(
                         date = photoTime ?: PhotoClock.now(),
                         address = resolveAddress().orEmpty(),
                         lat = lastLocation?.latitude,
-                        lng = lastLocation?.longitude
+                        lng = lastLocation?.longitude,
+                        accuracyMeters = accuracy,
+                        seriesId = seriesId
                     )
                 )
+                if (seriesId != null) seriesFrames.add(accuracy)
             }
             handleBackPressed()
+            if (seriesId != null) emitSeriesState()
         }
     }
 

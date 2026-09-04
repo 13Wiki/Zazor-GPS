@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Active state of a floating pill: a plain shape ignores isSelected, so the background swaps. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_accent" />
+    <corners android:radius="999dp" />
+</shape>
