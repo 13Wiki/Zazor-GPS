@@ -8,6 +8,7 @@ import com.gps.zazor.ui.base.BaseActivity
 import com.gps.zazor.ui.media.di.injectViewModel
 import com.gps.zazor.ui.media.edit.EditMediaFragment
 import com.gps.zazor.ui.media.list.MediaListFragment
+import com.gps.zazor.ui.outings.OutingsFragment
 
 class MediaActivity : BaseActivity<MediaContract.State, MediaContract.Event>(R.layout.activity_media), MediaCallback {
 
@@ -27,5 +28,9 @@ class MediaActivity : BaseActivity<MediaContract.State, MediaContract.Event>(R.l
 
     override fun editPhoto(photoPath: String) {
         navigateTo(EditMediaFragment.newInstance(photoPath), R.id.flContainer, true)
+    }
+
+    override fun openOutings() {
+        navigateTo(OutingsFragment(), R.id.flContainer, true)
     }
 }

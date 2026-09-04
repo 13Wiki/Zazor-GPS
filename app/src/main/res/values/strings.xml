@@ -1,5 +1,25 @@
 <resources>
     <string name="app_name">Zazor</string>
+    <string name="route_scale_m">%1$d м</string>
+    <string name="route_scale_km">%1$.0f км</string>
+    <string name="outings_title">Выходы</string>
+    <string name="outing_today">Сегодня</string>
+    <string name="outing_yesterday">Вчера</string>
+    <string name="outing_summary">%1$d точек · %2$s</string>
+    <string name="outing_time_range">%1$s — %2$s</string>
+    <string name="outing_delete">Удалить выход</string>
+    <string name="outing_delete_message">Снимки этого дня и след маршрута будут стёрты с телефона. Отменить нельзя.</string>
+    <string name="outing_deleted">Выход удалён</string>
+    <string name="outings_empty">Здесь появятся дни, когда вы снимали</string>
+    <string name="route_open_in_maps">Открыть в картах</string>
+    <string name="route_no_maps_app">Нет приложения карт</string>
+    <string name="route_point_of">Точка %1$d из %2$d</string>
+    <string name="distance_m">%1$d м</string>
+    <string name="distance_km">%1$s км</string>
+    <string name="duration_hm">%1$d ч %2$d мин</string>
+    <string name="duration_m">%1$d мин</string>
+    <string name="delete">Удалить</string>
+    <string name="cancel_action">Отмена</string>
     <string name="back">Назад</string>
     <string name="flash">Вспышка</string>
     <string name="setting_wait_fix">Предупреждать о слабом сигнале</string>

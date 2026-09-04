@@ -76,6 +76,7 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
             viewModel.sendEvent(MediaListContract.Event.SharePhotos)
         }
         binding.ivExport.setOnClickListener(::showExportMenu)
+        binding.ivOutings.setOnClickListener { mediaCallback?.openOutings() }
         observeEffects()
     }
 
