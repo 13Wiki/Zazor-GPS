@@ -23,3 +23,8 @@ local.properties
 
 # Kotlin compiler scratch output
 /.kotlin/
+
+# Upload key: never committed. Losing it means losing the ability to update the app on Play.
+/keystore.properties
+*.jks
+*.keystore

@@ -27,13 +27,30 @@ android {
     }
 
     signingConfigs {
-        // Debug-signed release builds so `assembleRelease` produces an installable APK
-        // out of the box. Replace with a real keystore before publishing to Play.
+        /*
+         * The real upload key is described by keystore.properties in the project root, which is
+         * git-ignored and never leaves the machine that holds the key: losing it means losing the
+         * ability to publish updates for this app, forever.
+         *
+         * Without that file the build falls back to the debug key, so a fresh checkout still
+         * produces an installable APK for testing. Play rejects debug-signed uploads, and
+         * `verifyReleaseSigning` below fails the build before you waste an upload finding out.
+         */
         release {
-            storeFile file(System.getProperty("user.home") + "/.android/debug.keystore")
-            storePassword "android"
-            keyAlias "androiddebugkey"
-            keyPassword "android"
+            def keystoreProps = new Properties()
+            def keystoreFile = rootProject.file("keystore.properties")
+            if (keystoreFile.exists()) {
+                keystoreFile.withInputStream { keystoreProps.load(it) }
+                storeFile file(keystoreProps["storeFile"])
+                storePassword keystoreProps["storePassword"]
+                keyAlias keystoreProps["keyAlias"]
+                keyPassword keystoreProps["keyPassword"]
+            } else {
+                storeFile file(System.getProperty("user.home") + "/.android/debug.keystore")
+                storePassword "android"
+                keyAlias "androiddebugkey"
+                keyPassword "android"
+            }
         }
     }
 
@@ -123,4 +140,24 @@ dependencies {
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.1'
     androidTestImplementation 'androidx.test.ext:junit:1.2.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.6.1'
+}
+
+/*
+ * A debug-signed bundle is rejected by Play with an error that does not name the cause. Fail here
+ * instead, where the message can say what to do about it.
+ */
+tasks.matching { it.name == "bundleRelease" }.configureEach {
+    doFirst {
+        if (!rootProject.file("keystore.properties").exists()) {
+            throw new GradleException(
+                "bundleRelease needs a real upload key.\n" +
+                "Create one, then write keystore.properties in the project root:\n" +
+                "  storeFile=/absolute/path/to/zazor-upload.jks\n" +
+                "  storePassword=...\n" +
+                "  keyAlias=zazor\n" +
+                "  keyPassword=...\n" +
+                "See RELEASE.md. assembleRelease still works without it, for testing only."
+            )
+        }
+    }
 }
