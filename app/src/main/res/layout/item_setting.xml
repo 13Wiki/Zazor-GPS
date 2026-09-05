@@ -1,47 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- A row is a card, not a divided list line: dividers read as noise on a dark ground. -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/ds_space_2"
+    android:background="@drawable/ds_surface_card"
+    android:minHeight="@dimen/ds_touch_min"
+    android:paddingStart="@dimen/ds_space_4"
+    android:paddingEnd="@dimen/ds_space_4"
+    android:paddingTop="@dimen/ds_space_4"
+    android:paddingBottom="@dimen/ds_space_4">
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:textColor="@color/black"
-        android:textSize="17sp"
+        android:layout_marginEnd="@dimen/ds_space_3"
+        android:textColor="@color/ds_text_primary"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/ivArrow"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Pin-code" />
 
     <ImageView
-        android:layout_width="18dp"
-        android:layout_height="18dp"
         android:id="@+id/ivArrow"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:contentDescription="@null"
         android:src="@drawable/ic_baseline_arrow_forward_ios_24"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="24dp"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/ds_text_muted" />
 
     <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/sValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:id="@+id/sValue"
         android:clickable="false"
-        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginEnd="24dp"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.3dp"
-        android:background="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:thumbTint="@color/ds_text_primary"
+        app:trackTint="@color/ds_outline" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

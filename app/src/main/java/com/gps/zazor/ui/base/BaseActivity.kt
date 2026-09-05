@@ -1,6 +1,7 @@
 package com.gps.zazor.ui.base
 
 import android.os.Bundle
+import androidx.activity.addCallback
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -26,19 +27,27 @@ abstract class BaseActivity<STATE : UiState, EVENT : UiEvent>(@LayoutRes private
                 viewModel.uiState.collect(::observeState)
             }
         }
+        registerBackHandling()
         viewModel.init()
     }
 
-    @Deprecated("Kept for the existing in-app back handling")
-    override fun onBackPressed() {
-        // A listener returning false means it consumed the press, so the activity must not
-        // also pop. The original condition was inverted and popped whenever *any* listener ran.
-        val handled = supportFragmentManager.fragments.any {
-            (it as? OnBackPressedListener)?.onBackPressed() == false
-        }
-        if (!handled) {
-            @Suppress("DEPRECATION")
-            super.onBackPressed()
+    /**
+     * Back goes through the dispatcher, not `onBackPressed`: from Android 13 the predictive back
+     * gesture never calls the override, so a screen relying on it simply stops responding.
+     *
+     * A listener returning false means it consumed the press, so the activity must not also pop.
+     */
+    private fun registerBackHandling() {
+        onBackPressedDispatcher.addCallback(this) {
+            val handled = supportFragmentManager.fragments.any {
+                (it as? OnBackPressedListener)?.onBackPressed() == false
+            }
+            if (!handled) {
+                // Step aside and let the next callback - ultimately the default finish - run.
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+                isEnabled = true
+            }
         }
     }
 

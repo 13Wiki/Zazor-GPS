@@ -1,62 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  One cell of a collage is shot here. Same floating-controls treatment as the main capture screen,
+  minus the mode switch: this screen only ever takes one frame and returns.
+-->
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:background="@color/ds_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/black"
-        tools:context=".ui.photo.PhotoActivity">
+        tools:context=".ui.photo.collage.photo.CollagePhotoActivity">
 
         <FrameLayout
             android:id="@+id/flContainer"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/clPhotoPanel"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/clPhotoPanel"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:paddingVertical="4dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ds_bottom_scrim"
+            android:paddingTop="56dp"
+            android:paddingBottom="28dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
-
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivCapture"
-                android:layout_width="64dp"
-                android:layout_height="64dp"
-                android:layout_marginTop="24dp"
-                android:elevation="4dp"
-                android:src="@drawable/ic_capture"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="@dimen/ds_shutter"
+                android:layout_height="@dimen/ds_shutter"
+                android:background="@drawable/ds_shutter"
+                android:contentDescription="@string/photo"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/ivFlip"
-                android:layout_width="28dp"
-                android:layout_height="28dp"
-                android:layout_margin="16dp"
-                android:background="@drawable/bg_round"
-                android:elevation="4dp"
+                android:layout_width="54dp"
+                android:layout_height="54dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/ds_ghost_button"
+                android:contentDescription="@string/photo"
+                android:padding="15dp"
                 android:src="@drawable/ic_flip"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintBottom_toBottomOf="@id/ivCapture"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/ivCapture"
+                app:tint="@color/ds_text_primary" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <include layout="@layout/bottom_sheet_add_note"/>
+    <include layout="@layout/bottom_sheet_add_note" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,106 +1,114 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Photo card: the picture leads, the data reads underneath it. -->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cvPhoto"
+    android:id="@+id/clPhoto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="175dp"
-    android:background="@color/white"
-    android:layout_marginVertical="8dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="8dp">
+    android:layout_marginTop="@dimen/ds_space_3"
+    android:background="@drawable/ds_surface_card"
+    android:clickable="true"
+    android:focusable="true">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvImage"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        android:id="@+id/clPhoto"
-        android:layout_margin="16dp">
-
-        <CheckBox
-            android:id="@+id/cbSelect"
-            android:layout_width="30dp"
-            android:visibility="gone"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cvImage"
-            android:layout_width="125dp"
-            android:layout_height="125dp"
-            app:cardCornerRadius="6dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/cbSelect"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <androidx.appcompat.widget.AppCompatImageView
-                android:id="@+id/ivPreview"
-                android:layout_width="match_parent"
-                android:scaleType="centerCrop"
-                android:layout_height="match_parent" />
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:textColor="@color/black"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/ivVoiceNote"
-            app:layout_constraintStart_toEndOf="@id/cvImage"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="31 January 2021 year" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvAddress"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:textColor="@color/black"
-            app:layout_constraintEnd_toEndOf="@id/tvDate"
-            app:layout_constraintStart_toStartOf="@id/tvDate"
-            app:layout_constraintTop_toBottomOf="@id/tvDate"
-            tools:text="Dnipropetrovsk distrinct, Dniproptrovsk, Lazaryana street, 22" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvLocation"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:drawableStart="@drawable/ic_baseline_location_24"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="@id/tvDate"
-            app:layout_constraintStart_toStartOf="@id/tvAddress"
-            app:layout_constraintTop_toBottomOf="@id/tvAddress"
-            tools:text="25.2525325435345345, 23.234234234234" />
+        android:layout_height="168dp"
+        app:cardBackgroundColor="@color/ds_surface_raised"
+        app:cardCornerRadius="@dimen/ds_radius_card"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-                android:id="@+id/ivVoiceNote"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:padding="6dp"
-                android:src="@drawable/ic_note"
-                android:visibility="gone"
-                android:contentDescription="@string/voice_note_record"
-                app:layout_constraintBottom_toBottomOf="@id/tvDate"
-                app:layout_constraintEnd_toStartOf="@id/ivShare"
-                app:layout_constraintTop_toTopOf="@id/tvDate" />
+            android:id="@+id/ivPreview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/photo"
+            android:scaleType="centerCrop" />
+    </androidx.cardview.widget.CardView>
 
-            <ImageView
-            android:id="@+id/ivShare"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@id/tvDate"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/ic_share"/>
+    <CheckBox
+        android:id="@+id/cbSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/ds_space_2"
+        android:buttonTint="@color/ds_accent"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ds_space_4"
+        android:layout_marginTop="@dimen/ds_space_3"
+        android:textColor="@color/ds_text_primary"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/ivVoiceNote"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cvImage"
+        tools:text="03.09.2026, 15:30" />
 
-</androidx.cardview.widget.CardView>
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/ds_text_secondary"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="@id/tvDate"
+        app:layout_constraintStart_toStartOf="@id/tvDate"
+        app:layout_constraintTop_toBottomOf="@id/tvDate"
+        tools:text="Ленинский просп. 32, Москва" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvLocation"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="@dimen/ds_space_4"
+        android:textColor="@color/ds_text_muted"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tvDate"
+        app:layout_constraintStart_toStartOf="@id/tvDate"
+        app:layout_constraintTop_toBottomOf="@id/tvAddress"
+        tools:text="55.755826, 37.617300" />
+
+    <ImageView
+        android:id="@+id/ivVoiceNote"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/ds_ghost_button"
+        android:contentDescription="@string/voice_note_record"
+        android:padding="10dp"
+        android:src="@drawable/ic_note"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/tvDate"
+        app:layout_constraintEnd_toStartOf="@id/ivShare"
+        app:layout_constraintTop_toTopOf="@id/tvDate"
+        app:tint="@color/ds_accent" />
+
+    <ImageView
+        android:id="@+id/ivShare"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="@dimen/ds_space_2"
+        android:layout_marginEnd="@dimen/ds_space_4"
+        android:background="@drawable/ds_ghost_button"
+        android:contentDescription="@string/share"
+        android:padding="10dp"
+        android:src="@drawable/ic_share"
+        app:layout_constraintBottom_toBottomOf="@id/tvDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvDate"
+        app:tint="@color/ds_text_primary" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

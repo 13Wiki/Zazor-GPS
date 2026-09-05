@@ -1,5 +1,6 @@
 package com.gps.zazor.ui.photo.collage.photo
 
+import androidx.activity.addCallback
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -44,6 +45,7 @@ class CollagePhotoActivity : AppCompatActivity(R.layout.activity_collage_photo),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        registerSheetBackHandling()
         binding.ivCapture.setOnClickListener {
             getCurrentPhotoHandler()?.onCapturePhoto()
         }
@@ -55,11 +57,17 @@ class CollagePhotoActivity : AppCompatActivity(R.layout.activity_collage_photo),
         }
     }
 
-    @Deprecated("Kept for the existing in-app back handling")
-    override fun onBackPressed() {
-        if (!addNoteSheet.collapse()) {
-            @Suppress("DEPRECATION")
-            super.onBackPressed()
+    /**
+     * The note sheet swallows the first back press. Registered after the base callback, so it runs
+     * first; when the sheet is already closed it steps aside and the base handling takes over.
+     */
+    private fun registerSheetBackHandling() {
+        onBackPressedDispatcher.addCallback(this) {
+            if (!addNoteSheet.collapse()) {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+                isEnabled = true
+            }
         }
     }
 

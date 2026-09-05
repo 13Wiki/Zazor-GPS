@@ -1,64 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enter_pin"
-        android:textColor="@color/black"
-        android:id="@+id/tvTitle"
-        android:textSize="24sp"
-        android:textAllCaps="true"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.2"/>
+    android:background="@color/ds_background"
+    android:paddingStart="@dimen/ds_space_6"
+    android:paddingEnd="@dimen/ds_space_6"
+    android:paddingBottom="@dimen/ds_space_6">
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_verified"
-        android:gravity="center"
         android:id="@+id/ivIcon"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:layout_marginTop="72dp"
+        android:background="@drawable/ds_ghost_button"
+        android:contentDescription="@null"
+        android:padding="20dp"
+        android:src="@drawable/ic_verified"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.35"/>
+        app:tint="@color/ds_accent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ds_space_5"
+        android:gravity="center"
+        android:text="@string/enter_pin"
+        android:textAppearance="@style/TextAppearance.Zazor.Screen"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivIcon" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilText"
-        style="@style/Stromee.Widget.Design.TextInputLayout"
+        style="@style/Widget.Zazor.TextInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        app:passwordToggleEnabled="true"
-        app:layout_constraintTop_toBottomOf="@id/ivIcon"
-        android:labelFor="@id/etNote">
+        android:layout_marginTop="@dimen/ds_space_6"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etText"
+            style="@style/Widget.Zazor.TextInput.EditText"
             android:layout_width="match_parent"
-            android:maxLength="5"
             android:layout_height="wrap_content"
             android:imeOptions="actionGo"
-            android:inputType="numberDecimal" />
+            android:inputType="numberPassword"
+            android:maxLength="5" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
+        android:id="@+id/bOk"
+        style="@style/Widget.Zazor.Button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorAccent"
-        android:id="@+id/bOk"
         android:text="@string/ok"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

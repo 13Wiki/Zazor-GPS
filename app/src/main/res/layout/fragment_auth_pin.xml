@@ -1,98 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="16dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/ds_background"
+    android:paddingStart="@dimen/ds_space_6"
+    android:paddingEnd="@dimen/ds_space_6">
 
+    <!-- The lock is the whole screen: one badge, one field, one alternative. -->
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:background="@drawable/ds_ghost_button"
+        android:contentDescription="@null"
+        android:padding="20dp"
+        android:src="@drawable/ic_verified"
+        app:layout_constraintBottom_toTopOf="@id/tvTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:tint="@color/ds_accent" />
 
     <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/ds_space_5"
+        android:gravity="center"
         android:text="@string/welcome"
-        android:textColor="@color/black"
-        android:textSize="24sp"
-        android:textAllCaps="true"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textAppearance="@style/TextAppearance.Zazor.Screen"
+        app:layout_constraintBottom_toTopOf="@id/tilText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.2"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_verified"
-        android:gravity="center"
-        android:id="@+id/ivIcon"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.35"/>
+        app:layout_constraintTop_toBottomOf="@id/ivIcon" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilText"
-        style="@style/Stromee.Widget.Design.TextInputLayout"
+        style="@style/Widget.Zazor.TextInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
-        app:passwordToggleEnabled="true"
-        app:layout_constraintTop_toBottomOf="@id/ivIcon"
-        android:labelFor="@id/etNote">
+        android:layout_marginTop="@dimen/ds_space_6"
+        android:hint="@string/enter_pin"
+        app:layout_constraintBottom_toTopOf="@id/tvOr"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etText"
+            style="@style/Widget.Zazor.TextInput.EditText"
             android:layout_width="match_parent"
-            android:maxLength="5"
             android:layout_height="wrap_content"
             android:imeOptions="actionGo"
-            android:inputType="numberDecimal" />
+            android:inputType="numberPassword"
+            android:maxLength="5" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <TextView
+        android:id="@+id/tvOr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:id="@+id/tvOr"
-        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="@dimen/ds_space_6"
+        android:paddingStart="@dimen/ds_space_4"
+        android:paddingEnd="@dimen/ds_space_4"
         android:text="@string/or"
-        android:textColor="@color/colorAccent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/ds_text_muted"
+        app:layout_constraintBottom_toTopOf="@id/ivFingerprint"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tilText"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tilText" />
 
     <View
-        android:layout_width="90dp"
-        android:layout_height="0.5dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/black"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/ds_outline"
+        app:layout_constraintBottom_toBottomOf="@id/tvOr"
         app:layout_constraintEnd_toStartOf="@id/tvOr"
-        app:layout_constraintTop_toTopOf="@id/tvOr"
-        app:layout_constraintBottom_toBottomOf="@id/tvOr"/>
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvOr" />
 
     <View
-        android:layout_width="90dp"
-        android:layout_height="0.5dp"
-        android:layout_marginStart="16dp"
-        android:background="@color/black"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/ds_outline"
+        app:layout_constraintBottom_toBottomOf="@id/tvOr"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvOr"
-        app:layout_constraintTop_toTopOf="@id/tvOr"
-        app:layout_constraintBottom_toBottomOf="@id/tvOr"/>
+        app:layout_constraintTop_toTopOf="@id/tvOr" />
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:src="@drawable/ic_fingerprint"
-        android:gravity="center"
         android:id="@+id/ivFingerprint"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvOr"
+        android:layout_width="@dimen/ds_shutter"
+        android:layout_height="@dimen/ds_shutter"
+        android:layout_marginTop="@dimen/ds_space_6"
+        android:background="@drawable/ds_ghost_button"
+        android:contentDescription="@string/or"
+        android:padding="20dp"
+        android:src="@drawable/ic_fingerprint"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.35"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvOr"
+        app:tint="@color/ds_text_primary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

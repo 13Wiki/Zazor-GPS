@@ -45,8 +45,7 @@ class SettingsListFragment : BaseFragment<SettingsListContract.State, SettingsLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.toolbar.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24)
-        binding.toolbar.setNavigationOnClickListener {
+        binding.ivBack.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
     }

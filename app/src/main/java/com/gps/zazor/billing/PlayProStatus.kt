@@ -7,6 +7,7 @@ import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
+import com.android.billingclient.api.PendingPurchasesParams
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
 import com.android.billingclient.api.PurchasesUpdatedListener
@@ -46,7 +47,12 @@ class PlayProStatus(
 
     private val client = BillingClient.newBuilder(context.applicationContext)
         .setListener(this)
-        .enablePendingPurchases()
+        // Billing 8 requires the pending-purchase types to be declared explicitly.
+        .enablePendingPurchases(
+            PendingPurchasesParams.newBuilder()
+                .enableOneTimeProducts()
+                .build()
+        )
         .build()
 
     override fun refresh() {
@@ -101,9 +107,9 @@ class PlayProStatus(
                 )
             )
             .build()
-        client.queryProductDetailsAsync(params) { result, products ->
+        client.queryProductDetailsAsync(params) { result, productDetailsResult ->
             if (result.responseCode != BillingClient.BillingResponseCode.OK) return@queryProductDetailsAsync
-            details = products.firstOrNull()
+            details = productDetailsResult.productDetailsList.firstOrNull()
             priceState.value = details?.oneTimePurchaseOfferDetails?.formattedPrice
         }
     }

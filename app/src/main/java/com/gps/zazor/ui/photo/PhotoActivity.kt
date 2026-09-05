@@ -1,5 +1,6 @@
 package com.gps.zazor.ui.photo
 
+import androidx.activity.addCallback
 import android.Manifest
 import android.content.Context
 import android.content.Intent
@@ -90,6 +91,7 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         drawEdgeToEdge()
+        registerSheetBackHandling()
         binding.ivCapture.setOnClickListener {
             getCurrentPhotoHandler()?.onCapturePhoto()
         }
@@ -130,11 +132,17 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
         viewModel.sendEvent(PhotoContract.Event.EditPhotoClosed)
     }
 
-    @Deprecated("Kept for the existing in-app back handling")
-    override fun onBackPressed() {
-        if (!addNoteSheet.collapse()) {
-            @Suppress("DEPRECATION")
-            super.onBackPressed()
+    /**
+     * The note sheet swallows the first back press. Registered after the base callback, so it runs
+     * first; when the sheet is already closed it steps aside and the base handling takes over.
+     */
+    private fun registerSheetBackHandling() {
+        onBackPressedDispatcher.addCallback(this) {
+            if (!addNoteSheet.collapse()) {
+                isEnabled = false
+                onBackPressedDispatcher.onBackPressed()
+                isEnabled = true
+            }
         }
     }
 

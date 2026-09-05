@@ -160,7 +160,7 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
     private fun showRecording(isRecording: Boolean) {
         val color = ContextCompat.getColor(
             requireContext(),
-            if (isRecording) R.color.recording else R.color.colorAccent
+            if (isRecording) R.color.ds_danger else R.color.ds_text_primary
         )
         // mutate() first: a drawable inflated from resources shares its ConstantState, so tinting
         // it directly would also repaint the same icon in the gallery rows.

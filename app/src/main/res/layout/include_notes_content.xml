@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNote"
-        style="@style/Stromee.Widget.Design.TextInputLayout"
+        style="@style/Widget.Zazor.TextInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginStart="@dimen/ds_space_5"
+        android:layout_marginTop="@dimen/ds_space_5"
+        android:layout_marginEnd="@dimen/ds_space_5"
+        android:layout_marginBottom="72dp"
         android:hint="@string/note"
-        android:labelFor="@id/etNote"
         app:layout_constraintTop_toBottomOf="@id/tvTitle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etNote"
+            style="@style/Widget.Zazor.TextInput.EditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:imeOptions="actionGo"
-            android:inputType="textEmailAddress" />
+            android:imeOptions="actionDone"
+            android:inputType="textCapSentences|textMultiLine"
+            android:maxLines="3" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -34,6 +34,9 @@
     <color name="ds_danger">#FF5A4E</color>
     <color name="ds_danger_soft">#1FFF5A4E</color>
 
+    <!-- Trial watermark over the live preview: readable on any frame, never opaque. -->
+    <color name="ds_watermark">#33FFFFFF</color>
+
     <!-- Stamp burned onto the photo -->
     <color name="ds_stamp_scrim">#B3000000</color>
 
