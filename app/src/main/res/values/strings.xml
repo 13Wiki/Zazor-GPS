@@ -5,7 +5,7 @@
     <string name="pro_unavailable">Покупка пока недоступна: товар не настроен в Google Play</string>
     <string name="pro_active">Реклама отключена</string>
     <string name="privacy_title">Ваши снимки остаются вашими</string>
-    <string name="privacy_never_label">НИКОГДА НЕ ПОКИДАЕТ ТЕЛЕФОН</string>
+    <string name="privacy_never_label">МЫ ЭТОГО НЕ ВИДИМ И НЕ ХРАНИМ</string>
     <string name="privacy_never">Фотографии и панорамы\nКоординаты и маршруты\nЗаметки и отметки\nТелефон, почта, контакты</string>
     <string name="privacy_counted_label">ЧТО МЫ СЧИТАЕМ</string>
     <string name="privacy_counted">Только обезличенные счётчики: сколько раз открыли приложение, какими режимами пользуются, где падает. Без имени и без привязки к вам — мы не знаем, кто вы, и не хотим знать.</string>

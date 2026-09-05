@@ -5,7 +5,7 @@
     <string name="pro_unavailable">Purchase unavailable: the product is not set up in Google Play</string>
     <string name="pro_active">Ads are off</string>
     <string name="privacy_title">Your photos stay yours</string>
-    <string name="privacy_never_label">NEVER LEAVES THE PHONE</string>
+    <string name="privacy_never_label">WE NEVER SEE OR STORE THIS</string>
     <string name="privacy_never">Photos and panoramas\nCoordinates and routes\nNotes and marks\nPhone, email, contacts</string>
     <string name="privacy_counted_label">WHAT WE COUNT</string>
     <string name="privacy_counted">Anonymous counters only: how often the app is opened, which modes are used, where it crashes. No name, nothing tied to you — we do not know who you are, and we do not want to.</string>
