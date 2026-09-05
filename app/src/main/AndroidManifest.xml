@@ -22,6 +22,15 @@
     <uses-permission
         android:name="android.permission.ACCESS_ADSERVICES_AD_ID"
         tools:node="remove" />
+    <!--
+      The Ads SDK adds this one: Privacy Sandbox "Topics" hands the app the interest categories
+      the system inferred from everything else the person uses. That is cross-app profiling by
+      another name, so it goes the same way as the advertising id. Without the permission the
+      Topics API cannot be called at all, whatever the bundled config says.
+    -->
+    <uses-permission
+        android:name="android.permission.ACCESS_ADSERVICES_TOPICS"
+        tools:node="remove" />
 
     <!-- Photos live in the app-private external directory, so no storage permission is needed on
          API 29+. The legacy grant is kept only for API 24-28. -->
@@ -61,6 +70,29 @@
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Zazor">
+
+        <!--
+          Required by the Ads SDK; without it the process is killed on startup. The value comes
+          from a Gradle property so a release build can carry the owner's real id without it ever
+          sitting in the repository.
+        -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="${admobAppId}" />
+
+        <!--
+          Ads are served without the advertising id (see the AD_ID removal above), so they are
+          non-personalised. That costs revenue per impression and is the deliberate trade: an app
+          whose entire claim is that it does not follow you cannot ship a tracker to pay for itself.
+        -->
+        <meta-data
+            android:name="com.google.android.gms.ads.flag.OPTIMIZE_INITIALIZATION"
+            android:value="true" />
+
+        <property
+            android:name="android.adservices.AD_SERVICES_CONFIG"
+            tools:node="remove" />
+
 
         <!-- android:exported is mandatory from API 31; without it the package fails to install. -->
         <activity

@@ -104,11 +104,26 @@
         android:paddingEnd="@dimen/ds_space_4"
         android:paddingBottom="@dimen/ds_space_4"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/flAd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivBack"
         tools:listitem="@layout/item_media" />
+
+    <!--
+      The only ad in the app. It sits under the feed, where someone is browsing rather than
+      working, and collapses to nothing when there is no ad to show or the user has paid.
+    -->
+    <FrameLayout
+        android:id="@+id/flAd"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/ds_space_2"
+        android:minHeight="0dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tvEmpty"

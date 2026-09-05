@@ -24,9 +24,12 @@ import com.gps.zazor.databinding.FragmentMediaListBinding
 import com.gps.zazor.ui.base.BaseFragment
 import com.gps.zazor.ui.media.MediaCallback
 import com.gps.zazor.ui.media.list.di.injectViewModel
+import com.gps.zazor.ads.AdSlot
+import com.gps.zazor.billing.ProStatus
 import com.gps.zazor.utils.audio.VoiceNotePlayer
 import com.gps.zazor.utils.export.TrackFormat
 import com.gps.zazor.utils.viewBinding.viewBinding
+import org.koin.android.ext.android.inject
 import androidx.appcompat.widget.PopupMenu
 import java.io.File
 
@@ -41,6 +44,10 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
     private var adapter: MediaListAdapter? = null
 
     private val voicePlayer = VoiceNotePlayer()
+
+    private val adSlot: AdSlot by inject()
+
+    private val proStatus: ProStatus by inject()
 
     private val onItemSwipeListener = object : OnItemSwipeListener<Photo> {
         override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection, item: Photo): Boolean {
@@ -75,6 +82,7 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         binding.ivExport.setOnClickListener(::showExportMenu)
         binding.ivOutings.setOnClickListener { mediaCallback?.openOutings() }
         observeEffects()
+        observeAds()
     }
 
     override fun onPause() {
@@ -84,8 +92,31 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
 
     override fun onDestroyView() {
         voicePlayer.stop()
+        // The banner holds a reference to this view hierarchy; leaving it attached leaks the
+        // fragment's whole view tree for as long as the ad lives.
+        adSlot.destroy(binding.flAd)
         adapter = null
         super.onDestroyView()
+    }
+
+    /**
+     * The ad appears only when this build has an ad unit and the user has not paid to remove it.
+     * A refund flips [ProStatus.isPro] back, so this is collected rather than read once.
+     */
+    private fun observeAds() {
+        if (!adSlot.isAvailable) return
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                proStatus.isPro.collect { isPro ->
+                    if (isPro) {
+                        adSlot.destroy(binding.flAd)
+                        binding.flAd.isVisible = false
+                    } else {
+                        binding.flAd.isVisible = adSlot.show(binding.flAd)
+                    }
+                }
+            }
+        }
     }
 
     /** Tapping the playing note stops it; tapping another switches to it. */

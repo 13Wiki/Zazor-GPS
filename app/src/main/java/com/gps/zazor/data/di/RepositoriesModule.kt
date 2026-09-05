@@ -7,6 +7,7 @@ import com.gps.zazor.utils.PhotoStorage
 import com.gps.zazor.ads.AdSlot
 import com.gps.zazor.analytics.Analytics
 import com.gps.zazor.analytics.FirebaseAnalyticsClient
+import com.gps.zazor.ads.AdMobSlot
 import com.gps.zazor.ads.NoAdSlot
 import com.gps.zazor.billing.PlayProStatus
 import com.gps.zazor.billing.ProStatus
@@ -28,6 +29,8 @@ val repositoriesModule = module {
     single<PhotoRepository> { PhotoRepositoryImpl(get(), get(), get(), get(), get()) }
     single<ProStatus> { PlayProStatus(androidApplication(), get()) }
     // No ad network configured yet: a build with no ads is a working build, not a crash.
-    single<AdSlot> { NoAdSlot() }
+    // NoAdSlot stays as the fallback: AdMobSlot reports itself unavailable without a unit id, but
+    // keeping the empty implementation means a build can drop the ad network entirely by one line.
+    single<AdSlot> { AdMobSlot(androidApplication()) }
     single<Analytics> { FirebaseAnalyticsClient(androidApplication(), get()) }
 }

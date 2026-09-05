@@ -5,10 +5,10 @@ import android.view.ViewGroup
 /**
  * Where an ad may appear.
  *
- * There is exactly one slot in the whole app - a card in the photo feed - and this interface is
- * what enforces it. Nothing on the capture screen, in the editor or while sharing can show an ad,
- * because there is no way to ask for one there: a banner in front of someone mid-task buys an
- * uninstall, not an impression.
+ * There is exactly one slot in the whole app - under the photo feed in the gallery - and this
+ * interface is what enforces it. Nothing on the capture screen, in the editor or while sharing can
+ * show an ad, because there is no way to ask for one there: a banner in front of someone mid-task
+ * buys an uninstall, not an impression.
  *
  * The default implementation shows nothing. A build without an ad network configured is a working
  * build with no ads, not a crash.
