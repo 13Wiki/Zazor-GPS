@@ -19,6 +19,9 @@ class MediaListContract {
 
         object SharePhotos : Event()
 
+        /** Removes everything currently ticked, after the user has confirmed it. */
+        object DeleteSelected : Event()
+
         /** Writes the visible photos out as a track file for another app to open. */
         data class ExportTrack(val format: TrackFormat) : Event()
     }
@@ -49,5 +52,8 @@ class MediaListContract {
 
         /** Hands the chosen photos to the transfer screen. */
         data class OpenShare(val paths: List<String>) : Effect()
+
+        /** How many photos the bulk delete actually removed. */
+        data class SelectionDeleted(val count: Int) : Effect()
     }
 }

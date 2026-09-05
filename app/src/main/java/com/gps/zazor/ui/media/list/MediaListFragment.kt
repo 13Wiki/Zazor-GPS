@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.lifecycle.Lifecycle
@@ -52,10 +53,7 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
     override fun observeState(state: MediaListContract.State?) {
         when (state) {
             is MediaListContract.State.Initial -> showPhotos(state.photos)
-            is MediaListContract.State.ClearSelectedMode -> {
-                adapter?.clearSelection()
-                binding.ivShare.isVisible = false
-            }
+            is MediaListContract.State.ClearSelectedMode -> leaveSelectionMode()
             else -> Unit
         }
     }
@@ -73,6 +71,7 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         binding.ivShare.setOnClickListener {
             viewModel.sendEvent(MediaListContract.Event.SharePhotos)
         }
+        binding.ivDeleteSelected.setOnClickListener { confirmDeleteSelected() }
         binding.ivExport.setOnClickListener(::showExportMenu)
         binding.ivOutings.setOnClickListener { mediaCallback?.openOutings() }
         observeEffects()
@@ -145,6 +144,34 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         viewModel.sendEvent(MediaListContract.Event.TurnOnSelectionMode)
         adapter?.isSelectableMode = true
         binding.ivShare.isVisible = true
+        binding.ivDeleteSelected.isVisible = true
+    }
+
+    private fun leaveSelectionMode() {
+        adapter?.clearSelection()
+        binding.ivShare.isVisible = false
+        binding.ivDeleteSelected.isVisible = false
+    }
+
+    /**
+     * Deleting a batch cannot be undone and takes the voice notes with it, so it asks first. The
+     * count is in the question: "delete everything ticked" means nothing if you have lost track of
+     * how much is ticked.
+     */
+    private fun confirmDeleteSelected() {
+        val count = adapter?.selectedCount ?: 0
+        if (count == 0) {
+            toast(getString(R.string.export_empty))
+            return
+        }
+        AlertDialog.Builder(requireContext())
+            .setTitle(R.string.delete_selected)
+            .setMessage(getString(R.string.delete_selected_message, count))
+            .setNegativeButton(R.string.cancel, null)
+            .setPositiveButton(R.string.delete) { _, _ ->
+                viewModel.sendEvent(MediaListContract.Event.DeleteSelected)
+            }
+            .show()
     }
 
     /** One photo still goes through the transfer screen, so the same choices apply to it. */
@@ -170,6 +197,14 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
                             toast(getString(R.string.export_failed))
                         is MediaListContract.Effect.AddressesFilled ->
                             toast(getString(R.string.addresses_filled, effect.count))
+                        is MediaListContract.Effect.SelectionDeleted -> {
+                            leaveSelectionMode()
+                            toast(
+                                resources.getQuantityString(
+                                    R.plurals.photos_deleted, effect.count, effect.count
+                                )
+                            )
+                        }
                     }
                 }
             }

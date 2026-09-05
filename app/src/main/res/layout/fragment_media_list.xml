@@ -58,9 +58,27 @@
         android:padding="12dp"
         android:src="@drawable/ic_baseline_location_24"
         app:layout_constraintBottom_toBottomOf="@id/ivBack"
-        app:layout_constraintEnd_toStartOf="@id/ivShare"
+        app:layout_constraintEnd_toStartOf="@id/ivDeleteSelected"
+        app:layout_goneMarginEnd="@dimen/ds_space_4"
         app:layout_constraintTop_toTopOf="@id/ivBack"
         app:tint="@color/ds_text_primary" />
+
+    <!-- Both appear only in selection mode: send the ticked photos, or remove them. -->
+    <ImageView
+        android:id="@+id/ivDeleteSelected"
+        android:layout_width="@dimen/ds_icon_button"
+        android:layout_height="@dimen/ds_icon_button"
+        android:layout_marginEnd="@dimen/ds_space_2"
+        android:background="@drawable/ds_ghost_button"
+        android:contentDescription="@string/delete_selected"
+        android:padding="12dp"
+        android:src="@drawable/ic_baseline_delete_24"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/ivBack"
+        app:layout_constraintEnd_toStartOf="@id/ivShare"
+        app:layout_goneMarginEnd="@dimen/ds_space_4"
+        app:layout_constraintTop_toTopOf="@id/ivBack"
+        app:tint="@color/ds_danger" />
 
     <ImageView
         android:id="@+id/ivShare"

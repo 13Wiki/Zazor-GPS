@@ -72,6 +72,7 @@ class MediaListViewModelImpl(
             is MediaListContract.Event.TurnOnSelectionMode -> {
                 if (selectedPhotos == null) selectedPhotos = mutableListOf()
             }
+            is MediaListContract.Event.DeleteSelected -> deleteSelected()
             is MediaListContract.Event.ExportTrack -> exportTrack(event.format)
             else -> Unit
         }
@@ -111,6 +112,23 @@ class MediaListViewModelImpl(
                     else -> MediaListContract.Effect.TrackExported(file, format)
                 }
             )
+        }
+    }
+
+    /**
+     * Leaves selection mode afterwards: with every ticked photo gone there is nothing left to act
+     * on, and a selection toolbar over an empty selection is a dead end.
+     */
+    private fun deleteSelected() {
+        val chosen = selectedPhotos?.toList().orEmpty()
+        if (chosen.isEmpty()) return
+        launchIo {
+            selectedPhotos = null
+            photos = photoRepository.deletePhotos(chosen)
+            uiState.value = MediaListContract.State.Initial(photos)
+            // The list and the "selection is over" signal must not both go through the conflated
+            // uiState - the first write would be swallowed. The effect carries the second.
+            effectFlow.emit(MediaListContract.Effect.SelectionDeleted(chosen.size))
         }
     }
 

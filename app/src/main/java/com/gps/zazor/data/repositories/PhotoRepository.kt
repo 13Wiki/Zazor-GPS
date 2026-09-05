@@ -16,6 +16,8 @@ interface PhotoRepository {
 
     suspend fun deletePhoto(photo: Photo): List<Photo>
 
+    suspend fun deletePhotos(photos: List<Photo>): List<Photo>
+
     suspend fun getPhotos(): List<Photo>
 
     suspend fun getPhoto(path: String): Photo?
@@ -80,6 +82,19 @@ class PhotoRepositoryImpl(
         // The row was the only thing removed before, leaving the JPEG behind forever.
         storage.delete(photo.path)
         photo.voiceNotePath?.let { storage.delete(it) }
+        return getPhotos()
+    }
+
+    /**
+     * Bulk delete. One database pass and one list rebuild rather than a round trip per photo:
+     * clearing a whole outing is a normal action here, not an edge case.
+     */
+    override suspend fun deletePhotos(photos: List<Photo>): List<Photo> {
+        photos.forEach { photo ->
+            dao.delete(photo.toDb())
+            storage.delete(photo.path)
+            photo.voiceNotePath?.let { storage.delete(it) }
+        }
         return getPhotos()
     }
 

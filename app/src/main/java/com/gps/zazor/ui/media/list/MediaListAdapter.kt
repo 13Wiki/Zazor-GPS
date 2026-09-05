@@ -51,6 +51,9 @@ class MediaListAdapter(
         dataSet = photos
     }
 
+    /** What the confirmation dialog puts in front of the user before it wipes anything. */
+    val selectedCount: Int get() = selected.size
+
     fun clearSelection() {
         selected.clear()
         isSelectableMode = false

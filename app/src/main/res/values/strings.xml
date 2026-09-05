@@ -208,6 +208,14 @@
     <string name="code_trial_incorrect">Неверный Trial-код</string>
     <string name="label">Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor</string>
     <string name="removed">Фото удалено</string>
+    <string name="delete_selected">Удалить выбранные</string>
+    <string name="delete_selected_message">Выбранных снимков: %1$d. Они и их голосовые заметки будут стёрты с телефона. Отменить нельзя.</string>
+    <plurals name="photos_deleted">
+        <item quantity="one">Удалён %1$d снимок</item>
+        <item quantity="few">Удалено %1$d снимка</item>
+        <item quantity="many">Удалено %1$d снимков</item>
+        <item quantity="other">Удалено %1$d снимка</item>
+    </plurals>
     <string name="text">Введите текст</string>
     <string name="collage_added">Коллаж создан. Используются координаты последнего фото.</string>
     <string name="accuracy">Точность: %s m</string>
