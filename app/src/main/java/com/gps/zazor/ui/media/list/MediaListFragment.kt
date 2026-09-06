@@ -85,8 +85,15 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         observeAds()
     }
 
+    override fun onResume() {
+        super.onResume()
+        adSlot.resume(binding.flAd)
+    }
+
     override fun onPause() {
         voicePlayer.stop()
+        // AdMob guidance: a banner keeps refreshing and animating while off screen unless paused.
+        adSlot.pause(binding.flAd)
         super.onPause()
     }
 
@@ -102,18 +109,22 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
     /**
      * The ad appears only when this build has an ad unit and the user has not paid to remove it.
      * A refund flips [ProStatus.isPro] back, so this is collected rather than read once.
+     *
+     * The collector is tied to the view lifecycle directly rather than wrapped in
+     * repeatOnLifecycle: a StateFlow re-emits its value to every new collector, and
+     * repeatOnLifecycle starts a fresh one on each return to the screen, which would fire a new
+     * paid ad request every time the user comes back to the gallery. AdSlot.show is idempotent, so
+     * pausing and resuming the banner - not rebuilding it - is what STARTED/STOPPED do here.
      */
     private fun observeAds() {
         if (!adSlot.isAvailable) return
         viewLifecycleOwner.lifecycleScope.launch {
-            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                proStatus.isPro.collect { isPro ->
-                    if (isPro) {
-                        adSlot.destroy(binding.flAd)
-                        binding.flAd.isVisible = false
-                    } else {
-                        binding.flAd.isVisible = adSlot.show(binding.flAd)
-                    }
+            proStatus.isPro.collect { isPro ->
+                if (isPro) {
+                    adSlot.destroy(binding.flAd)
+                    binding.flAd.isVisible = false
+                } else {
+                    binding.flAd.isVisible = adSlot.show(binding.flAd)
                 }
             }
         }

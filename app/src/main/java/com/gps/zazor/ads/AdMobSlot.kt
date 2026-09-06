@@ -45,9 +45,10 @@ class AdMobSlot(context: Context) : AdSlot {
 
     override fun show(container: ViewGroup): Boolean {
         if (!isAvailable) return false
-        // Re-showing into a container that already holds a banner would stack two AdViews and
-        // leak the first; the caller may run this on every state update.
-        destroy(container)
+        // Idempotent by design: a banner already in place means the request was already paid for.
+        // Reloading on every resume is how an AdMob account gets flagged for invalid traffic, so
+        // an existing AdView is left to its own refresh cycle rather than rebuilt.
+        if (bannerOf(container) != null) return true
 
         val view = AdView(container.context).apply {
             adUnitId = BuildConfig.ADMOB_BANNER_UNIT_ID
@@ -58,11 +59,26 @@ class AdMobSlot(context: Context) : AdSlot {
         return true
     }
 
+    override fun pause(container: ViewGroup) {
+        bannerOf(container)?.pause()
+    }
+
+    override fun resume(container: ViewGroup) {
+        bannerOf(container)?.resume()
+    }
+
     override fun destroy(container: ViewGroup) {
         for (index in container.childCount - 1 downTo 0) {
             (container.getChildAt(index) as? AdView)?.destroy()
         }
         container.removeAllViews()
+    }
+
+    private fun bannerOf(container: ViewGroup): AdView? {
+        for (index in 0 until container.childCount) {
+            (container.getChildAt(index) as? AdView)?.let { return it }
+        }
+        return null
     }
 
     private fun nonPersonalisedRequest(): AdRequest =

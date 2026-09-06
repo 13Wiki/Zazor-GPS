@@ -21,8 +21,18 @@ interface AdSlot {
     /**
      * Fills [container] with an ad, or leaves it empty and returns false.
      * Never called when the user has paid to remove ads.
+     *
+     * Idempotent: calling it while the container already holds this slot's ad is a no-op that
+     * still returns true, so a screen may call it on every resume without paying for a fresh
+     * request each time. A new request happens only after [destroy].
      */
     fun show(container: ViewGroup): Boolean
+
+    /** Pauses the ad while the screen is not visible; safe to call when nothing is shown. */
+    fun pause(container: ViewGroup)
+
+    /** Resumes a paused ad; safe to call when nothing is shown. */
+    fun resume(container: ViewGroup)
 
     fun destroy(container: ViewGroup)
 }
@@ -33,6 +43,10 @@ class NoAdSlot : AdSlot {
     override val isAvailable = false
 
     override fun show(container: ViewGroup) = false
+
+    override fun pause(container: ViewGroup) = Unit
+
+    override fun resume(container: ViewGroup) = Unit
 
     override fun destroy(container: ViewGroup) = Unit
 }
