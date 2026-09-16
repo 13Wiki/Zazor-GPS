@@ -15,6 +15,16 @@ class DrawView
 @JvmOverloads
 constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
 
+    /**
+     * One mark, as the person drew it.
+     *
+     * The line and its arrow head used to live in two separate lists, which was enough to paint
+     * them but not enough to take one back: nothing said which head belonged to which line, or
+     * which of the two was drawn last. A mark keeps its own pieces together, and the list keeps
+     * their order, so undoing is dropping the last one.
+     */
+    private class Mark(val path: Path, val arrowHead: Path?)
+
     private var paint: Paint? = null
 
     private var arrowPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -23,9 +33,7 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
         strokeWidth = 3F
     }
 
-    private var paths = mutableListOf<Path>()
-
-    private var arrowPaths = mutableListOf<Path>()
+    private val marks = mutableListOf<Mark>()
 
     private var startX = 0F
     private var startY = 0F
@@ -46,6 +54,9 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
         invalidate()
     }
 
+    /** True while there is something to take back; the screen hides the button otherwise. */
+    val hasMarks: Boolean get() = marks.isNotEmpty()
+
     init {
         paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.STROKE
@@ -57,11 +68,9 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         paint?.let { drawPaint ->
-            paths.forEach { drawPath ->
-                canvas.drawPath(drawPath, drawPaint)
-            }
-            arrowPaths.forEach { arrowPath ->
-                canvas.drawPath(arrowPath, arrowPaint)
+            marks.forEach { mark ->
+                canvas.drawPath(mark.path, drawPaint)
+                mark.arrowHead?.let { canvas.drawPath(it, arrowPaint) }
             }
         }
     }
@@ -82,45 +91,33 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
     }
 
     fun clear() {
-        paths.clear()
-        arrowPaths.clear()
+        marks.clear()
         invalidate()
     }
 
+    /** Removes the last mark drawn. Returns false when there was nothing left to remove. */
+    fun undo(): Boolean {
+        if (marks.isEmpty()) return false
+        marks.removeAt(marks.lastIndex)
+        invalidate()
+        return true
+    }
+
     private fun handleDownPress(event: MotionEvent) {
-        when (mode) {
-            Mode.LINE -> {
-                startX = event.x
-                startY = event.y
-                paths.add(Path().also {
-                    it.moveTo(event.x, event.y)
-                })
-            }
-            Mode.CIRCLE -> {
-                paths.add(Path().also {
-                    it.moveTo(event.x, event.y)
-                })
-                startX = event.x
-                startY = event.y
-            }
-            Mode.ARROW -> {
-                startX = event.x
-                startY = event.y
-                paths.add(Path().also {
-                    it.moveTo(event.x, event.y)
-                })
-                arrowPaths.add(Path())
-            }
-        }
+        startX = event.x
+        startY = event.y
+        val path = Path().also { it.moveTo(event.x, event.y) }
+        marks.add(Mark(path, if (mode == Mode.ARROW) Path() else null))
     }
 
     private fun handleMoveAction(event: MotionEvent) {
+        val mark = marks.lastOrNull() ?: return
         when (mode) {
             Mode.LINE -> {
-                paths.lastOrNull()?.lineTo(event.x, event.y)
+                mark.path.lineTo(event.x, event.y)
             }
             Mode.CIRCLE -> {
-                paths.lastOrNull()?.run {
+                mark.path.run {
                     reset()
                     addCircle(
                         startX, startY,
@@ -132,19 +129,19 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
                 }
             }
             Mode.ARROW -> {
-                paths.lastOrNull()?.run {
+                mark.path.run {
                     reset()
                     moveTo(startX, startY)
                     lineTo(event.x, event.y)
-                    drawArrow(event.x, startX, event.y, startY)
                 }
+                mark.arrowHead?.let { drawArrow(it, event.x, startX, event.y, startY) }
             }
         }
         invalidate()
     }
 
-    private fun drawArrow(endX: Float, startX: Float, endY: Float, startY: Float) {
-        arrowPaths.lastOrNull()?.apply {
+    private fun drawArrow(head: Path, endX: Float, startX: Float, endY: Float, startY: Float) {
+        head.apply {
             reset()
             val deltaX: Float = endX - startX
             val deltaY: Float = endY - startY

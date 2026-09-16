@@ -2,6 +2,7 @@ package com.gps.zazor.data.prefs
 
 import android.annotation.SuppressLint
 import android.content.Context
+import com.gps.zazor.data.models.CoordinateFormat
 
 interface AppPreferences {
 
@@ -22,6 +23,11 @@ interface AppPreferences {
     fun hasClearCode(): Boolean
 
     fun isClearCode(code: String): Boolean
+
+    /** How coordinates are written for a person to read; the exports stay decimal either way. */
+    fun getCoordinateFormat(): CoordinateFormat
+
+    fun putCoordinateFormat(format: CoordinateFormat)
 
     fun putDisplayCoordinates(isDisplay: Boolean)
 
@@ -88,6 +94,7 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
         private const val PIN_KEY = "pinCode"
         private const val CLEAR_CODE_KEY = "clearCode"
         private const val DISPLAY_COORDINATES_KEY = "displayCoordinates"
+        private const val COORDINATE_FORMAT_KEY = "coordinateFormat"
         private const val DISPLAY_DATE_KEY = "displayDate"
         private const val DISPLAY_ACCURACY = "displayAccuracy"
         private const val DISPLAY_TIME_KEY = "displayTime"
@@ -123,7 +130,7 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
 
     /** `putString(key, null)` removes the entry, which is what clearing a code means here. */
     private fun putCode(key: String, code: String?) {
-        preferences.edit().putString(key, code?.let(CodeHasher::hash)).commit()
+        preferences.edit().putString(key, code?.let(CodeHasher::hash)).apply()
     }
 
     /**
@@ -141,8 +148,18 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
         return CodeHasher.matches(code, stored)
     }
 
+    /** An unknown or damaged value reads as degrees - the format every phone shows by default. */
+    override fun getCoordinateFormat(): CoordinateFormat =
+        preferences.getString(COORDINATE_FORMAT_KEY, null)
+            ?.let { stored -> CoordinateFormat.entries.firstOrNull { it.name == stored } }
+            ?: CoordinateFormat.DEGREES
+
+    override fun putCoordinateFormat(format: CoordinateFormat) {
+        preferences.edit().putString(COORDINATE_FORMAT_KEY, format.name).apply()
+    }
+
     override fun putDisplayCoordinates(isDisplay: Boolean) {
-        preferences.edit().putBoolean(DISPLAY_COORDINATES_KEY, isDisplay).commit()
+        preferences.edit().putBoolean(DISPLAY_COORDINATES_KEY, isDisplay).apply()
     }
 
     override fun isDisplayCoordinates(): Boolean {
@@ -150,7 +167,7 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
     }
 
     override fun putDisplayDate(isDisplay: Boolean) {
-        preferences.edit().putBoolean(DISPLAY_DATE_KEY, isDisplay).commit()
+        preferences.edit().putBoolean(DISPLAY_DATE_KEY, isDisplay).apply()
     }
 
     override fun isDisplayDate(): Boolean {
@@ -158,7 +175,7 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
     }
 
     override fun putDisplayAccuracy(isDisplay: Boolean) {
-        preferences.edit().putBoolean(DISPLAY_ACCURACY, isDisplay).commit()
+        preferences.edit().putBoolean(DISPLAY_ACCURACY, isDisplay).apply()
     }
 
     override fun isDisplayAccuracy(): Boolean {
@@ -166,7 +183,7 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
     }
 
     override fun putDisplayTime(isDisplay: Boolean) {
-        preferences.edit().putBoolean(DISPLAY_TIME_KEY, isDisplay).commit()
+        preferences.edit().putBoolean(DISPLAY_TIME_KEY, isDisplay).apply()
     }
 
     override fun isDisplayTime(): Boolean {
@@ -174,7 +191,7 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
     }
 
     override fun putDrawColor(color: Int) {
-        preferences.edit().putInt(DRAW_COLOR_KEY, color).commit()
+        preferences.edit().putInt(DRAW_COLOR_KEY, color).apply()
     }
 
     override fun getDrawColor(): Int? {
@@ -182,7 +199,7 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
     }
 
     override fun putTextColor(color: Int) {
-        preferences.edit().putInt(TEXT_COLOR_KEY, color).commit()
+        preferences.edit().putInt(TEXT_COLOR_KEY, color).apply()
     }
 
     override fun getTextColor(): Int? {
@@ -190,7 +207,7 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
     }
 
     override fun putFont(fontId: Int) {
-        preferences.edit().putInt(FONT_KEY, fontId).commit()
+        preferences.edit().putInt(FONT_KEY, fontId).apply()
     }
 
     override fun getFont(): Int? {
@@ -201,32 +218,32 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
         preferences.getBoolean(WAIT_FIX_KEY, true)
 
     override fun putWaitForAccurateFix(wait: Boolean) {
-        preferences.edit().putBoolean(WAIT_FIX_KEY, wait).commit()
+        preferences.edit().putBoolean(WAIT_FIX_KEY, wait).apply()
     }
 
     override fun getAccuracyThresholdMeters(): Int =
         preferences.getInt(ACCURACY_THRESHOLD_KEY, DEFAULT_ACCURACY_THRESHOLD_M)
 
     override fun putAccuracyThresholdMeters(meters: Int) {
-        preferences.edit().putInt(ACCURACY_THRESHOLD_KEY, meters).commit()
+        preferences.edit().putInt(ACCURACY_THRESHOLD_KEY, meters).apply()
     }
 
     override fun isPro(): Boolean = preferences.getBoolean(PRO_KEY, false)
 
     override fun setPro(pro: Boolean) {
-        preferences.edit().putBoolean(PRO_KEY, pro).commit()
+        preferences.edit().putBoolean(PRO_KEY, pro).apply()
     }
 
     override fun isPrivacyAccepted(): Boolean = preferences.getBoolean(PRIVACY_KEY, false)
 
     override fun setPrivacyAccepted(accepted: Boolean) {
-        preferences.edit().putBoolean(PRIVACY_KEY, accepted).commit()
+        preferences.edit().putBoolean(PRIVACY_KEY, accepted).apply()
     }
 
     override fun isAnalyticsEnabled(): Boolean = preferences.getBoolean(ANALYTICS_KEY, true)
 
     override fun setAnalyticsEnabled(enabled: Boolean) {
-        preferences.edit().putBoolean(ANALYTICS_KEY, enabled).commit()
+        preferences.edit().putBoolean(ANALYTICS_KEY, enabled).apply()
     }
 
     /**
@@ -234,6 +251,8 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
      * on the next query. The wipe code must not leave a trace of who used this phone.
      */
     override fun clear() {
+        // The one write that waits: after the wipe code the process may be killed seconds later,
+        // and a queued write is not a wipe. Everything else uses apply() and never blocks a tap.
         preferences.edit().clear().commit()
     }
 }

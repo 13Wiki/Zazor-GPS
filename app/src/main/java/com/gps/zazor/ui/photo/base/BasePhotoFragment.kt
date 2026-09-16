@@ -56,7 +56,21 @@ abstract class BasePhotoFragment :
 
     private var lastSignal: SignalQuality? = null
 
+    /** True while a drawing tool is selected; then the corner button undoes instead of clearing. */
+    private var isDrawing = false
+
     abstract fun onPhotoReady(bitmap: Bitmap)
+
+    /**
+     * What the corner button does, and says it does.
+     *
+     * While drawing it takes back the last mark; the rest of the time it wipes the edits. Those are
+     * different enough that one label for both was a trap: a circle drawn slightly wrong left the
+     * only button in sight, and pressing it threw away the note, the text and every other mark too.
+     */
+    private fun renderCornerAction() {
+        binding.tvClearAll.setText(if (isDrawing) R.string.undo_last else R.string.clear_all)
+    }
 
     /**
      * The picture that actually gets saved.
@@ -95,13 +109,18 @@ abstract class BasePhotoFragment :
                 vDraw.isPaintAllowed = true
                 state.color?.let { vDraw.colorRes = it }
                 vDraw.mode = state.mode
+                isDrawing = true
+                renderCornerAction()
             }
             is BasePhotoContract.State.DisallowDraw -> binding.vDraw.run {
                 elevation = 0F
                 isPaintAllowed = false
+                isDrawing = false
+                renderCornerAction()
             }
             is BasePhotoContract.State.SaveNotes -> composeSavedPhoto()?.let(::onPhotoReady)
             is BasePhotoContract.State.ClearDraw -> binding.vDraw.clear()
+            is BasePhotoContract.State.UndoDraw -> binding.vDraw.undo()
             is BasePhotoContract.State.ShowPreview -> showPreview(state)
             is BasePhotoContract.State.HidePreview -> hidePreview()
             is BasePhotoContract.State.Exit -> exitScreen()
@@ -125,7 +144,7 @@ abstract class BasePhotoFragment :
                 viewModel.sendEvent(BasePhotoContract.Event.BackPressed)
             }
             tvClearAll.setOnClickListener {
-                callback?.clearAll()
+                if (isDrawing) callback?.undoPaint() else callback?.clearAll()
             }
             ivSettings.setOnClickListener {
                 callback?.openSettings()
@@ -313,6 +332,9 @@ abstract class BasePhotoFragment :
     private fun hidePreview() {
         startCamera()
         callback?.onPhotoEditCancel()
+        // The next shot starts with nothing drawn, so the button starts as Clear all again.
+        isDrawing = false
+        renderCornerAction()
         with(binding) {
             toggleSettingsPanelVisibility(true)
             vCamera.show()

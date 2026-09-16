@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Text over a photo. Not the camera's glass pill: white glass over a bright frame left the
+  coordinates unreadable.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_photo_scrim" />
+    <corners android:radius="999dp" />
+</shape>

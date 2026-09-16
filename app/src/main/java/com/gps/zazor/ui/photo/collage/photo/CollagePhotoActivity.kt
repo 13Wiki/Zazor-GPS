@@ -105,6 +105,10 @@ class CollagePhotoActivity : AppCompatActivity(R.layout.activity_collage_photo),
         addNoteSheet.clearAll()
     }
 
+    override fun undoPaint() {
+        addNoteSheet.undoPaint()
+    }
+
     private fun getCurrentPhotoHandler(): PhotoHandler? =
         supportFragmentManager.findFragmentById(R.id.flContainer) as? PhotoHandler
 

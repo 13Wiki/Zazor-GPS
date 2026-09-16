@@ -8,6 +8,16 @@ import java.io.File
 
 class MediaListContract {
 
+    /**
+     * What a long feed can be narrowed to.
+     *
+     * Three, and no more: everything, the shots someone marked up, and the wide frames. A filter
+     * that has to be explained is a filter nobody uses.
+     */
+    enum class Filter {
+        ALL, MARKED, WIDE
+    }
+
     sealed class Event : UiEvent {
 
         data class DeletePhoto(val photo: Photo) : Event()
@@ -24,11 +34,13 @@ class MediaListContract {
 
         /** Writes the visible photos out as a track file for another app to open. */
         data class ExportTrack(val format: TrackFormat) : Event()
+
+        data class FilterSelected(val filter: Filter) : Event()
     }
 
     sealed class State : UiState {
 
-        data class Initial(val photos: List<Photo>) : State()
+        data class Initial(val photos: List<Photo>, val filter: Filter) : State()
 
         object ClearSelectedMode : State()
 

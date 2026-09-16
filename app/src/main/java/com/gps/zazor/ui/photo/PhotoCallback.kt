@@ -8,6 +8,9 @@ interface PhotoCallback {
 
     fun clearAll()
 
+    /** Takes back the last drawn mark; what the corner button does while drawing. */
+    fun undoPaint()
+
     fun onCollageShown()
 
     fun onPhotoShown()

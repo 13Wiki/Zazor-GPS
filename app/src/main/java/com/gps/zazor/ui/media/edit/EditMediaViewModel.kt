@@ -69,6 +69,8 @@ class EditMediaViewModelImpl(
                         uiState.value = EditMediaContract.State.DisallowDraw
                     is EditPhotoContract.Flow.ClearPaint ->
                         uiState.value = EditMediaContract.State.ClearDraw
+                    is EditPhotoContract.Flow.UndoPaint ->
+                        uiState.value = EditMediaContract.State.UndoDraw
                     is EditPhotoContract.Flow.Idle -> Unit
                 }
             }
@@ -116,5 +118,6 @@ class EditMediaViewModelImpl(
         }
     }
 
-    private fun Double.formatCoordinate() = String.format(Locale.US, "%.6f", this)
+    /** Written the way the person chose to read it; the exports stay decimal regardless. */
+    private fun Double.formatCoordinate() = prefs.getCoordinateFormat().format(this)
 }

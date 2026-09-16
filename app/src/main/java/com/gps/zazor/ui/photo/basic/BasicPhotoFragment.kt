@@ -10,6 +10,6 @@ import com.gps.zazor.utils.FragmentArgumentDelegate
 class BasicPhotoFragment : BasePhotoFragment() {
 
     override fun onPhotoReady(bitmap: Bitmap) {
-        viewModel.sendEvent(BasePhotoContract.Event.SaveEdits(bitmap))
+        viewModel.sendEvent(BasePhotoContract.Event.SaveEdits(bitmap, isWide = false))
     }
 }

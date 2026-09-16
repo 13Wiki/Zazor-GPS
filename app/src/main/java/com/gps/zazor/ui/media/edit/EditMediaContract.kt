@@ -40,6 +40,8 @@ class EditMediaContract {
 
         object ClearDraw : State()
 
+        object UndoDraw : State()
+
         /** Whether this photo currently carries a voice note. */
         data class VoiceNote(val path: String?) : State()
     }

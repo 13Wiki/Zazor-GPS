@@ -16,6 +16,8 @@
     <color name="ds_glass_strong">#40FFFFFF</color>
     <color name="ds_glass_outline">#3DFFFFFF</color>
     <color name="ds_scrim">#B30B0F14</color>
+    <!-- Behind text laid over a photo: dark enough to read on snow, light enough to see through. -->
+    <color name="ds_photo_scrim">#8C0B0F14</color>
 
     <!-- Ink -->
     <color name="ds_text_primary">#FFFFFF</color>
@@ -36,6 +38,10 @@
 
     <!-- Stamp burned onto the photo -->
     <color name="ds_stamp_scrim">#B3000000</color>
+
+    <!-- A statement the app stands behind, rather than a warning: blue, not red. -->
+    <color name="ds_accent_surface">#242F86F6</color>
+    <color name="ds_accent_text">#A8CDFF</color>
 
     <dimen name="ds_radius_card">24dp</dimen>
     <dimen name="ds_radius_control">18dp</dimen>

@@ -80,7 +80,7 @@ open class BasePhotoViewModelImpl(
     private var seriesFrames = mutableListOf<Float?>()
 
     open fun onSaveEdits(edits: BasePhotoContract.Event.SaveEdits) {
-        saveEdits(edits.bitmap)
+        saveEdits(edits.bitmap, edits.isWide)
     }
 
     override suspend fun initialState(): BasePhotoContract.State = BasePhotoContract.State.Initial
@@ -186,6 +186,9 @@ open class BasePhotoViewModelImpl(
                     is EditPhotoContract.Flow.ClearPaint -> {
                         uiState.value = BasePhotoContract.State.ClearDraw
                     }
+                    is EditPhotoContract.Flow.UndoPaint -> {
+                        uiState.value = BasePhotoContract.State.UndoDraw
+                    }
                     is EditPhotoContract.Flow.Idle -> Unit
                 }
             }
@@ -247,22 +250,26 @@ open class BasePhotoViewModelImpl(
         )
     }
 
-    private fun saveEdits(bitmap: Bitmap) {
+    private fun saveEdits(bitmap: Bitmap, isWide: Boolean) {
         val seriesId = openSeriesId
         // Captured before the coroutine: the fix can move on while the file is being written.
         val accuracy = signalState.value.accuracyMeters
+        // The note is what the person called this shot, so it is kept beside the file as its name
+        // and not only drawn into the pixels - a list of dates tells nobody which photo is which.
+        val title = pendingNote.orEmpty().trim()
         launchIo {
             photoStorage.save(bitmap)?.let { path ->
                 photoRepository.savePhoto(
                     Photo(
                         path = path,
-                        name = "",
+                        name = title,
                         date = photoTime ?: PhotoClock.now(),
                         address = resolveAddress().orEmpty(),
                         lat = lastLocation?.latitude,
                         lng = lastLocation?.longitude,
                         accuracyMeters = accuracy,
-                        seriesId = seriesId
+                        seriesId = seriesId,
+                        isWide = isWide
                     )
                 )
                 if (seriesId != null) seriesFrames.add(accuracy)
@@ -272,5 +279,6 @@ open class BasePhotoViewModelImpl(
         }
     }
 
-    private fun Double.formatCoordinate() = String.format(java.util.Locale.US, "%.6f", this)
+    /** Written the way the person chose to read it; the exports stay decimal regardless. */
+    private fun Double.formatCoordinate() = prefs.getCoordinateFormat().format(this)
 }

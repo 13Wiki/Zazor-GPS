@@ -20,6 +20,7 @@ import com.ernestoyaquello.dragdropswiperecyclerview.listener.OnItemSwipeListene
 import com.gps.zazor.BuildConfig
 import com.gps.zazor.R
 import com.gps.zazor.data.models.Photo
+import com.gps.zazor.data.prefs.AppPreferences
 import com.gps.zazor.databinding.FragmentMediaListBinding
 import com.gps.zazor.ui.base.BaseFragment
 import com.gps.zazor.ui.media.MediaCallback
@@ -49,6 +50,8 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
 
     private val proStatus: ProStatus by inject()
 
+    private val prefs: AppPreferences by inject()
+
     private val onItemSwipeListener = object : OnItemSwipeListener<Photo> {
         override fun onItemSwiped(position: Int, direction: OnItemSwipeListener.SwipeDirection, item: Photo): Boolean {
             viewModel.sendEvent(MediaListContract.Event.DeletePhoto(item))
@@ -59,7 +62,10 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
 
     override fun observeState(state: MediaListContract.State?) {
         when (state) {
-            is MediaListContract.State.Initial -> showPhotos(state.photos)
+            is MediaListContract.State.Initial -> {
+                showFilter(state.filter)
+                showPhotos(state.photos, state.filter)
+            }
             is MediaListContract.State.ClearSelectedMode -> leaveSelectionMode()
             else -> Unit
         }
@@ -81,6 +87,11 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         binding.ivDeleteSelected.setOnClickListener { confirmDeleteSelected() }
         binding.ivExport.setOnClickListener(::showExportMenu)
         binding.ivOutings.setOnClickListener { mediaCallback?.openOutings() }
+        filterPills().forEach { (pill, filter) ->
+            pill.setOnClickListener {
+                viewModel.sendEvent(MediaListContract.Event.FilterSelected(filter))
+            }
+        }
         observeEffects()
         observeAds()
     }
@@ -153,15 +164,21 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
      * Feeds a new list into the existing adapter instead of building a new one on every state,
      * which used to reset scroll position and selection on each delete.
      */
-    private fun showPhotos(photos: List<Photo>) {
+    private fun showPhotos(photos: List<Photo>, filter: MediaListContract.Filter) {
         binding.tvEmpty.isVisible = photos.isEmpty()
+        // "No photos yet" under a filter would say the gallery is empty when it is not.
+        binding.tvEmpty.setText(
+            if (filter == MediaListContract.Filter.ALL) R.string.no_photos else R.string.no_photos_filtered
+        )
+        // The promise about metadata is about the files in the list; over an empty list it is noise.
+        binding.tvMetadataNote.isVisible = photos.isNotEmpty()
         adapter?.let {
             it.submit(photos)
             return
         }
         adapter = MediaListAdapter(
             photos, ::openEditPhoto, ::onMediaSelected, ::shareMedia, ::turnOnSelectionMode,
-            ::toggleVoiceNote
+            ::toggleVoiceNote, prefs.getCoordinateFormat()
         ).also {
             binding.rvPhotos.run {
                 adapter = it
@@ -172,6 +189,16 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
                 disableDragDirection(DragDropSwipeRecyclerView.ListOrientation.DirectionFlag.DOWN)
             }
         }
+    }
+
+    private fun filterPills() = listOf(
+        binding.tvFilterAll to MediaListContract.Filter.ALL,
+        binding.tvFilterMarked to MediaListContract.Filter.MARKED,
+        binding.tvFilterWide to MediaListContract.Filter.WIDE
+    )
+
+    private fun showFilter(selected: MediaListContract.Filter) {
+        filterPills().forEach { (pill, filter) -> pill.isSelected = filter == selected }
     }
 
     private fun openEditPhoto(photo: Photo) {

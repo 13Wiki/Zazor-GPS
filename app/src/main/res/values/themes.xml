@@ -34,6 +34,20 @@
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
+    <!-- A filter in the feed: the same pill the rest of the app uses for a choice. -->
+    <style name="Widget.Zazor.FilterPill" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ds_filter_pill</item>
+        <item name="android:paddingStart">@dimen/ds_space_4</item>
+        <item name="android:paddingEnd">@dimen/ds_space_4</item>
+        <item name="android:paddingTop">9dp</item>
+        <item name="android:paddingBottom">9dp</item>
+        <item name="android:textColor">@color/ds_filter_pill_text</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Theme.Zazor.BottomSheet" parent="Theme.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/Widget.Zazor.BottomSheet</item>
         <item name="android:navigationBarColor">@color/ds_surface</item>

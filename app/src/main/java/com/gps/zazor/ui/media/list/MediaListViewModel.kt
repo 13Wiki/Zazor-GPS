@@ -33,12 +33,17 @@ class MediaListViewModelImpl(
 
     private var backfillJob: Job? = null
 
-    /** Last list rendered, so an export uses exactly what the user is looking at. */
+    /** Everything stored, before the filter. */
+    private var allPhotos: List<Photo> = emptyList()
+
+    private var filter: MediaListContract.Filter = MediaListContract.Filter.ALL
+
+    /** What is on screen right now, so an export sends exactly what the user is looking at. */
     private var photos: List<Photo> = emptyList()
 
     override suspend fun initialState(): MediaListContract.State {
-        photos = photoRepository.getPhotos()
-        return MediaListContract.State.Initial(photos)
+        allPhotos = photoRepository.getPhotos()
+        return contentState()
     }
 
     override fun init() {
@@ -74,8 +79,28 @@ class MediaListViewModelImpl(
             }
             is MediaListContract.Event.DeleteSelected -> deleteSelected()
             is MediaListContract.Event.ExportTrack -> exportTrack(event.format)
+            is MediaListContract.Event.FilterSelected -> {
+                filter = event.filter
+                uiState.value = contentState()
+            }
             else -> Unit
         }
+    }
+
+    /**
+     * The feed under the current filter.
+     *
+     * "Marked up" means the shot carries a note - that is what the person wrote it down as, and it
+     * is the only mark that survives as data rather than as pixels. "Panoramas" are the frames the
+     * wide lens took.
+     */
+    private fun contentState(): MediaListContract.State.Initial {
+        photos = when (filter) {
+            MediaListContract.Filter.ALL -> allPhotos
+            MediaListContract.Filter.MARKED -> allPhotos.filter { it.name.isNotBlank() }
+            MediaListContract.Filter.WIDE -> allPhotos.filter { it.isWide }
+        }
+        return MediaListContract.State.Initial(photos, filter)
     }
 
     /**
@@ -89,8 +114,8 @@ class MediaListViewModelImpl(
         backfillJob = launchIo {
             val filled = photoRepository.backfillAddresses()
             if (filled > 0) {
-                photos = photoRepository.getPhotos()
-                uiState.value = MediaListContract.State.Initial(photos)
+                allPhotos = photoRepository.getPhotos()
+                uiState.value = contentState()
                 effectFlow.emit(MediaListContract.Effect.AddressesFilled(filled))
             }
         }
@@ -101,7 +126,7 @@ class MediaListViewModelImpl(
             // Read fresh rather than trusting the cached list: init() fills it asynchronously, so
             // an export tapped immediately after opening the gallery would otherwise export nothing.
             val exported = selectedPhotos?.takeIf { it.isNotEmpty() }
-                ?: photoRepository.getPhotos().also { photos = it }
+                ?: photoRepository.getPhotos().also { allPhotos = it }
             val name = "Zazor " + PhotoClock.formatDate(PhotoClock.now())
             val file = trackFileWriter.write(exported, format, name)
             effectFlow.emit(
@@ -124,8 +149,8 @@ class MediaListViewModelImpl(
         if (chosen.isEmpty()) return
         launchIo {
             selectedPhotos = null
-            photos = photoRepository.deletePhotos(chosen)
-            uiState.value = MediaListContract.State.Initial(photos)
+            allPhotos = photoRepository.deletePhotos(chosen)
+            uiState.value = contentState()
             // The list and the "selection is over" signal must not both go through the conflated
             // uiState - the first write would be swallowed. The effect carries the second.
             effectFlow.emit(MediaListContract.Effect.SelectionDeleted(chosen.size))
@@ -135,8 +160,8 @@ class MediaListViewModelImpl(
     private fun deletePhoto(photo: Photo) {
         launchIo {
             selectedPhotos?.remove(photo)
-            photos = photoRepository.deletePhoto(photo)
-            uiState.value = MediaListContract.State.Initial(photos)
+            allPhotos = photoRepository.deletePhoto(photo)
+            uiState.value = contentState()
         }
     }
 }

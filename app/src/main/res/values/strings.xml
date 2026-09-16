@@ -93,6 +93,11 @@
     <string name="addresses_filled">Адреса дозаполнены: %1$d</string>
     <string name="share">Поделиться</string>
     <string name="no_photos">Пока нет ни одного снимка</string>
+    <string name="filter_all">Все</string>
+    <string name="filter_marked">С метками</string>
+    <string name="filter_wide">Панорамы</string>
+    <string name="no_photos_filtered">Под этот фильтр снимков нет</string>
+    <string name="gallery_metadata_note">Координаты нанесены на снимок. В самом файле метаданных устройства нет.</string>
     <string name="panorama_unavailable">Панорама недоступна на этом устройстве</string>
     <string name="photo">Фото</string>
     <string name="give_permission">Для дальнейшей работы, предоставьте разрешения</string>
@@ -102,12 +107,21 @@
     <string name="cancel">Отмена</string>
     <string name="done">Готово</string>
     <string name="clear_all">Очистить все</string>
+    <string name="undo_last">Отменить</string>
     <string name="add_text">Добавить текст</string>
     <string name="font">Шрифт</string>
     <string name="panorama">Панорама</string>
-    <string name="location_pattern" translatable="false">%s\n%s</string>
     <string name="pin_code_setting">Использовать пароль на вход</string>
-    <string name="notes_setting">Заметки</string>
+    <string name="notes_setting">Что писать на снимке</string>
+    <string name="settings_group_capture">Съёмка</string>
+    <string name="settings_group_protection">Защита</string>
+    <string name="settings_group_other">Прочее</string>
+    <string name="stamp_fields_summary">%1$d из %2$d</string>
+    <string name="appearance_row_subtitle">Значок, подпись, стирающий код</string>
+    <string name="privacy_row_subtitle">Что уходит с телефона</string>
+    <string name="coordinate_format_setting">Формат координат</string>
+    <string name="coordinate_format_degrees">Градусы</string>
+    <string name="coordinate_format_dms">Градусы, минуты, секунды</string>
     <string name="clear_code_setting">Задать код очистки файлов</string>
     <string name="feedback_setting">Написать разработчику</string>
     <!-- Owner's public address. Replace before release; the same one goes into the privacy policy. -->

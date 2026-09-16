@@ -5,6 +5,7 @@ import com.gps.zazor.data.storage.models.PhotoDb
 import java.time.Instant
 
 data class Photo(val path: String,
+                 /** What the person called it - the note they typed, empty when they typed none. */
                  val name: String,
                  val date: Instant,
                  val address: String? = null,
@@ -15,7 +16,9 @@ data class Photo(val path: String,
                  /** Fix radius in metres at the moment of the shot. */
                  val accuracyMeters: Float? = null,
                  /** Set on every frame of one approach series. */
-                 val seriesId: String? = null)
+                 val seriesId: String? = null,
+                 /** Taken on the wide lens; the gallery can show those on their own. */
+                 val isWide: Boolean = false)
 
 val Photo.location get() = Location("").apply {
     latitude = lat ?: 0.0
@@ -37,5 +40,6 @@ fun Photo.toDb(): PhotoDb =
           lng ?: 0.0,
           voiceNotePath,
           accuracyMeters,
-          seriesId
+          seriesId,
+          isWide
       )

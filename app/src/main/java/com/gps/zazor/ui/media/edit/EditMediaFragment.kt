@@ -97,6 +97,7 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
                 viewModel.sendEvent(EditMediaContract.Event.SaveEdits(it))
             }
             is EditMediaContract.State.ClearDraw -> binding.vDraw.clear()
+            is EditMediaContract.State.UndoDraw -> binding.vDraw.undo()
             is EditMediaContract.State.VoiceNote -> renderVoiceNote(state.path != null)
             is EditMediaContract.State.Done -> requireActivity().onBackPressedDispatcher.onBackPressed()
             else -> Unit

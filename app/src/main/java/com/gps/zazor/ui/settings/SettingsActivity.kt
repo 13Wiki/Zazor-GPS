@@ -6,8 +6,12 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.gps.zazor.BuildConfig
 import com.gps.zazor.R
+import com.gps.zazor.data.models.CoordinateFormat
+import com.gps.zazor.data.prefs.AppPreferences
 import com.gps.zazor.ui.base.BaseActivity
 import com.gps.zazor.ui.settings.clearCode.ClearCodeSetupFragment
 import com.gps.zazor.ui.settings.di.injectViewModel
@@ -18,7 +22,6 @@ import com.gps.zazor.ui.settings.appearance.AppearanceFragment
 import com.gps.zazor.ui.privacy.PrivacyFragment
 import com.gps.zazor.billing.PlayProStatus
 import com.gps.zazor.billing.ProStatus
-import android.widget.Toast
 import org.koin.android.ext.android.inject
 
 class SettingsActivity : BaseActivity<SettingsContract.State, SettingsContract.Event>(R.layout.activity_settings),
@@ -34,11 +37,13 @@ class SettingsActivity : BaseActivity<SettingsContract.State, SettingsContract.E
 
     private val proStatus: ProStatus by inject()
 
+    private val prefs: AppPreferences by inject()
+
     override fun observeState(state: SettingsContract.State?) = Unit
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        navigateTo(SettingsListFragment(), R.id.flContainer)
+        showList()
         proStatus.refresh()
     }
 
@@ -58,6 +63,48 @@ class SettingsActivity : BaseActivity<SettingsContract.State, SettingsContract.E
 
     override fun openNotesSettings() {
         navigateTo(NotesSettingsFragment(), R.id.flContainer, addToBackStack = true)
+    }
+
+    /**
+     * Decimal degrees or degrees-minutes-seconds.
+     *
+     * A choice between two ways of writing the same point is a question, not a screen: it is asked
+     * where it was tapped and answered in one press. The list is rebuilt afterwards because the row
+     * carries the answer.
+     */
+    override fun openCoordinateFormat() {
+        val formats = CoordinateFormat.values()
+        val labels = formats.map { getString(it.titleRes) }.toTypedArray<CharSequence>()
+        AlertDialog.Builder(this)
+            .setTitle(R.string.coordinate_format_setting)
+            .setSingleChoiceItems(labels, formats.indexOf(prefs.getCoordinateFormat())) { dialog, which ->
+                prefs.putCoordinateFormat(formats[which])
+                dialog.dismiss()
+                showList()
+            }
+            .setNegativeButton(R.string.cancel, null)
+            .show()
+    }
+
+    override fun openAppearance() {
+        navigateTo(AppearanceFragment(), R.id.flContainer, addToBackStack = true)
+    }
+
+    override fun openPrivacy() {
+        navigateTo(PrivacyFragment.newInstance(isFirstRun = false), R.id.flContainer, addToBackStack = true)
+    }
+
+    /**
+     * Opens the store flow. Until the product exists in Play Console there is nothing to buy, so
+     * the person is told plainly rather than left tapping a dead button.
+     */
+    override fun openPro() {
+        val status = proStatus as? PlayProStatus
+        if (status == null || status.priceLabel.value == null) {
+            Toast.makeText(this, R.string.pro_unavailable, Toast.LENGTH_LONG).show()
+            return
+        }
+        status.purchase(this)
     }
 
     /**
@@ -87,24 +134,7 @@ class SettingsActivity : BaseActivity<SettingsContract.State, SettingsContract.E
         }
     }
 
-    override fun openAppearance() {
-        navigateTo(AppearanceFragment(), R.id.flContainer, addToBackStack = true)
-    }
-
-    override fun openPrivacy() {
-        navigateTo(PrivacyFragment.newInstance(isFirstRun = false), R.id.flContainer, addToBackStack = true)
-    }
-
-    /**
-     * Opens the store flow. Until the product exists in Play Console there is nothing to buy, so
-     * the person is told plainly rather than left tapping a dead button.
-     */
-    override fun openPro() {
-        val status = proStatus as? PlayProStatus
-        if (status == null || status.priceLabel.value == null) {
-            Toast.makeText(this, R.string.pro_unavailable, Toast.LENGTH_LONG).show()
-            return
-        }
-        status.purchase(this)
+    private fun showList() {
+        navigateTo(SettingsListFragment(), R.id.flContainer)
     }
 }

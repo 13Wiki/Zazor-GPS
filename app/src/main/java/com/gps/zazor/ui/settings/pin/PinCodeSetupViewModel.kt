@@ -21,7 +21,9 @@ open class PinCodeSetupViewModelImpl(protected val prefs: AppPreferences) : Base
 
     override fun onEventArrived(event: PinCodeSetupContract.Event?) {
         when (event) {
-            is PinCodeSetupContract.Event.CodeEntered -> checkPin(event.pin)
+            // Off the main thread: hashing a code is deliberately slow, and on the main thread
+            // that slowness is a frozen screen between the tap and the answer.
+            is PinCodeSetupContract.Event.CodeEntered -> launchIo { checkPin(event.pin) }
             else -> Unit
         }
     }

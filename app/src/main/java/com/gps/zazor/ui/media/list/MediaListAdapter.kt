@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeAdapter
+import com.gps.zazor.data.models.CoordinateFormat
 import com.gps.zazor.data.models.Photo
 import com.gps.zazor.databinding.ItemMediaBinding
 import com.gps.zazor.utils.time.PhotoClock
@@ -16,7 +17,9 @@ class MediaListAdapter(
     private val onCheckListener: (Photo, Boolean) -> Unit,
     private val onShareClick: (Photo) -> Unit,
     private val onLongPressListener: () -> Unit,
-    private val onVoiceNoteClick: (Photo) -> Unit
+    private val onVoiceNoteClick: (Photo) -> Unit,
+    /** The same way the coordinates are written on the picture itself. */
+    private val coordinateFormat: CoordinateFormat
 ) : DragDropSwipeAdapter<Photo, MediaListAdapter.MediaHolder>(photos) {
 
     var isSelectableMode: Boolean = false
@@ -83,15 +86,26 @@ class MediaListAdapter(
                     onCheckListener(photo, checked)
                 }
                 ivPreview.loadImage(photo.path, circle = false)
-                tvLocation.isVisible = photo.lat != null && photo.lng != null
-                tvLocation.text = root.context.getString(
-                    com.gps.zazor.R.string.location_pattern,
-                    photo.lat?.formatCoordinate().orEmpty(),
-                    photo.lng?.formatCoordinate().orEmpty()
-                )
-                tvAddress.isVisible = photo.address?.isNotBlank() == true
-                tvAddress.text = photo.address
-                tvDate.text = PhotoClock.formatDateTime(photo.date)
+                val hasPosition = photo.lat != null && photo.lng != null
+                // The note the person typed is what this photo is called; a date is what it is
+                // called when they did not type one.
+                val date = PhotoClock.formatDateTime(photo.date)
+                tvName.text = photo.name.ifBlank { date }
+                // Same coordinates as on the picture itself, legible over the thumbnail. They are
+                // not repeated under it: one place to read them is enough.
+                tvPreviewCoordinates.isVisible = hasPosition
+                tvPreviewCoordinates.text = if (hasPosition) {
+                    "${photo.lat?.formatCoordinate()}, ${photo.lng?.formatCoordinate()}"
+                } else {
+                    ""
+                }
+                // One line under the title, as in the design: when, then where. The date is left
+                // out when it already is the title.
+                tvDate.text = listOfNotNull(
+                    date.takeIf { photo.name.isNotBlank() },
+                    photo.address?.takeIf { it.isNotBlank() }
+                ).joinToString(" · ")
+                tvDate.isVisible = tvDate.text.isNotEmpty()
                 // The voice button appears only for photos that actually carry a recording.
                 ivVoiceNote.isVisible = photo.voiceNotePath != null
                 ivVoiceNote.setOnClickListener { onVoiceNoteClick(photo) }
@@ -104,6 +118,6 @@ class MediaListAdapter(
             }
         }
 
-        private fun Double.formatCoordinate() = String.format(java.util.Locale.US, "%.6f", this)
+        private fun Double.formatCoordinate() = coordinateFormat.format(this)
     }
 }

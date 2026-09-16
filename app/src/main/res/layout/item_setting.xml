@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- A row is a card, not a divided list line: dividers read as noise on a dark ground. -->
+<!--
+  A row is a card, not a divided list line: dividers read as noise on a dark ground.
+
+  The row says what the setting is set to, at its end - a settings screen that only lists names
+  makes you open every one of them to find out where you stand.
+-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -13,18 +18,60 @@
     android:paddingTop="@dimen/ds_space_4"
     android:paddingBottom="@dimen/ds_space_4">
 
+    <ImageView
+        android:id="@+id/ivIcon"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:contentDescription="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/ds_accent"
+        tools:src="@drawable/ic_row_lock" />
+
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ds_space_3"
         android:layout_marginEnd="@dimen/ds_space_3"
         android:textColor="@color/ds_text_primary"
         android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/tvSubtitle"
+        app:layout_constraintEnd_toStartOf="@id/tvValue"
+        app:layout_constraintStart_toEndOf="@id/ivIcon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:text="Код на вход" />
+
+    <TextView
+        android:id="@+id/tvSubtitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:textColor="@color/ds_text_muted"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tvTitle"
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        tools:text="Значок, подпись, стирающий код"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/tvValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/ds_space_2"
+        android:textColor="@color/ds_text_secondary"
+        android:textSize="14sp"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/ivArrow"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Pin-code" />
+        tools:text="Градусы"
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/ivArrow"
@@ -37,16 +84,19 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tint="@color/ds_text_muted" />
 
+    <!-- The switch reserves a 48dp touch height; the whole row is the target, so it may overhang. -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-12dp"
+        android:layout_marginBottom="-12dp"
         android:clickable="false"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:thumbTint="@color/ds_text_primary"
-        app:trackTint="@color/ds_outline" />
+        app:trackTint="@color/ds_switch_track" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

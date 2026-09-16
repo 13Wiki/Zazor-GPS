@@ -25,6 +25,7 @@ class PanoramaFragment : BasePhotoFragment() {
     override val useUltraWide = true
 
     override fun onPhotoReady(bitmap: Bitmap) {
-        viewModel.sendEvent(BasePhotoContract.Event.SaveEdits(bitmap))
+        // Marked as wide where the lens was chosen: nothing in the file itself says which one.
+        viewModel.sendEvent(BasePhotoContract.Event.SaveEdits(bitmap, isWide = true))
     }
 }

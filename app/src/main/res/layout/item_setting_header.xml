@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The caption over a group of settings. Quiet and small: it sorts, it does not announce. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/ds_space_5"
+    android:layout_marginBottom="@dimen/ds_space_1"
+    android:paddingStart="@dimen/ds_space_2"
+    android:paddingEnd="@dimen/ds_space_2"
+    android:letterSpacing="0.06"
+    android:textAllCaps="true"
+    android:textColor="@color/ds_text_muted"
+    android:textSize="12sp"
+    android:textStyle="bold"
+    tools:text="Защита" />

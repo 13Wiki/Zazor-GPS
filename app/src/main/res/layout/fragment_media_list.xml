@@ -95,6 +95,39 @@
         app:layout_constraintTop_toTopOf="@id/ivBack"
         app:tint="@color/ds_on_accent" />
 
+    <!--
+      Three ways to narrow a long feed, and the only three worth having here: everything, the shots
+      someone marked up, and the wide frames. A filter is a pill, like every other choice in the app.
+    -->
+    <LinearLayout
+        android:id="@+id/llFilters"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ds_space_4"
+        android:layout_marginTop="@dimen/ds_space_2"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivBack">
+
+        <TextView
+            android:id="@+id/tvFilterAll"
+            style="@style/Widget.Zazor.FilterPill"
+            android:text="@string/filter_all" />
+
+        <TextView
+            android:id="@+id/tvFilterMarked"
+            style="@style/Widget.Zazor.FilterPill"
+            android:layout_marginStart="@dimen/ds_space_2"
+            android:text="@string/filter_marked" />
+
+        <TextView
+            android:id="@+id/tvFilterWide"
+            style="@style/Widget.Zazor.FilterPill"
+            android:layout_marginStart="@dimen/ds_space_2"
+            android:text="@string/filter_wide" />
+
+    </LinearLayout>
+
     <com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeRecyclerView
         android:id="@+id/rvPhotos"
         android:layout_width="match_parent"
@@ -104,11 +137,34 @@
         android:paddingEnd="@dimen/ds_space_4"
         android:paddingBottom="@dimen/ds_space_4"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@id/flAd"
+        app:layout_constraintBottom_toTopOf="@id/tvMetadataNote"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivBack"
+        app:layout_constraintTop_toBottomOf="@id/llFilters"
         tools:listitem="@layout/item_media" />
+
+    <!-- The promise, where the files are: coordinates are on the picture and not inside it. -->
+    <TextView
+        android:id="@+id/tvMetadataNote"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ds_space_4"
+        android:layout_marginEnd="@dimen/ds_space_4"
+        android:layout_marginBottom="@dimen/ds_space_2"
+        android:background="@drawable/ds_accent_note"
+        android:drawablePadding="@dimen/ds_space_3"
+        android:paddingStart="@dimen/ds_space_4"
+        android:paddingEnd="@dimen/ds_space_4"
+        android:paddingTop="@dimen/ds_space_3"
+        android:paddingBottom="@dimen/ds_space_3"
+        android:text="@string/gallery_metadata_note"
+        android:textColor="@color/ds_accent_text"
+        android:textSize="12sp"
+        app:drawableStartCompat="@drawable/ic_row_lock"
+        app:drawableTint="@color/ds_accent_text"
+        app:layout_constraintBottom_toTopOf="@id/flAd"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <!--
       The only ad in the app. It sits under the feed, where someone is browsing rather than

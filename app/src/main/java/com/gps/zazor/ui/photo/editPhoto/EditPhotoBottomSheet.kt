@@ -79,6 +79,11 @@ class EditPhotoBottomSheet(val binding: BottomSheetAddNoteBinding)
         }
     }
 
+    /** One mark back, rather than everything at once - see the drawing button on the frame. */
+    fun undoPaint() {
+        viewModel.sendEvent(EditPhotoContract.Event.UndoPaint)
+    }
+
     /** Built once; the old version appended three more delegates on every `show()`. */
     private fun initDelegates() {
         if (delegates.isNotEmpty()) return

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A quiet blue card for a statement of fact: the promise the gallery is there to keep. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/ds_accent_surface" />
+    <corners android:radius="@dimen/ds_radius_control" />
+</shape>

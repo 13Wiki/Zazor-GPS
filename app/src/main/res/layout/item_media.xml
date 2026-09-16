@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Photo card: the picture leads, the data reads underneath it. -->
+<!--
+  Photo card: the picture leads, the data reads underneath it.
+
+  The note is the title, because that is what a person wrote the photo down as - "the stone by the
+  clearing" tells them which shot this is, where a timestamp does not. Without a note the date takes
+  the title's place rather than leaving a hole.
+-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -28,6 +34,28 @@
             android:layout_height="match_parent"
             android:contentDescription="@string/photo"
             android:scaleType="centerCrop" />
+
+        <!--
+          The coordinates sit on the picture here for the same reason they sit on the file. Bottom
+          corner, not top: the stamp burned into the photo is in the top one, and the pill covered it.
+        -->
+        <TextView
+            android:id="@+id/tvPreviewCoordinates"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="@dimen/ds_space_3"
+            android:background="@drawable/ds_photo_pill"
+            android:paddingStart="@dimen/ds_space_3"
+            android:paddingEnd="@dimen/ds_space_3"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="55.755826, 37.617300"
+            tools:visibility="visible" />
     </androidx.cardview.widget.CardView>
 
     <CheckBox
@@ -41,46 +69,38 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvDate"
+        android:id="@+id/tvName"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/ds_space_4"
         android:layout_marginTop="@dimen/ds_space_3"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="@color/ds_text_primary"
         android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@id/ivVoiceNote"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/cvImage"
-        tools:text="03.09.2026, 15:30" />
+        tools:text="Камень у просеки, 40 м на СВ" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvAddress"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:ellipsize="end"
-        android:maxLines="2"
-        android:textColor="@color/ds_text_secondary"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="@id/tvDate"
-        app:layout_constraintStart_toStartOf="@id/tvDate"
-        app:layout_constraintTop_toBottomOf="@id/tvDate"
-        tools:text="Ленинский просп. 32, Москва" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/tvLocation"
+        android:id="@+id/tvDate"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="@dimen/ds_space_4"
-        android:textColor="@color/ds_text_muted"
-        android:textSize="12sp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textColor="@color/ds_text_secondary"
+        android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@id/tvDate"
-        app:layout_constraintStart_toStartOf="@id/tvDate"
-        app:layout_constraintTop_toBottomOf="@id/tvAddress"
-        tools:text="55.755826, 37.617300" />
+        app:layout_constraintEnd_toEndOf="@id/tvName"
+        app:layout_constraintStart_toStartOf="@id/tvName"
+        app:layout_constraintTop_toBottomOf="@id/tvName"
+        tools:text="03.09.2026, 15:30 · Ленинский просп. 32" />
+
+
 
     <ImageView
         android:id="@+id/ivVoiceNote"
@@ -91,9 +111,9 @@
         android:padding="10dp"
         android:src="@drawable/ic_note"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/tvDate"
+        app:layout_constraintBottom_toBottomOf="@id/tvName"
         app:layout_constraintEnd_toStartOf="@id/ivShare"
-        app:layout_constraintTop_toTopOf="@id/tvDate"
+        app:layout_constraintTop_toTopOf="@id/tvName"
         app:tint="@color/ds_accent" />
 
     <ImageView
@@ -106,9 +126,9 @@
         android:contentDescription="@string/share"
         android:padding="10dp"
         android:src="@drawable/ic_share"
-        app:layout_constraintBottom_toBottomOf="@id/tvDate"
+        app:layout_constraintBottom_toBottomOf="@id/tvName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvDate"
+        app:layout_constraintTop_toTopOf="@id/tvName"
         app:tint="@color/ds_text_primary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

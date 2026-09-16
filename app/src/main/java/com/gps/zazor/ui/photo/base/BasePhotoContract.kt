@@ -16,7 +16,8 @@ class BasePhotoContract {
 
         class PhotoCaptured(val photo: Bitmap) : Event()
 
-        class SaveEdits(val bitmap: Bitmap) : Event()
+        /** @param isWide the frame came from the wide lens, which the gallery filters by. */
+        class SaveEdits(val bitmap: Bitmap, val isWide: Boolean = false) : Event()
 
         object FlipCamera : Event()
 
@@ -60,6 +61,8 @@ class BasePhotoContract {
         object DisallowDraw : State()
 
         object ClearDraw : State()
+
+        object UndoDraw : State()
 
         object HidePreview : State()
 

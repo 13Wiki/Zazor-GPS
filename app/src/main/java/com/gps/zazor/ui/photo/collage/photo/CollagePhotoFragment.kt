@@ -28,7 +28,7 @@ class CollagePhotoFragment : BasePhotoFragment() {
     }
 
     override fun onPhotoReady(bitmap: Bitmap) {
-        viewModel.sendEvent(BasePhotoContract.Event.SaveEdits(bitmap))
+        viewModel.sendEvent(BasePhotoContract.Event.SaveEdits(bitmap, isWide = false))
     }
 
     /**

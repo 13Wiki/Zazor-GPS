@@ -67,6 +67,11 @@ class EditPhotoViewModelImpl(private val editPhotoFlow: MutableSharedFlow<EditPh
                     editPhotoFlow.emit(EditPhotoContract.Flow.ClearPaint)
                 }
             }
+            is EditPhotoContract.Event.UndoPaint -> {
+                launch {
+                    editPhotoFlow.emit(EditPhotoContract.Flow.UndoPaint)
+                }
+            }
             else -> Unit
         }
     }

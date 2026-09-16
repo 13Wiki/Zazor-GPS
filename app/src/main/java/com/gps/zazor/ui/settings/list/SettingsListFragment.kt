@@ -22,15 +22,16 @@ class SettingsListFragment : BaseFragment<SettingsListContract.State, SettingsLi
     override fun observeState(state: SettingsListContract.State?) {
         when (state) {
             is SettingsListContract.State.Initial -> {
-                binding.rvSettings.adapter = SettingsListAdapter(state.settings) { type ->
+                binding.rvSettings.adapter = SettingsListAdapter(state.rows) { type ->
                     when (type) {
                         MainSettingType.PIN_CODE -> settingsCallback?.openPinSetup()
                         MainSettingType.CLEAR_CODE -> settingsCallback?.openClearCodeSetup()
                         MainSettingType.NOTES -> settingsCallback?.openNotesSettings()
-                        MainSettingType.FEEDBACK -> settingsCallback?.openFeedback()
+                        MainSettingType.COORDINATE_FORMAT -> settingsCallback?.openCoordinateFormat()
                         MainSettingType.APPEARANCE -> settingsCallback?.openAppearance()
                         MainSettingType.PRIVACY -> settingsCallback?.openPrivacy()
                         MainSettingType.PRO -> settingsCallback?.openPro()
+                        MainSettingType.FEEDBACK -> settingsCallback?.openFeedback()
                     }
                 }
             }

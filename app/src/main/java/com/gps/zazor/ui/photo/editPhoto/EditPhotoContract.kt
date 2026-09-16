@@ -43,6 +43,9 @@ class EditPhotoContract {
 
         data class PaintColorPicked(val color: Int) : Event()
         object ClearPaint : Event()
+
+        /** Takes back the last mark, which is what a person drawing actually wants. */
+        object UndoPaint : Event()
     }
 
     sealed class State : UiState {
@@ -64,5 +67,6 @@ class EditPhotoContract {
         data class AllowPaint(val color: Int?, val mode: Mode) : Flow()
         object DisallowPaint : Flow()
         object ClearPaint : Flow()
+        object UndoPaint : Flow()
     }
 }

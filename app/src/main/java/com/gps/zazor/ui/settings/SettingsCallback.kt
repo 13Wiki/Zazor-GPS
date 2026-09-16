@@ -8,6 +8,9 @@ interface SettingsCallback {
 
     fun openNotesSettings()
 
+    /** Decimal degrees or degrees-minutes-seconds, for what is written on the picture. */
+    fun openCoordinateFormat()
+
     /** Writing to the author: what is broken, and what the person wishes the app did. */
     fun openFeedback()
 
