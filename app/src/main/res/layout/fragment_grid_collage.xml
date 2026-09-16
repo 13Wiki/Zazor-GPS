@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  The gutter is the parent's background showing between slots. Slots use centerCrop: the frames
-  arrive upright from the editor, so the old rotate-and-overscale trick would lay them sideways.
+  The gutter is the parent's background showing between slots. Slots show the whole frame rather
+  than filling themselves with a crop of it: the coordinates are stamped near a corner, and a slot
+  that crops to fit cut them off - which makes the picture useless as the record it exists to be.
+  The band left beside a frame is the slot's own surface colour, so the grid still reads as a grid.
 -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,7 +29,7 @@
             android:layout_height="match_parent"
             android:background="@color/ds_surface"
             android:contentDescription="@null"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <ImageView
             android:id="@+id/ivMakeFirst"
@@ -59,7 +61,7 @@
             android:layout_height="match_parent"
             android:background="@color/ds_surface"
             android:contentDescription="@null"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <ImageView
             android:id="@+id/ivMakeSecond"
@@ -91,7 +93,7 @@
             android:layout_height="match_parent"
             android:background="@color/ds_surface"
             android:contentDescription="@null"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <ImageView
             android:id="@+id/ivMakeThird"
@@ -122,7 +124,7 @@
             android:layout_height="match_parent"
             android:background="@color/ds_surface"
             android:contentDescription="@null"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <ImageView
             android:id="@+id/ivMakeFour"

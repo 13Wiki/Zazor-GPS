@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Two slots side by side. See fragment_grid_collage.xml on why the slots are plain centerCrop. -->
+<!-- Two slots side by side. See fragment_grid_collage.xml on why the slots show the whole frame. -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/clCollagePreview"
@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:background="@color/ds_surface"
             android:contentDescription="@null"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <ImageView
             android:id="@+id/ivMakeFirst"
@@ -54,7 +54,7 @@
             android:layout_height="match_parent"
             android:background="@color/ds_surface"
             android:contentDescription="@null"
-            android:scaleType="centerCrop" />
+            android:scaleType="fitCenter" />
 
         <ImageView
             android:id="@+id/ivMakeSecond"
