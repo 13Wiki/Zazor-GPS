@@ -50,6 +50,8 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
         fun newIntent(context: Context) = Intent(context, PhotoActivity::class.java)
     }
 
+    override val drawsUnderSystemBars: Boolean = true
+
     override val viewModel by injectViewModel()
 
     private var adapter: PhotoPagerAdapter? = null

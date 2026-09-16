@@ -2,6 +2,7 @@ package com.gps.zazor.ui.settings.pin
 
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import androidx.core.widget.doOnTextChanged
 import com.gps.zazor.R
 import com.gps.zazor.databinding.FragmentPinSetupBinding
@@ -39,8 +40,19 @@ open class PinCodeSetupFragment : BaseFragment<PinCodeSetupContract.State, PinCo
         binding.etText.doOnTextChanged { _, _, _, _ ->
             binding.tilText.error = null
         }
-        binding.bOk.setOnClickListener {
-            viewModel.sendEvent(PinCodeSetupContract.Event.CodeEntered(binding.etText.text.toString()))
+        binding.bOk.setOnClickListener { submit() }
+        // The keyboard's own Go key does what OK does; it used to do nothing at all.
+        binding.etText.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_GO) {
+                submit()
+                true
+            } else {
+                false
+            }
         }
+    }
+
+    private fun submit() {
+        viewModel.sendEvent(PinCodeSetupContract.Event.CodeEntered(binding.etText.text.toString()))
     }
 }
