@@ -8,7 +8,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.dsl.module
 
 val settingsListModule = module {
-    viewModel { SettingsListViewModelImpl(get()) }
+    viewModel { SettingsListViewModelImpl(get(), get()) }
 }
 
 fun SettingsListFragment.injectViewModel(): Lazy<SettingsListViewModel> =
