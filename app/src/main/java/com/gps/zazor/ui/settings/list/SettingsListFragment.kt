@@ -27,7 +27,7 @@ class SettingsListFragment : BaseFragment<SettingsListContract.State, SettingsLi
                         MainSettingType.PIN_CODE -> settingsCallback?.openPinSetup()
                         MainSettingType.CLEAR_CODE -> settingsCallback?.openClearCodeSetup()
                         MainSettingType.NOTES -> settingsCallback?.openNotesSettings()
-                        MainSettingType.TRIAL_CODE -> settingsCallback?.openTrialCode()
+                        MainSettingType.FEEDBACK -> settingsCallback?.openFeedback()
                         MainSettingType.APPEARANCE -> settingsCallback?.openAppearance()
                         MainSettingType.PRIVACY -> settingsCallback?.openPrivacy()
                         MainSettingType.PRO -> settingsCallback?.openPro()

@@ -66,7 +66,7 @@ abstract class BasePhotoFragment :
      * letterbox bars in it. Falls back to the old behaviour if there is no bitmap to compose onto.
      */
     private fun composeSavedPhoto(): Bitmap? = with(binding) {
-        PhotoComposer.compose(ivPreview, listOf(dvNotes, evDroidArt, vDraw, tvTrial))
+        PhotoComposer.compose(ivPreview, listOf(dvNotes, evDroidArt, vDraw))
             ?: clPreviewContainer.getBitmap()
     }
 
@@ -102,12 +102,8 @@ abstract class BasePhotoFragment :
             }
             is BasePhotoContract.State.SaveNotes -> composeSavedPhoto()?.let(::onPhotoReady)
             is BasePhotoContract.State.ClearDraw -> binding.vDraw.clear()
-            is BasePhotoContract.State.Initial -> binding.tvTrial.isVisible = state.isTrial
             is BasePhotoContract.State.ShowPreview -> showPreview(state)
-            is BasePhotoContract.State.HidePreview -> {
-                hidePreview()
-                binding.tvTrial.isVisible = state.isTrial
-            }
+            is BasePhotoContract.State.HidePreview -> hidePreview()
             is BasePhotoContract.State.Exit -> exitScreen()
             else -> Unit
         }

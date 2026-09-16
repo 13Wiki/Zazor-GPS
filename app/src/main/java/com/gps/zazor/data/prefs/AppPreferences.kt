@@ -39,10 +39,6 @@ interface AppPreferences {
 
     fun isDisplayDate(): Boolean
 
-    fun setTrial(trial: Boolean)
-
-    fun isTrial(): Boolean
-
     fun putDrawColor(color: Int)
 
     fun getDrawColor(): Int?
@@ -175,14 +171,6 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
 
     override fun isDisplayTime(): Boolean {
         return preferences.getBoolean(DISPLAY_TIME_KEY, true)
-    }
-
-    override fun setTrial(trial: Boolean) {
-        preferences.edit().putBoolean(TRIAL_KEY, trial).commit()
-    }
-
-    override fun isTrial(): Boolean {
-        return preferences.getBoolean(TRIAL_KEY, true)
     }
 
     override fun putDrawColor(color: Int) {

@@ -107,7 +107,9 @@
     <string name="pin_code_setting">Require a passcode to open</string>
     <string name="notes_setting">Notes</string>
     <string name="clear_code_setting">Set a wipe code</string>
-    <string name="use_trial_code">Use a trial code</string>
+    <string name="feedback_setting">Write to the developer</string>
+    <string name="feedback_subject">Zazor %1$s · %2$s · Android %3$d</string>
+    <string name="feedback_no_mail_app">There is no mail app on this phone</string>
     <string name="camera_error_msg">Cannot access the camera, the app will close now.</string>
     <string name="collage">Collage</string>
     <string name="labels">Marks</string>
@@ -126,8 +128,6 @@
     <string name="display_coordinates">Show coordinates</string>
     <string name="display_date">Show the date</string>
     <string name="display_time">Show the time</string>
-    <string name="enter_trial_code">Enter the code</string>
-    <string name="code_trial_incorrect">Wrong trial code</string>
     <string name="removed">Photo deleted</string>
     <string name="delete_selected">Delete selected</string>
     <string name="nothing_selected">Nothing selected</string>

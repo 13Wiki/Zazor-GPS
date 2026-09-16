@@ -107,7 +107,9 @@
     <string name="pin_code_setting">Використовувати пароль на вхід</string>
     <string name="notes_setting">Нотатки</string>
     <string name="clear_code_setting">Задати код очищення файлів</string>
-    <string name="use_trial_code">Використати Trial-код</string>
+    <string name="feedback_setting">Написати розробнику</string>
+    <string name="feedback_subject">Zazor %1$s · %2$s · Android %3$d</string>
+    <string name="feedback_no_mail_app">На телефоні немає застосунку пошти</string>
     <string name="camera_error_msg">Немає доступу до камери, застосунок буде закрито.</string>
     <string name="collage">Колаж</string>
     <string name="labels">Мітки</string>
@@ -126,8 +128,6 @@
     <string name="display_coordinates">Показувати координати</string>
     <string name="display_date">Показувати дату</string>
     <string name="display_time">Показувати час</string>
-    <string name="enter_trial_code">Введіть код</string>
-    <string name="code_trial_incorrect">Невірний Trial-код</string>
     <string name="removed">Фото видалено</string>
     <string name="delete_selected">Видалити вибрані</string>
     <string name="nothing_selected">Нічого не вибрано</string>

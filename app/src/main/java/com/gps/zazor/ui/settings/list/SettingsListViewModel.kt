@@ -28,7 +28,7 @@ class SettingsListViewModelImpl(
         // that takes money for a change the person would not see. It returns with the ads.
         MainSetting(MainSettingType.PRO, R.string.pro_setting, appPrefs.isPro())
             .takeIf { adSlot.isAvailable },
-        MainSetting(MainSettingType.TRIAL_CODE, R.string.use_trial_code)
+        MainSetting(MainSettingType.FEEDBACK, R.string.feedback_setting)
     )
 
     override suspend fun initialState(): SettingsListContract.State =

@@ -83,8 +83,7 @@ open class BasePhotoViewModelImpl(
         saveEdits(edits.bitmap)
     }
 
-    override suspend fun initialState(): BasePhotoContract.State =
-        BasePhotoContract.State.Initial(isTrialWatermarkVisible())
+    override suspend fun initialState(): BasePhotoContract.State = BasePhotoContract.State.Initial
 
     override fun init() {
         super.init()
@@ -96,7 +95,6 @@ open class BasePhotoViewModelImpl(
             is BasePhotoContract.Event.Resume -> {
                 observeLocation()
                 subscribeToAddNoteFlow()
-                refreshTrialState()
             }
             is BasePhotoContract.Event.FlipCamera -> handleCameraFlip()
             is BasePhotoContract.Event.ToggleFlash -> handleFlashToggle()
@@ -126,7 +124,7 @@ open class BasePhotoViewModelImpl(
             isPreviewShown = false
             pendingNote = null
             uiState.value =
-                if (wasPreviewShown) BasePhotoContract.State.HidePreview(isTrialWatermarkVisible())
+                if (wasPreviewShown) BasePhotoContract.State.HidePreview
                 else BasePhotoContract.State.Exit
         }
     }
@@ -160,15 +158,6 @@ open class BasePhotoViewModelImpl(
     private fun stopObservingLocation() {
         locationJob?.cancel()
         locationJob = null
-    }
-
-    private suspend fun isTrialWatermarkVisible(): Boolean =
-        prefs.isTrial() && photoRepository.getPhotos().size > TRIAL_COUNT
-
-    private fun refreshTrialState() {
-        launchIo {
-            uiState.value = initialState()
-        }
     }
 
     private fun subscribeToAddNoteFlow() {

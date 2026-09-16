@@ -109,7 +109,11 @@
     <string name="pin_code_setting">Использовать пароль на вход</string>
     <string name="notes_setting">Заметки</string>
     <string name="clear_code_setting">Задать код очистки файлов</string>
-    <string name="use_trial_code">Использовать Trial-код</string>
+    <string name="feedback_setting">Написать разработчику</string>
+    <!-- Owner's public address. Replace before release; the same one goes into the privacy policy. -->
+    <string name="feedback_email" translatable="false">ПОЧТА@ПРИМЕР</string>
+    <string name="feedback_subject">Zazor %1$s · %2$s · Android %3$d</string>
+    <string name="feedback_no_mail_app">На телефоне нет приложения для почты</string>
 
     <string-array name="fonts" translatable="false">
         <item>Android default</item>
@@ -149,9 +153,6 @@
     <string name="display_coordinates">Отображать координаты</string>
     <string name="display_date">Отображать дату</string>
     <string name="display_time">Отображать время</string>
-    <string name="enter_trial_code">Введите код</string>
-    <string name="code_trial_incorrect">Неверный Trial-код</string>
-    <string name="label" translatable="false">Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor</string>
     <string name="removed">Фото удалено</string>
     <string name="delete_selected">Удалить выбранные</string>
     <string name="nothing_selected">Ничего не выбрано</string>

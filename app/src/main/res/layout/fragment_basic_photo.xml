@@ -124,19 +124,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <TextView
-            android:id="@+id/tvTrial"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:lineHeight="32sp"
-            android:rotation="330"
-            android:scaleX="2"
-            android:scaleY="2"
-            android:text="@string/label"
-            android:textColor="@color/ds_watermark"
-            android:textSize="12sp" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--

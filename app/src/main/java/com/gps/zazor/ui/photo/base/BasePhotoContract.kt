@@ -6,8 +6,6 @@ import com.gps.zazor.ui.base.UiState
 import com.gps.zazor.utils.camera.Camera
 import com.gps.zazor.views.Mode
 
-const val TRIAL_COUNT = 5
-
 class BasePhotoContract {
 
     sealed class Event : UiEvent {
@@ -36,7 +34,7 @@ class BasePhotoContract {
 
     sealed class State : UiState {
 
-        data class Initial(val isTrial: Boolean) : State()
+        object Initial : State()
 
         class FlipCamera(val camera: Camera) : State()
 
@@ -63,7 +61,7 @@ class BasePhotoContract {
 
         object ClearDraw : State()
 
-        data class HidePreview(val isTrial: Boolean) : State()
+        object HidePreview : State()
 
         object Exit : State()
     }

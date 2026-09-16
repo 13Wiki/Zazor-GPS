@@ -8,7 +8,8 @@ interface SettingsCallback {
 
     fun openNotesSettings()
 
-    fun openTrialCode()
+    /** Writing to the author: what is broken, and what the person wishes the app did. */
+    fun openFeedback()
 
     /** Launcher icon, label and a reminder of what the wipe code does. */
     fun openAppearance()

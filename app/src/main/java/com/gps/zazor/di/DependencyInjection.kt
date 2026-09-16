@@ -22,7 +22,6 @@ import com.gps.zazor.ui.settings.di.settingsModule
 import com.gps.zazor.ui.settings.list.di.settingsListModule
 import com.gps.zazor.ui.settings.notes.di.notesSettingsModule
 import com.gps.zazor.ui.settings.pin.di.pinCodeSetupModule
-import com.gps.zazor.ui.settings.trial.di.trialCodeModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
@@ -34,7 +33,7 @@ object DependencyInjection {
             modules(prefsModule, repositoriesModule, authModule, authPinModule, photoModule, collagePhotoModule,
                 basicPhotoModule, collageContainerModule,
                 collageModule, mediaModule, mediaListModule, outingsModule, shareModule, privacyModule, appearanceModule, editMediaModule, settingsModule, settingsListModule,
-                pinCodeSetupModule, clearCodeSetupModule, notesSettingsModule, trialCodeModule)
+                pinCodeSetupModule, clearCodeSetupModule, notesSettingsModule)
         }
     }
 }

@@ -1,8 +1,12 @@
 package com.gps.zazor.ui.settings
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import com.gps.zazor.BuildConfig
 import com.gps.zazor.R
 import com.gps.zazor.ui.base.BaseActivity
 import com.gps.zazor.ui.settings.clearCode.ClearCodeSetupFragment
@@ -10,7 +14,6 @@ import com.gps.zazor.ui.settings.di.injectViewModel
 import com.gps.zazor.ui.settings.list.SettingsListFragment
 import com.gps.zazor.ui.settings.notes.NotesSettingsFragment
 import com.gps.zazor.ui.settings.pin.PinCodeSetupFragment
-import com.gps.zazor.ui.settings.trial.TrialCodeFragment
 import com.gps.zazor.ui.settings.appearance.AppearanceFragment
 import com.gps.zazor.ui.privacy.PrivacyFragment
 import com.gps.zazor.billing.PlayProStatus
@@ -57,8 +60,31 @@ class SettingsActivity : BaseActivity<SettingsContract.State, SettingsContract.E
         navigateTo(NotesSettingsFragment(), R.id.flContainer, addToBackStack = true)
     }
 
-    override fun openTrialCode() {
-        navigateTo(TrialCodeFragment(), R.id.flContainer, addToBackStack = true)
+    /**
+     * A letter to the author, written where the thing went wrong.
+     *
+     * The first people to use this are the ones who will say what is broken and what it should do
+     * instead, and an address buried in a store listing is not where that gets written. The subject
+     * carries the version and the phone, so a report does not start with three questions back.
+     */
+    override fun openFeedback() {
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:" + Uri.encode(getString(R.string.feedback_email)))
+            putExtra(
+                Intent.EXTRA_SUBJECT,
+                getString(
+                    R.string.feedback_subject,
+                    BuildConfig.VERSION_NAME,
+                    Build.MODEL,
+                    Build.VERSION.SDK_INT
+                )
+            )
+        }
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(this, R.string.feedback_no_mail_app, Toast.LENGTH_LONG).show()
+        }
     }
 
     override fun openAppearance() {
