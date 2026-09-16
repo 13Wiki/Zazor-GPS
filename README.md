@@ -92,12 +92,17 @@ bypassed all three.
 ## Before publishing
 
 - Replace the debug signing config with a real keystore (see above).
-- Create the in-app product `zazor_pro_remove_ads` in Play Console; until it exists the Pro button
-  says so rather than failing silently.
-- Choose an ad network if ads are wanted: `AdSlot` has a no-op implementation, so the current build
-  simply shows none.
-- Fill in the Data safety form: the app collects anonymous usage counters only, and the advertising
-  ID is removed from the merged manifest.
+- There is no telemetry in the build at all: Crashlytics and Analytics are not in the dependency
+  list, so they are not in the APK, and `NoAnalytics` is what the app gets. An inert SDK would have
+  kept the app just as silent, but not the claim just as checkable - a listing that says "collects
+  nothing" should survive someone opening the file. Diagnostics come from Play Console, which
+  collects crashes without any library of ours, and from the feedback row in settings. Restoring
+  telemetry is the three steps listed in `app/build.gradle`, and then saying so in Data safety.
+- Ads are off the same way: `zazor.admob.bannerUnitId` in `gradle.properties` is empty, so nothing
+  is ever requested and the Pro row stays out of settings. The in-app product is only worth creating
+  in Play Console when that id is filled in.
+- Fill in the Data safety form: with this configuration the app collects nothing at all, and the
+  advertising ID is removed from the merged manifest either way.
 
 ## Known limitations
 

@@ -60,7 +60,15 @@ class PrivacyFragment : BaseFragment<PrivacyContract.State, PrivacyContract.Even
 
     override fun observeState(state: PrivacyContract.State?) {
         when (state) {
-            is PrivacyContract.State.Content -> binding.swAnalytics.isChecked = state.analyticsEnabled
+            // With no Firebase project in the build there are no counters to agree to, so the
+            // offer disappears instead of standing there promising something that cannot happen.
+            is PrivacyContract.State.Content -> binding.run {
+                val visibility = if (state.analyticsAvailable) View.VISIBLE else View.GONE
+                tvCountedLabel.visibility = visibility
+                tvCounted.visibility = visibility
+                swAnalytics.visibility = visibility
+                swAnalytics.isChecked = state.analyticsEnabled
+            }
             is PrivacyContract.State.Accepted -> finish()
             else -> Unit
         }

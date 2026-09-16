@@ -14,7 +14,14 @@ class PrivacyContract {
 
     sealed class State : UiState {
 
-        data class Content(val analyticsEnabled: Boolean) : State()
+        /**
+         * @param analyticsAvailable false in a build with no Firebase project: there is nothing to
+         *        agree to, so the switch is not shown at all rather than shown and dead.
+         */
+        data class Content(
+            val analyticsEnabled: Boolean,
+            val analyticsAvailable: Boolean
+        ) : State()
 
         object Accepted : State()
     }

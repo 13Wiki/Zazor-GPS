@@ -2,8 +2,6 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.devtools.ksp'
-    id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
 }
 
 android {
@@ -131,11 +129,19 @@ dependencies {
     implementation 'com.android.billingclient:billing-ktx:8.0.0'
     implementation 'com.google.android.gms:play-services-ads:25.4.0'
 
-    implementation platform('com.google.firebase:firebase-bom:33.7.0')
-    implementation 'com.google.firebase:firebase-crashlytics-ktx'
-    // Analytics carries the owner's anonymous counters. The advertising id it would normally
-    // collect is stripped in the manifest - nothing here should follow anyone between apps.
-    implementation 'com.google.firebase:firebase-analytics-ktx'
+    /*
+     * No Firebase. Not "configured off" - absent: neither Crashlytics nor Analytics is in the
+     * dependency list, so neither is in the APK.
+     *
+     * An inert SDK would have been enough to keep the app silent, but not enough to keep the claim
+     * checkable: anyone who opens the file would find Google Analytics inside an app whose listing
+     * says it collects nothing, and would be right to say so. Crashes still surface in Play
+     * Console, which collects them without any library of ours.
+     *
+     * Bringing telemetry back is three steps, in this order: add firebase-bom, analytics and
+     * crashlytics here; apply the google-services and crashlytics plugins above; drop the owner's
+     * own google-services.json into app/. And then say so in the Data safety form.
+     */
 
     implementation "androidx.room:room-runtime:$room_version"
     implementation "androidx.room:room-ktx:$room_version"

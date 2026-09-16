@@ -15,6 +15,14 @@ package com.gps.zazor.analytics
 interface Analytics {
 
     /**
+     * False when the build carries no analytics library, which is the case for this release.
+     *
+     * Then nothing is sent and nothing can be, so the screens do not offer a choice about it:
+     * a switch that promises to stop something that never starts is worse than no switch.
+     */
+    val isAvailable: Boolean
+
+    /**
      * @param event a fixed name from [Event]; never free text, so nothing personal can slip in.
      * @param count an optional magnitude, such as how many frames a series held.
      */

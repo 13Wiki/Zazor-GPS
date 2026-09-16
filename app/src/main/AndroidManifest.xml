@@ -150,13 +150,6 @@
             </intent-filter>
         </activity-alias>
 
-        <!-- Analytics stays off until the person has seen what is and is not collected. -->
-        <meta-data
-            android:name="firebase_analytics_collection_enabled"
-            android:value="false" />
-        <meta-data
-            android:name="google_analytics_adid_collection_enabled"
-            android:value="false" />
 
         <activity
             android:name=".ui.photo.PhotoActivity"

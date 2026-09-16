@@ -18,13 +18,14 @@ class PrivacyViewModelImpl(
 ) : BaseViewModelImpl<PrivacyContract.State, PrivacyContract.Event>(), PrivacyViewModel {
 
     override suspend fun initialState(): PrivacyContract.State =
-        PrivacyContract.State.Content(prefs.isAnalyticsEnabled())
+        PrivacyContract.State.Content(prefs.isAnalyticsEnabled(), analytics.isAvailable)
 
     override fun onEventArrived(event: PrivacyContract.Event?) {
         when (event) {
             is PrivacyContract.Event.ToggleAnalytics -> {
                 analytics.setEnabled(event.enabled)
-                uiState.value = PrivacyContract.State.Content(event.enabled)
+                uiState.value =
+                    PrivacyContract.State.Content(event.enabled, analytics.isAvailable)
             }
             is PrivacyContract.Event.Accept -> {
                 prefs.setPrivacyAccepted(true)
