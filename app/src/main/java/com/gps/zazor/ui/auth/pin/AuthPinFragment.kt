@@ -2,7 +2,6 @@ package com.gps.zazor.ui.auth.pin
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
@@ -30,8 +29,15 @@ class AuthPinFragment : BaseFragment<AuthPinContract.State, AuthPinContract.Even
             is AuthPinContract.State.AuthFailure -> {
                 binding.tilText.error = getString(R.string.auth_error)
             }
+            /*
+             * The same thing an ordinary sign-in does: the app opens, and it is empty. The wipe
+             * code is entered with someone watching, so it must look like nothing happened - the
+             * old toast announced "your data has been erased" to whoever was standing there, and
+             * staying on the lock screen afterwards said the code had not worked.
+             */
             AuthPinContract.State.DataCleared -> {
-                Toast.makeText(requireContext(), getString(R.string.data_was_cleared), Toast.LENGTH_LONG).show()
+                startActivity(PhotoActivity.newIntent(requireContext()))
+                activity?.finish()
             }
             else -> Unit
         }

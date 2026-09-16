@@ -121,8 +121,8 @@
     <string name="enter_pin">Enter the passcode</string>
     <string name="pin_incorrect">Wrong passcode</string>
     <string name="code_incorrect">Wrong wipe code</string>
-    <string name="data_was_cleared">Your data has been erased</string>
     <string name="enter_clear_code">Enter the wipe code</string>
+    <string name="code_length_hint">Exactly 5 digits</string>
     <string name="display_coordinates">Show coordinates</string>
     <string name="display_date">Show the date</string>
     <string name="display_time">Show the time</string>

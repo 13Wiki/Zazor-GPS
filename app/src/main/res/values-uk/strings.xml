@@ -121,8 +121,8 @@
     <string name="enter_pin">Введіть ПІН-код</string>
     <string name="pin_incorrect">Невірний ПІН</string>
     <string name="code_incorrect">Невірний код очищення</string>
-    <string name="data_was_cleared">Ваші дані було видалено</string>
     <string name="enter_clear_code">Введіть код очищення</string>
+    <string name="code_length_hint">Рівно 5 цифр</string>
     <string name="display_coordinates">Показувати координати</string>
     <string name="display_date">Показувати дату</string>
     <string name="display_time">Показувати час</string>

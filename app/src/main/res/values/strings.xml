@@ -144,8 +144,8 @@
     <string name="enter_pin">Введите ПИН-код</string>
     <string name="pin_incorrect">Неверный ПИН</string>
     <string name="code_incorrect">Неверный код очистки</string>
-    <string name="data_was_cleared">Ваши данные были удалены</string>
     <string name="enter_clear_code">Введите код очистки</string>
+    <string name="code_length_hint">Ровно 5 цифр</string>
     <string name="display_coordinates">Отображать координаты</string>
     <string name="display_date">Отображать дату</string>
     <string name="display_time">Отображать время</string>

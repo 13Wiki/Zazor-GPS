@@ -28,6 +28,10 @@ class AuthPinViewModelImpl(
             prefs.getClearCode() -> {
                 // Wipes the stored photos and their files, not just the database rows.
                 photosRepository.clear()
+                // And what the app remembers about the person: the passcode and the wipe code
+                // itself. Leaving those behind meant the phone still showed that someone kept
+                // something here under a code - which is exactly what this code exists to deny.
+                prefs.clear()
                 AuthPinContract.State.DataCleared
             }
             else -> AuthPinContract.State.AuthFailure
