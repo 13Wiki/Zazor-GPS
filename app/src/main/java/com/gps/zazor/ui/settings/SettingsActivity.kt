@@ -39,28 +39,34 @@ class SettingsActivity : BaseActivity<SettingsContract.State, SettingsContract.E
         proStatus.refresh()
     }
 
+    /*
+     * Every sub-screen goes on the back stack. Without it, back from any of them left settings
+     * altogether and dropped the person onto the camera, so changing two settings in a row meant
+     * walking into settings twice.
+     */
+
     override fun openPinSetup() {
-        navigateTo(PinCodeSetupFragment(), R.id.flContainer)
+        navigateTo(PinCodeSetupFragment(), R.id.flContainer, addToBackStack = true)
     }
 
     override fun openClearCodeSetup() {
-        navigateTo(ClearCodeSetupFragment(), R.id.flContainer)
+        navigateTo(ClearCodeSetupFragment(), R.id.flContainer, addToBackStack = true)
     }
 
     override fun openNotesSettings() {
-        navigateTo(NotesSettingsFragment(), R.id.flContainer)
+        navigateTo(NotesSettingsFragment(), R.id.flContainer, addToBackStack = true)
     }
 
     override fun openTrialCode() {
-        navigateTo(TrialCodeFragment(), R.id.flContainer)
+        navigateTo(TrialCodeFragment(), R.id.flContainer, addToBackStack = true)
     }
 
     override fun openAppearance() {
-        navigateTo(AppearanceFragment(), R.id.flContainer)
+        navigateTo(AppearanceFragment(), R.id.flContainer, addToBackStack = true)
     }
 
     override fun openPrivacy() {
-        navigateTo(PrivacyFragment.newInstance(isFirstRun = false), R.id.flContainer)
+        navigateTo(PrivacyFragment.newInstance(isFirstRun = false), R.id.flContainer, addToBackStack = true)
     }
 
     /**

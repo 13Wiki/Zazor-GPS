@@ -21,8 +21,10 @@ open class PinCodeSetupFragment : BaseFragment<PinCodeSetupContract.State, PinCo
 
     override fun observeState(state: PinCodeSetupContract.State?) {
         when (state) {
+            // Back to the settings list rather than out of settings: finishing the activity threw
+            // the person onto the camera the moment a code was set.
             is PinCodeSetupContract.State.CodeSet -> {
-                requireActivity().finish()
+                requireActivity().onBackPressedDispatcher.onBackPressed()
             }
             is PinCodeSetupContract.State.CodeIncorrect -> {
                 binding.tilText.error = getString(errorRes)
