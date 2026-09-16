@@ -104,5 +104,9 @@ bypassed all three.
 - **The PIN and clear code are stored in plain `SharedPreferences`.** They gate the UI, not the
   files on disk. Anything stronger needs a KeyStore-backed hash.
 - Photos live in the app-private external directory, so uninstalling the app deletes them.
-- Nothing has yet been run on a device or emulator: the build, the tests and lint are green, but
-  the camera, the Room migrations and the audio recorder are unverified against real hardware.
+- A photo is saved at the size of the screen, not of the sensor: the stamp, the marks and the text
+  are drawn as views over the frame and the whole container is what gets encoded. The letterboxing
+  around a 4:3 frame on a tall screen is encoded with it.
+- Run on an Android 14 emulator: capture, the stamp, the metadata scrub, the weak-fix warning, the
+  gallery and its banner behave. The ultra-wide lens, a real GPS fix and the audio recorder still
+  need a phone - an emulator has no second camera, fakes the fix perfectly and has no microphone.
