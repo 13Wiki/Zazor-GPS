@@ -13,7 +13,9 @@ open class PinCodeSetupViewModelImpl(protected val prefs: AppPreferences) : Base
         prefs.putPin(code)
     }
 
-    open fun getCode(): String? = prefs.getPin()
+    open fun hasCode(): Boolean = prefs.hasPin()
+
+    open fun isCode(code: String): Boolean = prefs.isPin(code)
 
     override suspend fun initialState(): PinCodeSetupContract.State? = null
 
@@ -24,22 +26,24 @@ open class PinCodeSetupViewModelImpl(protected val prefs: AppPreferences) : Base
         }
     }
 
+    /**
+     * Sets the code when there is none, and removes the existing one when it is entered again.
+     *
+     * Asks whether the code matches rather than reading it back: codes are stored as salted
+     * hashes, and nothing in the app ever needs to see one.
+     */
     private fun checkPin(pin: String) {
-        if (pin.length != PIN_LENGTH) {
-            uiState.value = PinCodeSetupContract.State.CodeIncorrect
-        } else {
-            getCode()?.let {
-                if (pin != it) {
-                    uiState.value = PinCodeSetupContract.State.CodeIncorrect
-                } else {
-                    // clear old pin
-                    setCode(null)
-                    uiState.value = PinCodeSetupContract.State.CodeSet
-                }
-            } ?: run {
+        uiState.value = when {
+            pin.length != PIN_LENGTH -> PinCodeSetupContract.State.CodeIncorrect
+            !hasCode() -> {
                 setCode(pin)
-                uiState.value = PinCodeSetupContract.State.CodeSet
+                PinCodeSetupContract.State.CodeSet
             }
+            isCode(pin) -> {
+                setCode(null)
+                PinCodeSetupContract.State.CodeSet
+            }
+            else -> PinCodeSetupContract.State.CodeIncorrect
         }
     }
 }

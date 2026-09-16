@@ -5,13 +5,23 @@ import android.content.Context
 
 interface AppPreferences {
 
+    /**
+     * Stores the passcode as a salted hash; `null` removes it.
+     *
+     * There is no getter on purpose. The codes are only ever compared, and a code that cannot be
+     * read back cannot be read out of a backup either - see [CodeHasher].
+     */
     fun putPin(pin: String?)
 
-    fun getPin(): String?
+    fun hasPin(): Boolean
+
+    fun isPin(code: String): Boolean
 
     fun putClearCode(code: String?)
 
-    fun getClearCode(): String?
+    fun hasClearCode(): Boolean
+
+    fun isClearCode(code: String): Boolean
 
     fun putDisplayCoordinates(isDisplay: Boolean)
 
@@ -103,20 +113,36 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
 
     private val preferences = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE)
 
-    override fun putPin(pin: String?) {
-        preferences.edit().putString(PIN_KEY, pin).commit()
+    override fun putPin(pin: String?) = putCode(PIN_KEY, pin)
+
+    override fun hasPin(): Boolean = preferences.contains(PIN_KEY)
+
+    override fun isPin(code: String): Boolean = matches(PIN_KEY, code)
+
+    override fun putClearCode(code: String?) = putCode(CLEAR_CODE_KEY, code)
+
+    override fun hasClearCode(): Boolean = preferences.contains(CLEAR_CODE_KEY)
+
+    override fun isClearCode(code: String): Boolean = matches(CLEAR_CODE_KEY, code)
+
+    /** `putString(key, null)` removes the entry, which is what clearing a code means here. */
+    private fun putCode(key: String, code: String?) {
+        preferences.edit().putString(key, code?.let(CodeHasher::hash)).commit()
     }
 
-    override fun getPin(): String? {
-        return preferences.getString(PIN_KEY, null)
-    }
-
-    override fun putClearCode(code: String?) {
-        preferences.edit().putString(CLEAR_CODE_KEY, code).commit()
-    }
-
-    override fun getClearCode(): String? {
-        return preferences.getString(CLEAR_CODE_KEY, null)
+    /**
+     * A build from before the codes were hashed stored them as themselves. Such a value is still
+     * accepted once and replaced by its hash straight away, so an existing install keeps working
+     * without leaving the readable code sitting in the file.
+     */
+    private fun matches(key: String, code: String): Boolean {
+        val stored = preferences.getString(key, null) ?: return false
+        if (!CodeHasher.isHashed(stored)) {
+            val isTheSame = stored == code
+            if (isTheSame) putCode(key, code)
+            return isTheSame
+        }
+        return CodeHasher.matches(code, stored)
     }
 
     override fun putDisplayCoordinates(isDisplay: Boolean) {

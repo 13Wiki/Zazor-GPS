@@ -30,6 +30,6 @@ class AuthViewModelImpl(
             AuthContract.State.NeedsPrivacy
         } else {
             analytics.track(Analytics.Event.APP_OPENED)
-            AuthContract.State.Initial(prefs.getPin() != null)
+            AuthContract.State.Initial(prefs.hasPin())
         }
 }

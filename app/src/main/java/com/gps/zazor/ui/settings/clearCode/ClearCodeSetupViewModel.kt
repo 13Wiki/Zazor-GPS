@@ -9,5 +9,7 @@ class ClearCodeSetupViewModelImpl(appPreferences: AppPreferences) : PinCodeSetup
         prefs.putClearCode(code)
     }
 
-    override fun getCode(): String? = prefs.getClearCode()
+    override fun hasCode(): Boolean = prefs.hasClearCode()
+
+    override fun isCode(code: String): Boolean = prefs.isClearCode(code)
 }

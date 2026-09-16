@@ -13,7 +13,7 @@ class AppearanceViewModelImpl(
 ) : BaseViewModelImpl<AppearanceContract.State, AppearanceContract.Event>(), AppearanceViewModel {
 
     override suspend fun initialState(): AppearanceContract.State =
-        AppearanceContract.State.Content(launcherAppearance.current(), prefs.getClearCode() != null)
+        AppearanceContract.State.Content(launcherAppearance.current(), prefs.hasClearCode())
 
     override fun onEventArrived(event: AppearanceContract.Event?) {
         when (event) {
@@ -22,7 +22,7 @@ class AppearanceViewModelImpl(
                 launcherAppearance.apply(event.appearance)
                 uiState.value = AppearanceContract.State.Content(
                     launcherAppearance.current(),
-                    prefs.getClearCode() != null
+                    prefs.hasClearCode()
                 )
             }
             else -> Unit
