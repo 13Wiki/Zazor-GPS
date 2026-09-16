@@ -5,13 +5,18 @@ import android.graphics.Color
 import android.graphics.DashPathEffect
 import android.os.Bundle
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.core.view.marginTop
+import androidx.core.view.updateLayoutParams
 import com.gps.zazor.R
 import com.gps.zazor.databinding.FragmentBasicPhotoBinding
 import com.gps.zazor.ui.base.BaseFragment
@@ -115,8 +120,28 @@ abstract class BasePhotoFragment :
                 viewModel.sendEvent(BasePhotoContract.Event.ToggleSeries)
             }
         }
+        applyStatusBarInset()
         setupOverlayEditor()
         observeSignal()
+    }
+
+    /**
+     * The capture screen draws under the status bar. With only their layout margins the corner
+     * controls sat on top of the clock and the status icons, so the bar's height is added to them.
+     */
+    private fun applyStatusBarInset() {
+        val topControls = with(binding) { listOf(tvSignal, ivFlash, ivSettings, ivBack, tvClearAll) }
+        val layoutMargins = topControls.associateWith { it.marginTop }
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val statusBar = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
+            topControls.forEach { control ->
+                control.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+                    topMargin = layoutMargins.getValue(control) + statusBar
+                }
+            }
+            insets
+        }
+        ViewCompat.requestApplyInsets(binding.root)
     }
 
     /**

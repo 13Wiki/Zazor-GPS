@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetBehavior.STATE_COLLAPSED
 import com.google.android.material.tabs.TabLayoutMediator
 import com.gps.zazor.R
@@ -91,6 +92,10 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         drawEdgeToEdge()
+        // The sheet starts collapsed, and Material adds the gesture inset to its zero peek height,
+        // so on a cold start its edge covered the shutter and the last-photo thumbnail. It belongs
+        // to a captured shot only; hidden is where hide() leaves it after one.
+        BottomSheetBehavior.from(sheetBinding.clRoot).state = BottomSheetBehavior.STATE_HIDDEN
         registerSheetBackHandling()
         binding.ivCapture.setOnClickListener {
             getCurrentPhotoHandler()?.onCapturePhoto()
