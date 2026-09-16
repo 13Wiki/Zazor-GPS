@@ -42,6 +42,15 @@ class MediaListAdapter(
         position: Int
     ): View = viewHolder.itemView
 
+    /**
+     * Rows are never reordered: the gallery is ordered by time, and the list disables dragging both
+     * up and down anyway. Saying so here is what makes the card usable - while an item claims to be
+     * draggable, the library's touch listener swallows ACTION_DOWN on the whole row to start a drag
+     * that can never happen, so the card's own tap (open the photo) and long press (selection mode)
+     * never fired at all.
+     */
+    override fun canBeDragged(item: Photo, viewHolder: MediaHolder, position: Int): Boolean = false
+
     override fun onBindViewHolder(item: Photo, viewHolder: MediaHolder, position: Int) {
         viewHolder.bind(item, isSelectableMode, selected.contains(item.path))
     }
