@@ -20,7 +20,13 @@ class CollageViewModelImpl(
     private val photoStorage: PhotoStorage
 ) : BaseViewModelImpl<CollageContract.State, CollageContract.Event>(), CollageViewModel {
 
-    private var photoCounter = 0
+    /**
+     * Which cells hold a frame, by index.
+     *
+     * A plain counter used to stand here, and it counted frames rather than cells: reshooting one
+     * cell four times filled the counter and offered to build a collage with three empty cells.
+     */
+    private val filledCells = mutableSetOf<Int>()
 
     private var gridSize = 0
 
@@ -33,6 +39,7 @@ class CollageViewModelImpl(
             collagePhotoFlow.collect { photo ->
                 photo?.let {
                     uiState.value = CollageContract.State.ShowPreview(it.bitmap, it.index)
+                    filledCells.add(it.index)
                     address = it.address
                     lat = it.lat
                     lng = it.lng
@@ -48,22 +55,22 @@ class CollageViewModelImpl(
     override fun onEventArrived(event: CollageContract.Event?) {
         when (event) {
             is CollageContract.Event.Initial -> {
-                // Switching between grid shapes resets progress, otherwise a stale counter can
-                // enable the capture button for a layout that has empty cells.
+                // Switching between grid shapes resets progress, otherwise stale cells can
+                // enable the capture button for a layout that has empty ones.
                 if (gridSize != event.gridSize) {
                     gridSize = event.gridSize
-                    photoCounter = 0
+                    filledCells.clear()
                 }
             }
             is CollageContract.Event.Resume -> handleCaptureState()
             is CollageContract.Event.PreviewShown -> {
-                if (++photoCounter >= gridSize) {
+                if (filledCells.size >= gridSize) {
                     uiState.value = CollageContract.State.AllowCollageCapture
                 }
             }
             is CollageContract.Event.SaveEdits -> saveEdits(event.bitmap)
             is CollageContract.Event.CapturePressed -> {
-                photoCounter = 0
+                filledCells.clear()
                 uiState.value = CollageContract.State.CaptureCollage
             }
             else -> Unit
@@ -72,7 +79,7 @@ class CollageViewModelImpl(
 
     private fun handleCaptureState() {
         uiState.value =
-            if (gridSize > 0 && photoCounter >= gridSize) CollageContract.State.AllowCollageCapture
+            if (gridSize > 0 && filledCells.size >= gridSize) CollageContract.State.AllowCollageCapture
             else CollageContract.State.DisallowCollageCapture
     }
 

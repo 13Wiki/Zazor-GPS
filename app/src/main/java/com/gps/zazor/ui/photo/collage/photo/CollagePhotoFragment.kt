@@ -30,4 +30,14 @@ class CollagePhotoFragment : BasePhotoFragment() {
     override fun onPhotoReady(bitmap: Bitmap) {
         viewModel.sendEvent(BasePhotoContract.Event.SaveEdits(bitmap))
     }
+
+    /**
+     * The frame is already on its way to the grid, so this screen is done.
+     *
+     * It used to ask for a back press instead, which the activity's own callback swallowed to
+     * collapse the note sheet: the finished cell stayed on screen and had to be dismissed by hand.
+     */
+    override fun exitScreen() {
+        requireActivity().finish()
+    }
 }

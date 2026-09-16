@@ -23,6 +23,7 @@ import com.gps.zazor.ui.photo.editPhoto.EditPhotoBottomSheet
 import com.gps.zazor.ui.photo.editPhoto.SELECTOR_BUTTON_COLOR_DEFAULT
 import com.gps.zazor.ui.photo.editPhoto.STROKE_WIDTH_FOR_DASH_LINE
 import com.gps.zazor.utils.FragmentArgumentDelegate
+import com.gps.zazor.utils.PhotoComposer
 import com.gps.zazor.utils.extensions.getBitmap
 import com.gps.zazor.utils.extensions.show
 import com.gps.zazor.utils.viewBinding.viewBinding
@@ -87,7 +88,12 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
                 vDraw.mode = state.mode
             }
             is EditMediaContract.State.DisallowDraw -> binding.vDraw.isPaintAllowed = false
-            is EditMediaContract.State.SaveNotes -> binding.clPreviewContainer.getBitmap()?.let {
+            // Re-editing composes onto the stored photo at its own size; it used to save a
+            // screenshot of this screen over the original, shrinking the file on every edit.
+            is EditMediaContract.State.SaveNotes -> binding.run {
+                PhotoComposer.compose(ivPreview, listOf(dvNotes, evDroidArt, vDraw))
+                    ?: clPreviewContainer.getBitmap()
+            }?.let {
                 viewModel.sendEvent(EditMediaContract.Event.SaveEdits(it))
             }
             is EditMediaContract.State.ClearDraw -> binding.vDraw.clear()
@@ -104,6 +110,13 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
         // than blowing up on a photo whose file was deleted outside the app.
         photoPath?.let { path ->
             BitmapFactory.decodeFile(path)?.let(binding.ivPreview::setImageBitmap)
+            // Marks go onto the picture, not onto the background beside it; the rectangle the photo
+            // occupies is only known once the view has been measured.
+            binding.ivPreview.post {
+                with(binding) {
+                    PhotoComposer.fitOverlays(ivPreview, listOf(dvNotes, evDroidArt, vDraw))
+                }
+            }
             viewModel.sendEvent(EditMediaContract.Event.Initial(path))
         }
         binding.ivVoiceNote.setOnClickListener { toggleRecording() }

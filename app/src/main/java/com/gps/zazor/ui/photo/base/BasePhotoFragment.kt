@@ -27,6 +27,7 @@ import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_ON_DISTANCE
 import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_PHASE
 import com.gps.zazor.ui.photo.editPhoto.SELECTOR_BUTTON_COLOR_DEFAULT
 import com.gps.zazor.ui.photo.editPhoto.STROKE_WIDTH_FOR_DASH_LINE
+import com.gps.zazor.utils.PhotoComposer
 import com.gps.zazor.utils.camera.CameraController
 import com.gps.zazor.utils.location.SignalQuality
 import com.gps.zazor.utils.extensions.getBitmap
@@ -56,6 +57,18 @@ abstract class BasePhotoFragment :
     private var lastSignal: SignalQuality? = null
 
     abstract fun onPhotoReady(bitmap: Bitmap)
+
+    /**
+     * The picture that actually gets saved.
+     *
+     * The stamp and the marks are drawn onto the captured frame at its own resolution rather than
+     * screenshotted off the preview, which used to hand the gallery a screen-sized copy with the
+     * letterbox bars in it. Falls back to the old behaviour if there is no bitmap to compose onto.
+     */
+    private fun composeSavedPhoto(): Bitmap? = with(binding) {
+        PhotoComposer.compose(ivPreview, listOf(dvNotes, evDroidArt, vDraw, tvTrial))
+            ?: clPreviewContainer.getBitmap()
+    }
 
     override fun observeState(state: BasePhotoContract.State?) {
         when (state) {
@@ -87,7 +100,7 @@ abstract class BasePhotoFragment :
                 elevation = 0F
                 isPaintAllowed = false
             }
-            is BasePhotoContract.State.SaveNotes -> binding.clPreviewContainer.getBitmap()?.let(::onPhotoReady)
+            is BasePhotoContract.State.SaveNotes -> composeSavedPhoto()?.let(::onPhotoReady)
             is BasePhotoContract.State.ClearDraw -> binding.vDraw.clear()
             is BasePhotoContract.State.Initial -> binding.tvTrial.isVisible = state.isTrial
             is BasePhotoContract.State.ShowPreview -> showPreview(state)
@@ -95,9 +108,14 @@ abstract class BasePhotoFragment :
                 hidePreview()
                 binding.tvTrial.isVisible = state.isTrial
             }
-            is BasePhotoContract.State.Exit -> requireActivity().onBackPressedDispatcher.onBackPressed()
+            is BasePhotoContract.State.Exit -> exitScreen()
             else -> Unit
         }
+    }
+
+    /** Leaving the screen for good. A collage cell closes itself instead - see its override. */
+    protected open fun exitScreen() {
+        requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -287,6 +305,11 @@ abstract class BasePhotoFragment :
             clPreviewContainer.show()
             ivPreview.show()
             ivPreview.setImageBitmap(state.bitmap)
+            // After layout: the photo's rectangle is only known once the view has measured, and
+            // the marks are pinned to the picture rather than to the screen around it.
+            ivPreview.post {
+                PhotoComposer.fitOverlays(ivPreview, listOf(dvNotes, evDroidArt, vDraw))
+            }
         }
         addNotes(state.notes)
     }

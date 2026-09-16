@@ -64,4 +64,19 @@ fun View.getBitmap(config: Bitmap.Config = Bitmap.Config.ARGB_8888) =
         return@run bmp
     }
 
+/**
+ * The same drawing, rendered [scale] times larger than the view is on screen.
+ *
+ * A view draws from its sources rather than from its pixels - an ImageView resamples the bitmap it
+ * holds - so a bigger canvas keeps detail that a screenshot of the view would have thrown away.
+ */
+fun View.getBitmap(scale: Float, config: Bitmap.Config = Bitmap.Config.ARGB_8888) =
+    takeIf { hasSize() && scale > 0F }?.run {
+        val bmp = Bitmap.createBitmap((width * scale).toInt(), (height * scale).toInt(), config)
+        val canvas = Canvas(bmp)
+        canvas.scale(scale, scale)
+        draw(canvas)
+        return@run bmp
+    }
+
 fun View.hasSize() = width > 0 && height > 0

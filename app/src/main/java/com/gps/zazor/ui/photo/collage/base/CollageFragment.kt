@@ -35,7 +35,16 @@ abstract class CollageFragment(layoutRes: Int) : BaseFragment<CollageContract.St
             }
             is CollageContract.State.CaptureCollage -> {
                 captureViews.forEach { it.isVisible = false }
-                collagePreview.getBitmap()?.let {
+                // Every cell holds a full-resolution frame, so the grid is drawn into a canvas
+                // larger than the screen: saving a screenshot of the layout threw that detail away
+                // and handed over a collage no one could zoom into. 4096 px caps the allocation -
+                // four twelve-megapixel cells at full size are more than a phone will hand out.
+                val cellScale = previewViews.maxOfOrNull { cell ->
+                    val source = cell.drawable?.intrinsicWidth ?: 0
+                    if (cell.width > 0 && source > 0) source.toFloat() / cell.width else 1F
+                } ?: 1F
+                val room = 4096F / maxOf(collagePreview.width, collagePreview.height).toFloat()
+                collagePreview.getBitmap(cellScale.coerceIn(1F, maxOf(1F, room)))?.let {
                     viewModel.sendEvent(CollageContract.Event.SaveEdits(it))
                 }
                 Toast.makeText(requireContext(), R.string.collage_added, Toast.LENGTH_LONG).show()
