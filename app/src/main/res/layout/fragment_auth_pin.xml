@@ -73,6 +73,7 @@
         app:layout_constraintTop_toBottomOf="@id/tilText" />
 
     <View
+        android:id="@+id/vOrLineStart"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/ds_outline"
@@ -82,6 +83,7 @@
         app:layout_constraintTop_toTopOf="@id/tvOr" />
 
     <View
+        android:id="@+id/vOrLineEnd"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:background="@color/ds_outline"
@@ -96,7 +98,7 @@
         android:layout_height="@dimen/ds_shutter"
         android:layout_marginTop="@dimen/ds_space_6"
         android:background="@drawable/ds_ghost_button"
-        android:contentDescription="@string/or"
+        android:contentDescription="@string/bio_auth_title"
         android:padding="20dp"
         android:src="@drawable/ic_fingerprint"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -104,5 +106,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvOr"
         app:tint="@color/ds_text_primary" />
+
+    <!-- "or" only means something when there is a second way in; without a sensor it all goes. -->
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/gBiometric"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="tvOr,vOrLineStart,vOrLineEnd,ivFingerprint" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

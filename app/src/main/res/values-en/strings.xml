@@ -102,6 +102,9 @@
     <string name="give_permission">Grant the permissions to continue</string>
     <string name="notes">Add a note</string>
     <string name="paint">Drawing</string>
+    <string name="paint_circle">Circle</string>
+    <string name="paint_line">Line</string>
+    <string name="paint_arrow">Arrow</string>
     <string name="note">Note text</string>
     <string name="cancel">Cancel</string>
     <string name="done">Done</string>

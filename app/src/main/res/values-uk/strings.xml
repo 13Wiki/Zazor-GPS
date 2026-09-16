@@ -102,6 +102,9 @@
     <string name="give_permission">Для подальшої роботи надайте дозволи</string>
     <string name="notes">Додати нотатку</string>
     <string name="paint">Малюнок</string>
+    <string name="paint_circle">Коло</string>
+    <string name="paint_line">Лінія</string>
+    <string name="paint_arrow">Стрілка</string>
     <string name="note">Текст нотатки</string>
     <string name="cancel">Скасувати</string>
     <string name="done">Готово</string>

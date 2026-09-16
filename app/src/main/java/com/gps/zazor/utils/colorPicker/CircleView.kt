@@ -51,9 +51,13 @@ class CircleView : View {
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        // Keep the swatch square. The previous version compared the raw MeasureSpec ints - packed
-        // mode+size values - and handed one straight to setMeasuredDimension as a pixel size.
-        val side = minOf(measuredWidth, measuredHeight)
+        // Keep the swatch square, sized by whichever side is actually bounded. A horizontal list
+        // measures its items' width as UNSPECIFIED, which the default measure turns into 0, and
+        // taking the smaller side then made every swatch 0 wide - the palette drew nothing.
+        val bounded = listOf(widthMeasureSpec to measuredWidth, heightMeasureSpec to measuredHeight)
+            .filter { (spec, _) -> MeasureSpec.getMode(spec) != MeasureSpec.UNSPECIFIED }
+            .map { (_, size) -> size }
+        val side = bounded.minOrNull() ?: resources.getDimensionPixelSize(R.dimen.ds_touch_min)
         setMeasuredDimension(side, side)
     }
 

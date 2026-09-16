@@ -45,7 +45,7 @@ class AuthPinFragment : BaseFragment<AuthPinContract.State, AuthPinContract.Even
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.ivFingerprint.isVisible = requireContext().hasBiometric()
+        binding.gBiometric.isVisible = requireContext().hasBiometric()
         binding.etText.doOnTextChanged { text, _, _, _ ->
             binding.tilText.error = null
             viewModel.sendEvent(AuthPinContract.Event.PinEntered(text.toString()))
