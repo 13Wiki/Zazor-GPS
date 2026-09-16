@@ -70,6 +70,7 @@
     <string name="cancel_action">Скасувати</string>
     <string name="back">Назад</string>
     <string name="flash">Спалах</string>
+    <string name="flip_camera">Змінити камеру</string>
     <string name="setting_wait_fix">Попереджати про слабкий сигнал</string>
     <string name="voice_note_record">Записати голосову нотатку</string>
     <string name="voice_note_recording">Триває запис… натисніть, щоб зупинити</string>
@@ -129,7 +130,12 @@
     <string name="code_trial_incorrect">Невірний Trial-код</string>
     <string name="removed">Фото видалено</string>
     <string name="delete_selected">Видалити вибрані</string>
-    <string name="delete_selected_message">Вибраних знімків: %1$d. Їх і їхні голосові нотатки буде стерто з телефона. Скасувати не можна.</string>
+    <plurals name="delete_selected_message">
+        <item quantity="one">Вибрано %1$d знімок. Його та його голосову нотатку буде стерто з телефона. Скасувати не можна.</item>
+        <item quantity="few">Вибрано %1$d знімки. Їх і їхні голосові нотатки буде стерто з телефона. Скасувати не можна.</item>
+        <item quantity="many">Вибрано %1$d знімків. Їх і їхні голосові нотатки буде стерто з телефона. Скасувати не можна.</item>
+        <item quantity="other">Вибрано %1$d знімка. Їх і їхні голосові нотатки буде стерто з телефона. Скасувати не можна.</item>
+    </plurals>
     <plurals name="photos_deleted">
         <item quantity="one">Видалено %1$d знімок</item>
         <item quantity="few">Видалено %1$d знімки</item>

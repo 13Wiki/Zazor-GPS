@@ -208,7 +208,10 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         }
         AlertDialog.Builder(requireContext())
             .setTitle(R.string.delete_selected)
-            .setMessage(getString(R.string.delete_selected_message, count))
+            // A plural: with one photo ticked the single-string version read "1 photos selected".
+            .setMessage(
+                resources.getQuantityString(R.plurals.delete_selected_message, count, count)
+            )
             .setNegativeButton(R.string.cancel, null)
             .setPositiveButton(R.string.delete) { _, _ ->
                 viewModel.sendEvent(MediaListContract.Event.DeleteSelected)

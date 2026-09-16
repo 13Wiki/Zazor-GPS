@@ -129,7 +129,7 @@
                 android:layout_height="54dp"
                 android:layout_marginEnd="32dp"
                 android:background="@drawable/ds_ghost_button"
-                android:contentDescription="@string/photo"
+                android:contentDescription="@string/flip_camera"
                 android:padding="15dp"
                 android:src="@drawable/ic_flip"
                 app:layout_constraintBottom_toBottomOf="@id/ivCapture"

@@ -71,6 +71,7 @@
     <string name="cancel_action">Отмена</string>
     <string name="back">Назад</string>
     <string name="flash">Вспышка</string>
+    <string name="flip_camera">Сменить камеру</string>
     <string name="setting_wait_fix">Предупреждать о слабом сигнале</string>
     <string name="voice_note_record">Записать голосовую заметку</string>
     <string name="voice_note_recording">Идёт запись… нажмите, чтобы остановить</string>
@@ -153,7 +154,12 @@
     <string name="label" translatable="false">Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor     Zazor</string>
     <string name="removed">Фото удалено</string>
     <string name="delete_selected">Удалить выбранные</string>
-    <string name="delete_selected_message">Выбранных снимков: %1$d. Они и их голосовые заметки будут стёрты с телефона. Отменить нельзя.</string>
+    <plurals name="delete_selected_message">
+        <item quantity="one">Выбран %1$d снимок. Он и его голосовая заметка будут стёрты с телефона. Отменить нельзя.</item>
+        <item quantity="few">Выбрано %1$d снимка. Они и их голосовые заметки будут стёрты с телефона. Отменить нельзя.</item>
+        <item quantity="many">Выбрано %1$d снимков. Они и их голосовые заметки будут стёрты с телефона. Отменить нельзя.</item>
+        <item quantity="other">Выбрано %1$d снимка. Они и их голосовые заметки будут стёрты с телефона. Отменить нельзя.</item>
+    </plurals>
     <plurals name="photos_deleted">
         <item quantity="one">Удалён %1$d снимок</item>
         <item quantity="few">Удалено %1$d снимка</item>
