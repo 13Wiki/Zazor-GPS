@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import kotlin.math.sqrt
 
 /**
  * Draws the stamp and the marks onto the photo itself, at the photo's own resolution.
@@ -21,31 +22,32 @@ import androidx.core.view.isVisible
  */
 object PhotoComposer {
 
+    private const val BYTES_PER_PIXEL = 4
+
     /**
-     * The longest side a composed photo may have.
+     * How much of the heap a composed photo may take.
      *
-     * A 48-megapixel frame is 8000 x 6000, and a mutable ARGB copy of it is 192 MB - more than a
-     * mid-range phone will hand out. Twelve megapixels is far past what any report needs.
+     * It is copied, drawn onto and then encoded, so a quarter leaves room for the encoder and for
+     * whatever else the screen is holding.
      */
-    private const val MAX_SIDE = 4096
+    private const val HEAP_SHARE = 4
+
+    /** Under this the picture stops being a record of anything, and giving up is the better answer. */
+    private const val MIN_LONG_SIDE = 1600
+
+    private const val RETRIES = 3
 
     /**
      * @param imageView the view showing the photo; it holds the frame and the mapping to it.
      * @param overlays views drawn over the photo, laid out inside [imageView]'s parent.
-     * @return the composed photo, or null when the view is not showing a bitmap.
+     * @return the composed photo, or null when there is nothing to compose onto or no room for it.
      */
     fun compose(imageView: ImageView, overlays: List<View>): Bitmap? {
         val source = (imageView.drawable as? BitmapDrawable)?.bitmap ?: return null
+        val target = workingCopy(source) ?: return null
         val visible = overlays.filter { it.isVisible }
         val photoRect = photoRect(imageView)
-        if (photoRect == null || visible.isEmpty()) return source.downscaledIfHuge()
-
-        val scaled = source.downscaledIfHuge()
-        val target = if (scaled !== source && scaled.isMutable) {
-            scaled
-        } else {
-            scaled.copy(Bitmap.Config.ARGB_8888, true)
-        } ?: return source
+        if (photoRect == null || visible.isEmpty()) return target
 
         val canvas = Canvas(target)
         // Points map as (point - rect.topLeft) * scale: the canvas applies the last transform first.
@@ -99,12 +101,37 @@ object PhotoComposer {
         return rect.takeIf { it.width() >= 1F && it.height() >= 1F }
     }
 
-    private fun Bitmap.downscaledIfHuge(): Bitmap {
-        val longest = maxOf(width, height)
-        if (longest <= MAX_SIDE) return this
-        val factor = MAX_SIDE.toFloat() / longest
-        return Bitmap.createScaledBitmap(
-            this, (width * factor).toInt(), (height * factor).toInt(), true
-        )
+    /**
+     * A mutable copy of the frame, as large as this particular phone can hold.
+     *
+     * The ceiling is a share of the app's own heap rather than a number someone picked: the same
+     * build runs on a phone that gets 96 MB and on one that gets 512, and a 200-megapixel flagship
+     * frame would ask for 800 MB as an editable copy. A phone that can keep the whole frame keeps
+     * it; one that cannot gets the largest picture it can actually hold. If the allocation fails
+     * anyway - the heap is shared with everything else on screen - it steps down and tries again,
+     * and gives up only below the point where the photo would stop being worth keeping. Giving up
+     * is not losing the shot: the caller then saves what is on screen, stamp and all.
+     */
+    private fun workingCopy(source: Bitmap): Bitmap? {
+        val pixels = source.width.toLong() * source.height
+        val budget = Runtime.getRuntime().maxMemory() / HEAP_SHARE / BYTES_PER_PIXEL
+        var factor = if (pixels > budget) sqrt(budget.toDouble() / pixels).toFloat() else 1F
+        repeat(RETRIES) {
+            val width = (source.width * factor).toInt().coerceAtLeast(1)
+            val height = (source.height * factor).toInt().coerceAtLeast(1)
+            try {
+                val copy = if (width == source.width && height == source.height) {
+                    source.copy(Bitmap.Config.ARGB_8888, true)
+                } else {
+                    Bitmap.createScaledBitmap(source, width, height, true)
+                }
+                if (copy != null) return if (copy.isMutable) copy else copy.copy(Bitmap.Config.ARGB_8888, true)
+            } catch (e: OutOfMemoryError) {
+                // Nothing to release here - the failed allocation never happened.
+            }
+            factor *= 0.7F
+            if (maxOf(source.width, source.height) * factor < MIN_LONG_SIDE) return null
+        }
+        return null
     }
 }

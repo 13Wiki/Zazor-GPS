@@ -104,9 +104,13 @@ bypassed all three.
 - **The PIN and clear code are stored in plain `SharedPreferences`.** They gate the UI, not the
   files on disk. Anything stronger needs a KeyStore-backed hash.
 - Photos live in the app-private external directory, so uninstalling the app deletes them.
-- A photo is saved at the size of the screen, not of the sensor: the stamp, the marks and the text
-  are drawn as views over the frame and the whole container is what gets encoded. The letterboxing
-  around a 4:3 frame on a tall screen is encoded with it.
+- A photo is saved at the resolution the camera gave it, with the stamp and the marks composed onto
+  the frame. The size is capped by a share of the app's heap rather than a fixed number, so a
+  flagship's 200-megapixel frame is scaled to what the phone can actually hold instead of failing.
+- The first release ships with the ads switched off (an empty banner unit id in
+  `gradle.properties`) and with no Pro row in settings; both come back with one line and a version
+  bump.
 - Run on an Android 14 emulator: capture, the stamp, the metadata scrub, the weak-fix warning, the
-  gallery and its banner behave. The ultra-wide lens, a real GPS fix and the audio recorder still
-  need a phone - an emulator has no second camera, fakes the fix perfectly and has no microphone.
+  gallery, the collage, the exports, the codes and the wipe behave. The ultra-wide lens, a real GPS
+  fix and the microphone still need a phone - an emulator has no second camera, fakes the fix
+  perfectly and records silence.
