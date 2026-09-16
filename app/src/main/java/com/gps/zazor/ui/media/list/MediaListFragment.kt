@@ -203,7 +203,9 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
     private fun confirmDeleteSelected() {
         val count = adapter?.selectedCount ?: 0
         if (count == 0) {
-            toast(getString(R.string.export_empty))
+            // Not the export screen's "no photos with coordinates": nothing is ticked, which has
+            // nothing to do with coordinates.
+            toast(getString(R.string.nothing_selected))
             return
         }
         AlertDialog.Builder(requireContext())

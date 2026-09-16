@@ -130,6 +130,7 @@
     <string name="code_trial_incorrect">Невірний Trial-код</string>
     <string name="removed">Фото видалено</string>
     <string name="delete_selected">Видалити вибрані</string>
+    <string name="nothing_selected">Нічого не вибрано</string>
     <plurals name="delete_selected_message">
         <item quantity="one">Вибрано %1$d знімок. Його та його голосову нотатку буде стерто з телефона. Скасувати не можна.</item>
         <item quantity="few">Вибрано %1$d знімки. Їх і їхні голосові нотатки буде стерто з телефона. Скасувати не можна.</item>
