@@ -9,4 +9,10 @@ interface MediaCallback {
 
     /** Opens the transfer screen for the given photos. */
     fun openShare(paths: List<String>)
+
+    /** Opens one approach series: its frames, and which of them the coordinate comes from. */
+    fun openSeries(seriesId: String)
+
+    /** Back to the camera with that series open, so the next shot joins it. */
+    fun addToSeries(seriesId: String)
 }

@@ -31,6 +31,9 @@ class BasePhotoContract {
 
         /** Starts a new approach series, or closes the open one. */
         object ToggleSeries : Event()
+
+        /** Re-opens a series shot earlier, so the next frames join it. */
+        class ResumeSeries(val seriesId: String) : Event()
     }
 
     sealed class State : UiState {

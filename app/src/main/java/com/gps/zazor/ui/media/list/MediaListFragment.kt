@@ -44,6 +44,8 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
 
     private var adapter: MediaListAdapter? = null
 
+    private var seriesSizes: Map<String, Int> = emptyMap()
+
     private val voicePlayer = VoiceNotePlayer()
 
     private val adSlot: AdSlot by inject()
@@ -64,6 +66,8 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         when (state) {
             is MediaListContract.State.Initial -> {
                 showFilter(state.filter)
+                adapter?.seriesSizes = state.seriesSizes
+                seriesSizes = state.seriesSizes
                 showPhotos(state.photos, state.filter)
             }
             is MediaListContract.State.ClearSelectedMode -> leaveSelectionMode()
@@ -178,8 +182,9 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
         }
         adapter = MediaListAdapter(
             photos, ::openEditPhoto, ::onMediaSelected, ::shareMedia, ::turnOnSelectionMode,
-            ::toggleVoiceNote, prefs.getCoordinateFormat()
+            ::toggleVoiceNote, ::openSeries, prefs.getCoordinateFormat()
         ).also {
+            it.seriesSizes = seriesSizes
             binding.rvPhotos.run {
                 adapter = it
                 swipeListener = onItemSwipeListener
@@ -199,6 +204,10 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
 
     private fun showFilter(selected: MediaListContract.Filter) {
         filterPills().forEach { (pill, filter) -> pill.isSelected = filter == selected }
+    }
+
+    private fun openSeries(seriesId: String) {
+        mediaCallback?.openSeries(seriesId)
     }
 
     private fun openEditPhoto(photo: Photo) {

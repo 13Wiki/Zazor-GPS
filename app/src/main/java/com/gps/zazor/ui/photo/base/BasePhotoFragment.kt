@@ -21,6 +21,7 @@ import com.gps.zazor.R
 import com.gps.zazor.databinding.FragmentBasicPhotoBinding
 import com.gps.zazor.ui.base.BaseFragment
 import com.gps.zazor.ui.photo.PhotoHandler
+import com.gps.zazor.ui.photo.SERIES_EXTRA_KEY
 import com.gps.zazor.ui.photo.base.di.injectViewModel
 import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_OFF_DISTANCE
 import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_ON_DISTANCE
@@ -45,6 +46,15 @@ abstract class BasePhotoFragment :
 
     /** Screens that want the widest back lens override this; see [PanoramaFragment]. */
     protected open val useUltraWide: Boolean = false
+
+    /**
+     * Whether this tab picks up a series handed over by the series screen.
+     *
+     * Only the ordinary photo tab does. Each tab keeps its own capture state and the pager builds
+     * the neighbouring tabs as well as the open one, so without this the panorama tab could take
+     * the series and the tab actually on screen would show none.
+     */
+    protected open val resumesSeriesFromIntent: Boolean = false
 
     override val viewModel by injectViewModel()
 
@@ -138,6 +148,7 @@ abstract class BasePhotoFragment :
         super.onViewCreated(view, savedInstanceState)
         camera = CameraController(requireContext(), binding.vCamera)
         binding.vDraw.onMarkAdded = ::hideMarkerHint
+        resumeSeriesFromIntent()
         binding.run {
             ivFlash.setOnClickListener {
                 viewModel.sendEvent(BasePhotoContract.Event.ToggleFlash)
@@ -263,12 +274,15 @@ abstract class BasePhotoFragment :
      * Shows how many frames the open series holds and how good its best fix is.
      * An open series with no frames yet must read differently from no series at all.
      */
+    private fun frames(count: Int): String =
+        resources.getQuantityString(R.plurals.series_frames_count, count, count)
+
     private fun renderSeries(progress: SeriesProgress) {
         val best = progress.bestAccuracy?.toInt()
         binding.tvSeries.text = when {
             !progress.isOpen -> getString(R.string.series_start)
-            best == null -> getString(R.string.series_active, progress.frameCount)
-            else -> getString(R.string.series_active_accuracy, progress.frameCount, best)
+            best == null -> getString(R.string.series_active, frames(progress.frameCount))
+            else -> getString(R.string.series_active_accuracy, frames(progress.frameCount), best)
         }
         // A plain shape ignores isSelected, so the active state is a different background.
         binding.tvSeries.setBackgroundResource(
@@ -282,6 +296,19 @@ abstract class BasePhotoFragment :
         if (useUltraWide) {
             controller.setUltraWide(viewLifecycleOwner, wide = true) { showCameraError() }
         }
+    }
+
+    /**
+     * "One more frame" on the series screen comes back here with the series in the intent. The
+     * extra is removed once used, so a later return to the camera does not silently reopen a
+     * series the person has since closed.
+     */
+    private fun resumeSeriesFromIntent() {
+        if (!resumesSeriesFromIntent) return
+        val intent = requireActivity().intent ?: return
+        val seriesId = intent.getStringExtra(SERIES_EXTRA_KEY) ?: return
+        intent.removeExtra(SERIES_EXTRA_KEY)
+        viewModel.sendEvent(BasePhotoContract.Event.ResumeSeries(seriesId))
     }
 
     private fun hideMarkerHint() {

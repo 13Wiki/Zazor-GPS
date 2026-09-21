@@ -10,6 +10,7 @@ import com.gps.zazor.ui.media.di.mediaModule
 import com.gps.zazor.ui.media.edit.di.editMediaModule
 import com.gps.zazor.ui.media.list.di.mediaListModule
 import com.gps.zazor.ui.outings.di.outingsModule
+import com.gps.zazor.ui.series.di.seriesModule
 import com.gps.zazor.ui.privacy.di.privacyModule
 import com.gps.zazor.ui.settings.appearance.di.appearanceModule
 import com.gps.zazor.ui.share.di.shareModule
@@ -32,7 +33,7 @@ object DependencyInjection {
             androidContext(application)
             modules(prefsModule, repositoriesModule, authModule, authPinModule, photoModule, collagePhotoModule,
                 basicPhotoModule, collageContainerModule,
-                collageModule, mediaModule, mediaListModule, outingsModule, shareModule, privacyModule, appearanceModule, editMediaModule, settingsModule, settingsListModule,
+                collageModule, mediaModule, mediaListModule, outingsModule, seriesModule, shareModule, privacyModule, appearanceModule, editMediaModule, settingsModule, settingsListModule,
                 pinCodeSetupModule, clearCodeSetupModule, notesSettingsModule)
         }
     }

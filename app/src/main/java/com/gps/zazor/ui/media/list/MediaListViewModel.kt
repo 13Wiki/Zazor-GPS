@@ -100,8 +100,14 @@ class MediaListViewModelImpl(
             MediaListContract.Filter.MARKED -> allPhotos.filter { it.name.isNotBlank() }
             MediaListContract.Filter.WIDE -> allPhotos.filter { it.isWide }
         }
-        return MediaListContract.State.Initial(photos, filter)
+        return MediaListContract.State.Initial(photos, filter, seriesSizes())
     }
+
+    /** Counted over everything, not the filtered feed: a series is a series either way. */
+    private fun seriesSizes(): Map<String, Int> =
+        allPhotos.mapNotNull { it.seriesId?.takeIf(String::isNotBlank) }
+            .groupingBy { it }
+            .eachCount()
 
     /**
      * A photo taken out of network coverage is stored without an address; the geocoder is retried

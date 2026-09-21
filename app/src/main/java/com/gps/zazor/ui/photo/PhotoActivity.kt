@@ -47,7 +47,11 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
 
-        fun newIntent(context: Context) = Intent(context, PhotoActivity::class.java)
+        /** @param seriesId an approach series to go on adding frames to, when there is one. */
+        fun newIntent(context: Context, seriesId: String? = null) =
+            Intent(context, PhotoActivity::class.java).apply {
+                seriesId?.let { putExtra(SERIES_EXTRA_KEY, it) }
+            }
     }
 
     override val drawsUnderSystemBars: Boolean = true
@@ -265,6 +269,9 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
     private fun currentFragment() = adapter?.currentFragment(binding.vpPhoto)
 }
+
+/** Carries an approach series from the series screen back to the camera. */
+const val SERIES_EXTRA_KEY = "seriesExtra"
 
 private const val COLLAPSED_PEEK_HEIGHT = 250
 

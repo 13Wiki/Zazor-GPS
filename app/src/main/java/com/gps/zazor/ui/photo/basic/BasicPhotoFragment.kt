@@ -9,6 +9,8 @@ import com.gps.zazor.utils.FragmentArgumentDelegate
 
 class BasicPhotoFragment : BasePhotoFragment() {
 
+    override val resumesSeriesFromIntent = true
+
     override fun onPhotoReady(bitmap: Bitmap) {
         viewModel.sendEvent(BasePhotoContract.Event.SaveEdits(bitmap, isWide = false))
     }

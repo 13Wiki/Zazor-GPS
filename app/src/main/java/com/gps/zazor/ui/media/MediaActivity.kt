@@ -9,6 +9,8 @@ import com.gps.zazor.ui.media.di.injectViewModel
 import com.gps.zazor.ui.media.edit.EditMediaFragment
 import com.gps.zazor.ui.media.list.MediaListFragment
 import com.gps.zazor.ui.outings.OutingsFragment
+import com.gps.zazor.ui.photo.PhotoActivity
+import com.gps.zazor.ui.series.SeriesFragment
 import com.gps.zazor.ui.share.ShareFragment
 
 class MediaActivity : BaseActivity<MediaContract.State, MediaContract.Event>(R.layout.activity_media), MediaCallback {
@@ -37,5 +39,18 @@ class MediaActivity : BaseActivity<MediaContract.State, MediaContract.Event>(R.l
 
     override fun openShare(paths: List<String>) {
         navigateTo(ShareFragment.newInstance(paths), R.id.flContainer, true)
+    }
+
+    override fun openSeries(seriesId: String) {
+        navigateTo(SeriesFragment.newInstance(seriesId), R.id.flContainer, true)
+    }
+
+    /**
+     * Finishes rather than stacking another camera on top: the camera is where this screen was
+     * opened from, and coming back to it with the series open is what "one more frame" means.
+     */
+    override fun addToSeries(seriesId: String) {
+        startActivity(PhotoActivity.newIntent(this, seriesId))
+        finish()
     }
 }

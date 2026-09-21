@@ -18,9 +18,13 @@ class MediaListAdapter(
     private val onShareClick: (Photo) -> Unit,
     private val onLongPressListener: () -> Unit,
     private val onVoiceNoteClick: (Photo) -> Unit,
+    private val onSeriesClick: (String) -> Unit,
     /** The same way the coordinates are written on the picture itself. */
     private val coordinateFormat: CoordinateFormat
 ) : DragDropSwipeAdapter<Photo, MediaListAdapter.MediaHolder>(photos) {
+
+    /** Frame counts by series id, so a card can say how many frames the series has. */
+    var seriesSizes: Map<String, Int> = emptyMap()
 
     var isSelectableMode: Boolean = false
         set(value) {
@@ -99,6 +103,18 @@ class MediaListAdapter(
                 } else {
                     ""
                 }
+                val seriesId = photo.seriesId?.takeIf { it.isNotBlank() }
+                val seriesSize = seriesId?.let { seriesSizes[it] } ?: 0
+                tvSeries.isVisible = seriesId != null && seriesSize > 1
+                tvSeries.text = seriesId?.let {
+                    root.context.getString(
+                        com.gps.zazor.R.string.series_open,
+                        root.context.resources.getQuantityString(
+                            com.gps.zazor.R.plurals.series_frames_count, seriesSize, seriesSize
+                        )
+                    )
+                }.orEmpty()
+                tvSeries.setOnClickListener { seriesId?.let(onSeriesClick) }
                 // A direction is recorded for every frame but shown for the wide ones: those are
                 // the shots someone has to stand in the same place to repeat.
                 val bearing = photo.bearingDegrees.takeIf { photo.isWide }

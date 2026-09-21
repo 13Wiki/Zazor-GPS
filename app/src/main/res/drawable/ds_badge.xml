@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A label that states a fact about the thing it sits on, rather than a choice someone made. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/ds_accent" />
+    <corners android:radius="999dp" />
+</shape>

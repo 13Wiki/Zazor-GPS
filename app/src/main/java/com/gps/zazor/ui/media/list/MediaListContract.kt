@@ -40,7 +40,12 @@ class MediaListContract {
 
     sealed class State : UiState {
 
-        data class Initial(val photos: List<Photo>, val filter: Filter) : State()
+        data class Initial(
+            val photos: List<Photo>,
+            val filter: Filter,
+            /** How many frames each approach series has, for the badge on a frame's card. */
+            val seriesSizes: Map<String, Int> = emptyMap()
+        ) : State()
 
         object ClearSelectedMode : State()
 

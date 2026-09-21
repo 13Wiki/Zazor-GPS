@@ -119,6 +119,7 @@ open class BasePhotoViewModelImpl(
             is BasePhotoContract.Event.Pause -> unSubscribeFromAddNoteFlow()
             is BasePhotoContract.Event.Stop -> stopObservingLocation()
             is BasePhotoContract.Event.ToggleSeries -> toggleSeries()
+            is BasePhotoContract.Event.ResumeSeries -> resumeSeries(event.seriesId)
             else -> Unit
         }
     }
@@ -252,6 +253,23 @@ open class BasePhotoViewModelImpl(
     private fun handleFlashToggle() {
         isFlashOn = !isFlashOn
         uiState.value = BasePhotoContract.State.ToggleFlash(isFlashOn)
+    }
+
+    /**
+     * Picks up a series shot earlier: its frames are read back so the counter and the best fix
+     * continue from where they were, instead of restarting at one frame.
+     */
+    private fun resumeSeries(seriesId: String) {
+        if (openSeriesId == seriesId) return
+        openSeriesId = seriesId
+        launchIo {
+            seriesFrames = photoRepository.getPhotos()
+                .filter { it.seriesId == seriesId }
+                .sortedBy { it.date }
+                .map { it.accuracyMeters }
+                .toMutableList()
+            emitSeriesState()
+        }
     }
 
     /**
