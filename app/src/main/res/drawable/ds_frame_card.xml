@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A frame of a series: white at five per cent, 20dp corners. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_surface_group" />
+    <corners android:radius="20dp" />
+</shape>

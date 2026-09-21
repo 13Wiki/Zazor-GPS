@@ -57,8 +57,8 @@
     <string name="series_explainer">The series takes its coordinate from the frame with the best signal - number %1$d, ±%2$d m. The rest show the way to it.</string>
     <string name="series_explainer_no_fix">No frame in this series has coordinates. They still show the way, but the spot has to be described in words.</string>
     <string name="series_frame_number">Frame %1$d</string>
-    <string name="series_frame_meta">±%1$d m · %2$s</string>
-    <string name="series_frame_no_fix">No coordinates · %1$s</string>
+    <string name="series_frame_no_coordinates">No coordinates</string>
+    <string name="series_frame_no_fix">no reading</string>
     <string name="series_open">Series · %1$s</string>
     <string name="series_frames">%1$d frame(s)</string>
     <plurals name="series_frames_count">

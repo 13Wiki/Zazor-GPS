@@ -57,8 +57,8 @@
     <string name="series_explainer">Координатою серії береться кадр із найкращим сигналом — %1$d-й, ±%2$d м. Решта кадрів показують дорогу до нього.</string>
     <string name="series_explainer_no_fix">Жоден кадр серії не має координат. Кадри показують дорогу, але точку доведеться описати словами.</string>
     <string name="series_frame_number">Кадр %1$d</string>
-    <string name="series_frame_meta">±%1$d м · %2$s</string>
-    <string name="series_frame_no_fix">Без координат · %1$s</string>
+    <string name="series_frame_no_coordinates">Без координат</string>
+    <string name="series_frame_no_fix">немає даних</string>
     <string name="series_open">Серія · %1$s</string>
     <string name="series_frames">%1$d кадр(ів)</string>
     <plurals name="series_frames_count">

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The quiet half of a pair of buttons: white at a tenth, 18dp corners. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/ds_surface_pill" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/ds_surface_round" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+</selector>

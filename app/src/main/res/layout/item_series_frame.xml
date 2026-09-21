@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  One frame of an approach: what it shows, where it was taken from and how good the fix was. The
-  frame the series takes its coordinate from wears a badge, because that is the number a receiver
-  will type into a navigator.
+  One frame of an approach, as the design draws it: the picture with its number on it, what it
+  shows, where it was taken from, and how tight the fix was - as a bar, because "±12 m" and "±3 m"
+  are the same number of characters and a person reading a list should not have to compare them.
+
+  The frame the series takes its coordinate from wears the green card and the badge: that is the
+  number a receiver will type into a navigator.
 -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,15 +13,15 @@
     android:id="@+id/clFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/ds_space_2"
-    android:background="@drawable/ds_surface_card"
-    android:padding="@dimen/ds_space_3">
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/ds_frame_card"
+    android:padding="10dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvImage"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        app:cardCornerRadius="@dimen/ds_radius_control"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        app:cardCornerRadius="14dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,61 +36,114 @@
 
     </androidx.cardview.widget.CardView>
 
+    <!-- Which frame of the walk this is; the order is the route in. -->
+    <TextView
+        android:id="@+id/tvIndex"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_margin="6dp"
+        android:background="@drawable/ds_index_badge"
+        android:fontFamily="@font/manrope"
+        android:gravity="center"
+        android:textColor="@color/ds_on_accent"
+        android:textFontWeight="800"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="@id/cvImage"
+        app:layout_constraintTop_toTopOf="@id/cvImage"
+        tools:text="1" />
+
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/ds_space_3"
+        android:layout_marginStart="12dp"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:fontFamily="@font/manrope"
+        android:maxLines="1"
         android:textColor="@color/ds_text_primary"
-        android:textSize="15sp"
+        android:textFontWeight="700"
+        android:textSize="14sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tvCoordinates"
         app:layout_constraintEnd_toStartOf="@id/tvBest"
         app:layout_constraintStart_toEndOf="@id/cvImage"
         app:layout_constraintTop_toTopOf="@id/cvImage"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Общий план · опушка" />
 
     <TextView
         android:id="@+id/tvBest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/ds_badge"
-        android:paddingStart="@dimen/ds_space_3"
-        android:paddingEnd="@dimen/ds_space_3"
-        android:paddingTop="4dp"
-        android:paddingBottom="4dp"
+        android:layout_marginStart="7dp"
+        android:background="@drawable/ds_badge_good"
+        android:fontFamily="@font/manrope"
+        android:paddingStart="7dp"
+        android:paddingEnd="7dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
         android:text="@string/series_best_badge"
-        android:textColor="@color/ds_on_accent"
-        android:textSize="11sp"
+        android:textColor="@color/ds_on_good"
+        android:textFontWeight="800"
+        android:textSize="9sp"
         android:textStyle="bold"
         android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/tvTitle"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/cvImage"
+        app:layout_constraintTop_toTopOf="@id/tvTitle"
         tools:visibility="visible" />
 
     <TextView
         android:id="@+id/tvCoordinates"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/ds_space_2"
-        android:textColor="@color/ds_text_secondary"
-        android:textSize="13sp"
+        android:layout_marginTop="5dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/manrope"
+        android:maxLines="1"
+        android:textColor="@color/ds_text_faint"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@id/vAccuracyTrack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@id/tvTitle"
         app:layout_constraintTop_toBottomOf="@id/tvTitle"
         tools:text="55.755826, 37.617300" />
 
+    <!-- How good the fix was, at a glance: a short bar filled by quality. -->
+    <View
+        android:id="@+id/vAccuracyTrack"
+        android:layout_width="@dimen/ds_accuracy_track_width"
+        android:layout_height="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/ds_accuracy_track"
+        app:layout_constraintBottom_toBottomOf="@id/cvImage"
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvCoordinates" />
+
+    <View
+        android:id="@+id/vAccuracyFill"
+        android:layout_width="22dp"
+        android:layout_height="5dp"
+        android:background="@drawable/ds_accuracy_fill"
+        app:layout_constraintBottom_toBottomOf="@id/vAccuracyTrack"
+        app:layout_constraintStart_toStartOf="@id/vAccuracyTrack"
+        app:layout_constraintTop_toTopOf="@id/vAccuracyTrack"
+        tools:layout_width="34dp" />
+
     <TextView
         android:id="@+id/tvAccuracy"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:textColor="@color/ds_text_muted"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tvTitle"
-        app:layout_constraintTop_toBottomOf="@id/tvCoordinates"
-        tools:text="±12 м · 15:30" />
+        android:layout_marginStart="7dp"
+        android:fontFamily="@font/manrope"
+        android:textFontWeight="700"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/vAccuracyTrack"
+        app:layout_constraintStart_toEndOf="@id/vAccuracyTrack"
+        app:layout_constraintTop_toTopOf="@id/vAccuracyTrack"
+        tools:text="±12 м"
+        tools:textColor="@color/ds_warn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

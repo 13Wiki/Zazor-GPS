@@ -41,7 +41,7 @@ class SeriesFragment : BaseFragment<SeriesContract.State, SeriesContract.Event>(
     private var mediaCallback: MediaCallback? = null
 
     private val adapter by lazy {
-        SeriesAdapter(prefs.getCoordinateFormat()) { photo ->
+        SeriesAdapter(prefs.getCoordinateFormat(), prefs.getAccuracyThresholdMeters()) { photo ->
             mediaCallback?.editPhoto(photo.path)
         }
     }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The filled part; the colour is set per frame, by whether the fix is good enough. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_signal_good" />
+    <corners android:radius="3dp" />
+</shape>

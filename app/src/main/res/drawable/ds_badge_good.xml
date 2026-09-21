@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A green badge for the one thing on the screen that is definitively true. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_signal_good" />
+    <corners android:radius="999dp" />
+</shape>

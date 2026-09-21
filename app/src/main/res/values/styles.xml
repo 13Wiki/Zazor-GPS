@@ -39,6 +39,15 @@
         <item name="android:textColor">@color/ds_text_primary</item>
     </style>
 
+    <!-- The pair of buttons the design puts at the foot of the series screen. -->
+    <style name="Widget.Zazor.Button.Series" parent="Widget.Zazor.Button">
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
     <!-- The mode switch's labels: 14sp semibold, as in the mockup. -->
     <style name="TextAppearance.Zazor.Mode" parent="TextAppearance.MaterialComponents.Button">
         <item name="android:fontFamily">@font/manrope</item>

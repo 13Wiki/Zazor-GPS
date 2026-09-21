@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A green note: the design explains the series' coordinate in the colour of a good fix. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_good_surface" />
+    <corners android:radius="20dp" />
+</shape>

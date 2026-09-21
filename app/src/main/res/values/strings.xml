@@ -59,8 +59,8 @@
     <string name="series_explainer">Координатой серии берётся кадр с лучшим сигналом — %1$d-й, ±%2$d м. Остальные кадры показывают дорогу к нему.</string>
     <string name="series_explainer_no_fix">Ни у одного кадра серии нет координат. Кадры показывают дорогу, но точку придётся называть словами.</string>
     <string name="series_frame_number">Кадр %1$d</string>
-    <string name="series_frame_meta">±%1$d м · %2$s</string>
-    <string name="series_frame_no_fix">Без координат · %1$s</string>
+    <string name="series_frame_no_coordinates">Без координат</string>
+    <string name="series_frame_no_fix">нет данных</string>
     <string name="series_open">Серия · %1$s</string>
     <string name="series_frames">%1$d кадр(ов)</string>
     <plurals name="series_frames_count">
