@@ -80,6 +80,12 @@ class EditPhotoBottomSheet(val binding: BottomSheetAddNoteBinding)
     }
 
     /** One mark back, rather than everything at once - see the drawing button on the frame. */
+    /** What a panorama opens on: the drawing tab, with the pin already chosen. */
+    fun startMarkerMode() {
+        initDelegates()
+        viewModel.sendEvent(EditPhotoContract.Event.PaintTabPressed(Mode.MARKER))
+    }
+
     fun undoPaint() {
         viewModel.sendEvent(EditPhotoContract.Event.UndoPaint)
     }

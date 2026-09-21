@@ -102,6 +102,8 @@
     <string name="give_permission">Для подальшої роботи надайте дозволи</string>
     <string name="notes">Додати нотатку</string>
     <string name="paint">Малюнок</string>
+    <string name="panorama_marker_hint">Торкніться панорами, щоб поставити мітку. Координати й огляд наносяться на знімок — у файлі їх не лишається.</string>
+    <string name="paint_marker">Мітка</string>
     <string name="paint_circle">Коло</string>
     <string name="paint_line">Лінія</string>
     <string name="paint_arrow">Стрілка</string>

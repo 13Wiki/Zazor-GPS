@@ -137,6 +137,7 @@ abstract class BasePhotoFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         camera = CameraController(requireContext(), binding.vCamera)
+        binding.vDraw.onMarkAdded = ::hideMarkerHint
         binding.run {
             ivFlash.setOnClickListener {
                 viewModel.sendEvent(BasePhotoContract.Event.ToggleFlash)
@@ -283,6 +284,10 @@ abstract class BasePhotoFragment :
         }
     }
 
+    private fun hideMarkerHint() {
+        binding.tvMarkerHint.isVisible = false
+    }
+
     private fun addNotes(state: BasePhotoContract.State.AddNotes) {
         binding.run {
             clPreviewContainer.show()
@@ -333,6 +338,10 @@ abstract class BasePhotoFragment :
             }
         }
         addNotes(state.notes)
+        // A panorama opens ready to be pinned: on a wide frame the one thing the receiver needs
+        // is which of the things in it the photo is about.
+        binding.tvMarkerHint.isVisible = useUltraWide
+        if (useUltraWide) callback?.startMarkerMode()
     }
 
     private fun hidePreview() {

@@ -204,6 +204,10 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
         addNoteSheet.undoPaint()
     }
 
+    override fun startMarkerMode() {
+        addNoteSheet.startMarkerMode()
+    }
+
     /**
      * The viewfinder runs under the system bars; the floating controls take the insets instead,
      * so nothing important hides behind the status bar or the gesture handle.

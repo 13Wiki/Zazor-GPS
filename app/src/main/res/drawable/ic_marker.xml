@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A pin inside the same ring the other drawing tools wear, so the row reads as one set of tools.
+  The pin says "this exact spot", where a circle says "somewhere in here".
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="30dp"
+    android:height="30dp"
+    android:viewportWidth="30"
+    android:viewportHeight="30">
+    <path
+        android:pathData="M15,15m-11,0a11,11 0,1 1,22 0a11,11 0,1 1,-22 0"
+        android:strokeWidth="2"
+        android:fillColor="#00000000"
+        android:strokeColor="@color/ds_accent" />
+    <path
+        android:fillColor="@color/ds_accent"
+        android:pathData="M15,7.5c-2.49,0 -4.5,2.01 -4.5,4.5c0,3.38 4.5,8.5 4.5,8.5s4.5,-5.12 4.5,-8.5C19.5,9.51 17.49,7.5 15,7.5zM15,13.6c-0.88,0 -1.6,-0.72 -1.6,-1.6s0.72,-1.6 1.6,-1.6s1.6,0.72 1.6,1.6S15.88,13.6 15,13.6z" />
+</vector>

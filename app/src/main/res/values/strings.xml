@@ -103,6 +103,8 @@
     <string name="give_permission">Для дальнейшей работы, предоставьте разрешения</string>
     <string name="notes">Добавить заметку</string>
     <string name="paint">Рисунок</string>
+    <string name="panorama_marker_hint">Коснитесь панорамы, чтобы поставить метку. Координаты и обзор наносятся на снимок — в файле их не остаётся.</string>
+    <string name="paint_marker">Метка</string>
     <string name="paint_circle">Круг</string>
     <string name="paint_line">Линия</string>
     <string name="paint_arrow">Стрелка</string>

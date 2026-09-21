@@ -11,6 +11,9 @@ interface PhotoCallback {
     /** Takes back the last drawn mark; what the corner button does while drawing. */
     fun undoPaint()
 
+    /** Opens the editor on the marker tool, the way a panorama starts. */
+    fun startMarkerMode()
+
     fun onCollageShown()
 
     fun onPhotoShown()

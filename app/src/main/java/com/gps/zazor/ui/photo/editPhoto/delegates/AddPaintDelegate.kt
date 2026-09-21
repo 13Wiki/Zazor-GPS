@@ -58,6 +58,9 @@ class AddPaintDelegate(sheetBinding: BottomSheetAddNoteBinding,
             ivCircle.setOnClickListener {
                 viewModel.sendEvent(EditPhotoContract.Event.PaintTabPressed(Mode.CIRCLE))
             }
+            ivMarker.setOnClickListener {
+                viewModel.sendEvent(EditPhotoContract.Event.PaintTabPressed(Mode.MARKER))
+            }
         }
     }
 

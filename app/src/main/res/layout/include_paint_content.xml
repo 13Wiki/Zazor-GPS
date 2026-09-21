@@ -42,6 +42,20 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
+            android:id="@+id/ivMarker"
+            android:layout_width="@dimen/ds_touch_min"
+            android:layout_height="@dimen/ds_touch_min"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:clickable="true"
+            android:contentDescription="@string/paint_marker"
+            android:focusable="true"
+            android:padding="@dimen/ds_space_3"
+            android:src="@drawable/ic_marker"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivArrow"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
             android:id="@+id/ivArrow"
             android:layout_width="@dimen/ds_touch_min"
             android:layout_height="@dimen/ds_touch_min"
@@ -51,7 +65,7 @@
             android:focusable="true"
             android:padding="@dimen/ds_space_3"
             android:src="@drawable/ic_arrow"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ivMarker"
             app:layout_constraintStart_toEndOf="@id/ivLine"
             app:layout_constraintTop_toTopOf="parent" />
 

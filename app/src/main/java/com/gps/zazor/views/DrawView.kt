@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Path
+import android.graphics.PointF
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
@@ -23,7 +24,7 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
      * which of the two was drawn last. A mark keeps its own pieces together, and the list keeps
      * their order, so undoing is dropping the last one.
      */
-    private class Mark(val path: Path, val arrowHead: Path?)
+    private class Mark(val path: Path, val arrowHead: Path?, val marker: PointF? = null)
 
     private var paint: Paint? = null
 
@@ -54,6 +55,9 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
         invalidate()
     }
 
+    /** Called when a mark is started, so a screen can drop an instruction that is now obvious. */
+    var onMarkAdded: (() -> Unit)? = null
+
     /** True while there is something to take back; the screen hides the button otherwise. */
     val hasMarks: Boolean get() = marks.isNotEmpty()
 
@@ -71,6 +75,7 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
             marks.forEach { mark ->
                 canvas.drawPath(mark.path, drawPaint)
                 mark.arrowHead?.let { canvas.drawPath(it, arrowPaint) }
+                mark.marker?.let { drawMarker(canvas, it, drawPaint) }
             }
         }
     }
@@ -107,12 +112,25 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
         startX = event.x
         startY = event.y
         val path = Path().also { it.moveTo(event.x, event.y) }
-        marks.add(Mark(path, if (mode == Mode.ARROW) Path() else null))
+        onMarkAdded?.invoke()
+        marks.add(
+            Mark(
+                path,
+                if (mode == Mode.ARROW) Path() else null,
+                if (mode == Mode.MARKER) PointF(event.x, event.y) else null
+            )
+        )
+        // A pin is placed by a tap with no movement at all, and only a move used to repaint:
+        // the mark existed, and the frame did not show it until something else redrew.
+        invalidate()
     }
 
     private fun handleMoveAction(event: MotionEvent) {
         val mark = marks.lastOrNull() ?: return
         when (mode) {
+            // A pin is placed by touching, and slid into place without lifting the finger: on a
+            // wide frame the exact spot is a stone among stones, and a fingertip covers it.
+            Mode.MARKER -> mark.marker?.set(event.x, event.y)
             Mode.LINE -> {
                 mark.path.lineTo(event.x, event.y)
             }
@@ -140,6 +158,17 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
         invalidate()
     }
 
+    /**
+     * A ring with a dot at its centre. Not a filled blob: the point of a marker is the pixel it
+     * stands on, and the receiver has to be able to see what is under it.
+     */
+    private fun drawMarker(canvas: Canvas, at: PointF, drawPaint: Paint) {
+        val radius = drawPaint.strokeWidth * MARKER_RADIUS_FACTOR
+        canvas.drawCircle(at.x, at.y, radius, drawPaint)
+        val dot = Paint(drawPaint).apply { style = Paint.Style.FILL }
+        canvas.drawCircle(at.x, at.y, drawPaint.strokeWidth / 2, dot)
+    }
+
     private fun drawArrow(head: Path, endX: Float, startX: Float, endY: Float, startY: Float) {
         head.apply {
             reset()
@@ -163,5 +192,8 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
 }
 
 enum class Mode {
-    LINE, CIRCLE, ARROW
+    LINE, CIRCLE, ARROW, MARKER
 }
+
+/** How many stroke widths across the marker's ring is. */
+private const val MARKER_RADIUS_FACTOR = 2F
