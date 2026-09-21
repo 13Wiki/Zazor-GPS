@@ -14,13 +14,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/ds_space_6">
+        android:paddingBottom="24dp">
 
         <ImageView
             android:id="@+id/ivBack"
             android:layout_width="46dp"
             android:layout_height="46dp"
-            android:layout_margin="@dimen/ds_space_4"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/ds_round_button"
             android:contentDescription="@string/back"
             android:padding="13dp"
@@ -33,12 +34,10 @@
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_3"
-            android:layout_marginEnd="@dimen/ds_space_4"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/support_title"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="24sp"
-            android:textStyle="bold"
+            android:textAppearance="@style/TextAppearance.Zazor.Screen"
             app:layout_constraintBottom_toBottomOf="@id/ivBack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivBack"
@@ -48,166 +47,246 @@
             android:id="@+id/tvIntro"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_2"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/manrope"
+            android:lineSpacingExtra="7sp"
             android:text="@string/support_intro"
-            android:textColor="@color/ds_text_secondary"
+            android:textColor="@color/ds_text_dim"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/ivBack" />
 
         <!-- What the letter is about: it decides who reads it first. -->
-        <LinearLayout
-            android:id="@+id/llTopics"
-            android:layout_width="wrap_content"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cgTopics"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_4"
-            android:orientation="horizontal"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
+            app:chipSpacingHorizontal="8dp"
+            app:chipSpacingVertical="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvIntro">
 
             <TextView
                 android:id="@+id/tvTopicBug"
-                style="@style/Widget.Zazor.FilterPill"
+                style="@style/Widget.Zazor.TopicPill"
                 android:text="@string/support_topic_bug" />
 
             <TextView
                 android:id="@+id/tvTopicIdea"
-                style="@style/Widget.Zazor.FilterPill"
-                android:layout_marginStart="@dimen/ds_space_2"
+                style="@style/Widget.Zazor.TopicPill"
                 android:text="@string/support_topic_idea" />
 
             <TextView
                 android:id="@+id/tvTopicPayment"
-                style="@style/Widget.Zazor.FilterPill"
-                android:layout_marginStart="@dimen/ds_space_2"
+                style="@style/Widget.Zazor.TopicPill"
                 android:text="@string/support_topic_payment" />
 
             <TextView
                 android:id="@+id/tvTopicOther"
-                style="@style/Widget.Zazor.FilterPill"
-                android:layout_marginStart="@dimen/ds_space_2"
+                style="@style/Widget.Zazor.TopicPill"
                 android:text="@string/support_topic_other" />
 
-        </LinearLayout>
+        </com.google.android.material.chip.ChipGroup>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilMessage"
-            style="@style/Widget.Zazor.TextInput"
+            style="@style/Widget.Zazor.TextInput.Support"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_4"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/llTopics">
+            app:layout_constraintTop_toBottomOf="@id/cgTopics">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etMessage"
                 style="@style/Widget.Zazor.TextInput.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@null"
                 android:gravity="top|start"
                 android:hint="@string/support_message_hint"
                 android:inputType="textMultiLine|textCapSentences"
-                android:minLines="5" />
+                android:lineSpacingExtra="7sp"
+                android:minLines="4"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="16dp"
+                android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilEmail"
-            style="@style/Widget.Zazor.TextInput"
+            style="@style/Widget.Zazor.TextInput.Support"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_3"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
+            app:boxCornerRadiusBottomEnd="18dp"
+            app:boxCornerRadiusBottomStart="18dp"
+            app:boxCornerRadiusTopEnd="18dp"
+            app:boxCornerRadiusTopStart="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilMessage">
+            app:layout_constraintTop_toBottomOf="@id/tilMessage"
+            app:startIconDrawable="@drawable/ic_mail"
+            app:startIconTint="@color/ds_text_dim">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 style="@style/Widget.Zazor.TextInput.EditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="54dp"
+                android:background="@null"
                 android:hint="@string/support_email_hint"
-                android:inputType="textEmailAddress" />
+                android:inputType="textEmailAddress"
+                android:paddingStart="10dp"
+                android:paddingEnd="18dp"
+                android:textSize="15sp" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/swDevice"
+        <!--
+          The two switches, in one block with a hairline between them, as the design has it:
+          nothing about the phone or its screen leaves without the person turning it on.
+        -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clDevice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_4"
-            android:minHeight="@dimen/ds_touch_min"
-            android:text="@string/support_device_info"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="15sp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ds_group_single"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tilEmail" />
+            app:layout_constraintTop_toBottomOf="@id/tilEmail">
 
-        <TextView
-            android:id="@+id/tvDeviceHint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:textColor="@color/ds_text_muted"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/swDevice"
-            tools:text="Zazor GPS 2.0 · Pixel 7 · Android 14" />
+            <TextView
+                android:id="@+id/tvDeviceTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="14dp"
+                android:fontFamily="@font/manrope"
+                android:text="@string/support_device_info"
+                android:textColor="@color/ds_text_primary"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/swDevice"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/swScreenshot"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_3"
-            android:minHeight="@dimen/ds_touch_min"
-            android:text="@string/support_screenshot"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvDeviceHint" />
+            <TextView
+                android:id="@+id/tvDeviceHint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="14dp"
+                android:fontFamily="@font/manrope"
+                android:lineSpacingExtra="3sp"
+                android:textColor="@color/ds_text_faint"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="@id/tvDeviceTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDeviceTitle"
+                tools:text="Zazor GPS 2.0 · Pixel 7 · Android 15" />
 
-        <TextView
-            android:id="@+id/tvScreenshotHint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:text="@string/support_nothing_without_consent"
-            android:textColor="@color/ds_text_muted"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/swScreenshot" />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swDevice"
+                android:layout_width="51dp"
+                android:layout_height="31dp"
+                android:thumb="@drawable/ds_switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@id/tvDeviceHint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvDeviceTitle"
+                app:showText="false"
+                app:track="@drawable/ds_switch_track" />
+
+            <View
+                android:id="@+id/vDeviceDivider"
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:background="@color/ds_divider_sheer"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvDeviceHint" />
+
+            <TextView
+                android:id="@+id/tvScreenshotTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="14dp"
+                android:fontFamily="@font/manrope"
+                android:text="@string/support_screenshot"
+                android:textColor="@color/ds_text_primary"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/swScreenshot"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/vDeviceDivider" />
+
+            <TextView
+                android:id="@+id/tvScreenshotHint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="14dp"
+                android:fontFamily="@font/manrope"
+                android:lineSpacingExtra="3sp"
+                android:text="@string/support_nothing_without_consent"
+                android:textColor="@color/ds_text_faint"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tvScreenshotTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvScreenshotTitle" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swScreenshot"
+                android:layout_width="51dp"
+                android:layout_height="31dp"
+                android:thumb="@drawable/ds_switch_thumb"
+                app:layout_constraintBottom_toBottomOf="@id/tvScreenshotHint"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvScreenshotTitle"
+                app:showText="false"
+                app:track="@drawable/ds_switch_track" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/bSend"
-            style="@style/Widget.Zazor.Button"
+            style="@style/Widget.Zazor.Button.Series"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_6"
+            android:layout_height="54dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/ds_accent_button_large"
             android:text="@string/support_send"
+            android:textFontWeight="700"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvScreenshotHint" />
+            app:layout_constraintTop_toBottomOf="@id/clDevice" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

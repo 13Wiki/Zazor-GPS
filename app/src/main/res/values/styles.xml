@@ -52,6 +52,31 @@
         <item name="tint">@color/ds_tool_icon</item>
     </style>
 
+    <!-- What the letter is about. -->
+    <style name="Widget.Zazor.TopicPill" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ds_include_pill</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">10dp</item>
+        <item name="android:paddingBottom">10dp</item>
+        <item name="android:textColor">@color/ds_include_pill_text</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- The fields on the support screen, which the design draws as cards rather than boxes. -->
+    <style name="Widget.Zazor.TextInput.Support" parent="Widget.MaterialComponents.TextInputLayout.FilledBox">
+        <item name="android:background">@drawable/ds_input_card</item>
+        <item name="boxBackgroundMode">none</item>
+        <item name="boxStrokeWidth">0dp</item>
+        <item name="boxStrokeWidthFocused">0dp</item>
+        <item name="hintEnabled">false</item>
+        <item name="android:textColorHint">@color/ds_hint</item>
+    </style>
+
     <!-- What travels with the photos: a pill that is on or off, as the design has it. -->
     <style name="Widget.Zazor.IncludePill" parent="">
         <item name="android:layout_width">wrap_content</item>

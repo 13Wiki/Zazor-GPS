@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A field the design draws as a card: white at six per cent inside a faint outline. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_surface_sheer" />
+    <stroke android:width="1dp" android:color="@color/ds_surface_round" />
+    <corners android:radius="22dp" />
+</shape>
