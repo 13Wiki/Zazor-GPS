@@ -15,7 +15,13 @@ import java.util.Locale
  */
 object ReportBuilder {
 
-    fun build(context: Context, photos: List<Photo>, includeCoordinates: Boolean = true): String =
+    fun build(
+        context: Context,
+        photos: List<Photo>,
+        includeCoordinates: Boolean = true,
+        includeAddress: Boolean = true,
+        includeNotes: Boolean = true
+    ): String =
         buildString {
             appendLine(context.getString(R.string.report_title))
             appendLine(context.getString(R.string.report_count, photos.size))
@@ -28,11 +34,14 @@ object ReportBuilder {
                         appendLine("   " + context.getString(R.string.report_accuracy, it.toInt()))
                     }
                 }
-                // An address is a location in words: unticking coordinates must drop it too.
-                if (includeCoordinates) {
+                // An address is a location in words, and has its own switch: someone sending a
+                // point from a private address may want the numbers and not the street.
+                if (includeAddress) {
                     photo.address?.takeIf { it.isNotBlank() }?.let { appendLine("   $it") }
                 }
-                photo.name.takeIf { it.isNotBlank() }?.let { appendLine("   $it") }
+                if (includeNotes) {
+                    photo.name.takeIf { it.isNotBlank() }?.let { appendLine("   $it") }
+                }
                 appendLine()
             }
             append(context.getString(R.string.report_footer))

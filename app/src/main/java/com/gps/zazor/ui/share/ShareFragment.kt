@@ -75,6 +75,9 @@ class ShareFragment : BaseFragment<ShareContract.State, ShareContract.Event>(R.l
         binding.swCoordinates.setOnCheckedChangeListener { button, checked ->
             if (button.isPressed) viewModel.sendEvent(ShareContract.Event.ToggleCoordinates(checked))
         }
+        binding.swAddress.setOnCheckedChangeListener { button, checked ->
+            if (button.isPressed) viewModel.sendEvent(ShareContract.Event.ToggleAddress(checked))
+        }
         binding.swTrack.setOnCheckedChangeListener { button, checked ->
             if (button.isPressed) viewModel.sendEvent(ShareContract.Event.ToggleTrack(checked))
         }
@@ -100,8 +103,13 @@ class ShareFragment : BaseFragment<ShareContract.State, ShareContract.Event>(R.l
         // Only reflect state here; the listeners ignore programmatic changes via isPressed.
         binding.swCoordinates.isChecked = state.options.coordinates
         binding.swTrack.isChecked = state.options.track
+        binding.swAddress.isChecked = state.options.address
+        binding.swAddress.isEnabled = state.photos.any { !it.address.isNullOrBlank() }
         binding.swVoice.isChecked = state.options.voiceNotes
-        binding.swVoice.isEnabled = state.photos.any { it.voiceNotePath != null }
+        // Notes cover both what was typed and what was recorded.
+        binding.swVoice.isEnabled = state.photos.any {
+            it.voiceNotePath != null || it.name.isNotBlank()
+        }
         binding.swTrack.isEnabled = state.photos.any { it.lat != null && it.lng != null }
         binding.pbPreparing.isVisible = state.isPreparing
     }
@@ -113,6 +121,7 @@ class ShareFragment : BaseFragment<ShareContract.State, ShareContract.Event>(R.l
                     when (effect) {
                         is ShareContract.Effect.SharePhotos -> sharePhotos(effect.photos)
                         is ShareContract.Effect.ShareBundle -> shareFile(effect.file)
+                        is ShareContract.Effect.ShareFile -> shareFile(effect.file, effect.mimeType)
                         is ShareContract.Effect.ShareText -> shareText(effect.text)
                         is ShareContract.Effect.Empty -> toast(R.string.share_nothing)
                         is ShareContract.Effect.Failed -> toast(R.string.share_failed)
@@ -140,7 +149,10 @@ class ShareFragment : BaseFragment<ShareContract.State, ShareContract.Event>(R.l
         )
     }
 
-    private fun shareFile(file: File) {
+    private fun shareFile(
+        file: File,
+        mimeType: String = com.gps.zazor.utils.export.BundleWriter.MIME_ZIP
+    ) {
         val uri = uriFor(file) ?: run {
             toast(R.string.share_failed)
             return
@@ -149,7 +161,7 @@ class ShareFragment : BaseFragment<ShareContract.State, ShareContract.Event>(R.l
             Intent.createChooser(
                 Intent(Intent.ACTION_SEND).apply {
                     putExtra(Intent.EXTRA_STREAM, uri)
-                    type = com.gps.zazor.utils.export.BundleWriter.MIME_ZIP
+                    type = mimeType
                     addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
                 },
                 getString(R.string.share)

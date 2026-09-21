@@ -14,6 +14,7 @@ import com.gps.zazor.billing.ProStatus
 import com.gps.zazor.utils.export.BundleWriter
 import com.gps.zazor.utils.export.TrackFileWriter
 import com.gps.zazor.utils.location.AddressResolver
+import com.gps.zazor.utils.export.PdfReportWriter
 import com.gps.zazor.utils.location.CompassProvider
 import com.gps.zazor.utils.location.LocationProvider
 import org.koin.android.ext.koin.androidApplication
@@ -25,6 +26,7 @@ val repositoriesModule = module {
     single { PhotoStorage(androidApplication()) }
     single { LocationProvider(androidApplication()) }
     single { CompassProvider(androidApplication()) }
+    single { PdfReportWriter(androidApplication()) }
     single { AddressResolver(androidApplication()) }
     single { TrackFileWriter(androidApplication()) }
     single { BundleWriter(androidApplication()) }

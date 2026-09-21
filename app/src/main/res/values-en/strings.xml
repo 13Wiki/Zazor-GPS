@@ -22,7 +22,7 @@
     <string name="appearance_hint">The icon and label on the home screen. Zazor never hides from the app list.</string>
     <string name="appearance_changed">Icon changed</string>
     <string name="share_summary">%1$d photo(s) · %2$.1f MB</string>
-    <string name="report_title">Zazor · site record</string>
+    <string name="report_title">Zazor GPS · site record</string>
     <string name="report_count">Photos: %1$d</string>
     <string name="report_accuracy">accuracy ±%1$d m</string>
     <string name="report_footer">Coordinates are drawn onto the photos themselves. The files carry no device metadata.</string>
@@ -31,12 +31,13 @@
     <string name="share_to_messenger_hint">Photos go as they are — no metadata inside</string>
     <string name="share_bundle">As an archive</string>
     <string name="share_bundle_hint">Photos, notes and a report in one file</string>
-    <string name="share_report">Text report only</string>
-    <string name="share_report_hint">A list of points, pastes straight into a chat</string>
+    <string name="share_report">As a PDF report</string>
+    <string name="share_report_hint">Frames, coordinates and notes on one sheet</string>
     <string name="share_include">What to include</string>
     <string name="share_include_coordinates">Coordinates</string>
     <string name="share_include_track">GPX route</string>
-    <string name="share_include_voice">Voice notes</string>
+    <string name="share_include_voice">Notes</string>
+    <string name="share_include_address">Address</string>
     <string name="share_nothing">Nothing to send</string>
     <string name="share_failed">Could not build the file</string>
     <string name="share_preparing">Preparing…</string>

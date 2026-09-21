@@ -25,4 +25,8 @@
     <files-path
         name="internal_tracks"
         path="tracks/" />
+    <!-- PDF reports: written to the cache, because a handed-over report is not kept afterwards. -->
+    <cache-path
+        name="internal_reports"
+        path="reports/" />
 </paths>

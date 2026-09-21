@@ -9,7 +9,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.dsl.module
 
 val shareModule = module {
-    viewModel { ShareViewModelImpl(androidContext(), get(), get()) }
+    viewModel { ShareViewModelImpl(androidContext(), get(), get(), get(), get()) }
 }
 
 fun ShareFragment.injectViewModel(): Lazy<ShareViewModel> =

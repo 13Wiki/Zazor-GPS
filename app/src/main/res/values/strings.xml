@@ -23,7 +23,7 @@
     <string name="appearance_hint">Значок и подпись на домашнем экране. Из списка приложений Zazor не прячется.</string>
     <string name="appearance_changed">Значок изменён</string>
     <string name="share_summary">%1$d снимк(ов) · %2$.1f МБ</string>
-    <string name="report_title">Zazor · фиксация на местности</string>
+    <string name="report_title">Zazor GPS · фиксация на местности</string>
     <string name="report_count">Снимков: %1$d</string>
     <string name="report_accuracy">точность ±%1$d м</string>
     <string name="report_footer">Координаты нанесены на сами снимки. Метаданных устройства в файлах нет.</string>
@@ -32,12 +32,13 @@
     <string name="share_to_messenger_hint">Снимки уходят как есть — метаданных в них нет</string>
     <string name="share_bundle">Архивом</string>
     <string name="share_bundle_hint">Снимки, заметки и отчёт одним файлом</string>
-    <string name="share_report">Только отчёт текстом</string>
-    <string name="share_report_hint">Список точек, вставляется прямо в переписку</string>
+    <string name="share_report">Отчётом PDF</string>
+    <string name="share_report_hint">Снимки, координаты и заметки на одном листе</string>
     <string name="share_include">Что вложить</string>
     <string name="share_include_coordinates">Координаты</string>
     <string name="share_include_track">Маршрут GPX</string>
-    <string name="share_include_voice">Голосовые заметки</string>
+    <string name="share_include_voice">Заметки</string>
+    <string name="share_include_address">Адрес</string>
     <string name="share_nothing">Нечего передавать</string>
     <string name="share_failed">Не удалось собрать файл</string>
     <string name="share_preparing">Собираем…</string>

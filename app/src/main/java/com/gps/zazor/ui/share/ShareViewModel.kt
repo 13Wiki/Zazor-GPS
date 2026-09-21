@@ -6,12 +6,16 @@ import com.gps.zazor.data.models.Photo
 import com.gps.zazor.data.repositories.PhotoRepository
 import com.gps.zazor.ui.base.BaseViewModel
 import com.gps.zazor.ui.base.BaseViewModelImpl
+import com.gps.zazor.data.prefs.AppPreferences
 import com.gps.zazor.utils.export.BundleWriter
+import com.gps.zazor.utils.export.PdfReportWriter
 import com.gps.zazor.utils.export.ReportBuilder
 import com.gps.zazor.utils.time.PhotoClock
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+
+private const val PDF_MIME = "application/pdf"
 
 interface ShareViewModel : BaseViewModel<ShareContract.State, ShareContract.Event> {
 
@@ -21,7 +25,9 @@ interface ShareViewModel : BaseViewModel<ShareContract.State, ShareContract.Even
 class ShareViewModelImpl(
     private val context: Context,
     private val photoRepository: PhotoRepository,
-    private val bundleWriter: BundleWriter
+    private val bundleWriter: BundleWriter,
+    private val pdfReportWriter: PdfReportWriter,
+    private val prefs: AppPreferences
 ) : BaseViewModelImpl<ShareContract.State, ShareContract.Event>(), ShareViewModel {
 
     private val effectFlow = MutableSharedFlow<ShareContract.Effect>(extraBufferCapacity = 8)
@@ -39,6 +45,7 @@ class ShareViewModelImpl(
         when (event) {
             is ShareContract.Event.Load -> load(event.paths)
             is ShareContract.Event.ToggleCoordinates -> update { copy(coordinates = event.on) }
+            is ShareContract.Event.ToggleAddress -> update { copy(address = event.on) }
             is ShareContract.Event.ToggleTrack -> update { copy(track = event.on) }
             is ShareContract.Event.ToggleVoiceNotes -> update { copy(voiceNotes = event.on) }
             is ShareContract.Event.SendPhotos -> sendPhotos()
@@ -81,7 +88,9 @@ class ShareViewModelImpl(
                 photos = payload,
                 bundleName = context.getString(R.string.app_name) + " " +
                     PhotoClock.formatDate(PhotoClock.now()),
-                report = ReportBuilder.build(context, photos, options.coordinates),
+                report = ReportBuilder.build(
+                    context, photos, options.coordinates, options.address, options.voiceNotes
+                ),
                 includeTrack = options.track
             )
             uiState.value = ShareContract.State.Content(photos, options, isPreparing = false)
@@ -91,16 +100,30 @@ class ShareViewModelImpl(
         }
     }
 
+    /**
+     * The document version: the frames on a sheet with what is known about each, for a folder or
+     * a printer rather than a chat window.
+     */
     private fun sendReport() {
         launchIo {
             if (photos.isEmpty()) {
                 effectFlow.emit(ShareContract.Effect.Empty)
                 return@launchIo
             }
+            uiState.value = ShareContract.State.Content(photos, options, isPreparing = true)
+            val file = pdfReportWriter.write(
+                photos = photos,
+                name = context.getString(R.string.app_name) + " " +
+                    PhotoClock.formatDate(PhotoClock.now()),
+                coordinateFormat = prefs.getCoordinateFormat(),
+                includeCoordinates = options.coordinates,
+                includeAddress = options.address,
+                includeNotes = options.voiceNotes
+            )
+            uiState.value = ShareContract.State.Content(photos, options, isPreparing = false)
             effectFlow.emit(
-                ShareContract.Effect.ShareText(
-                    ReportBuilder.build(context, photos, options.coordinates)
-                )
+                file?.let { ShareContract.Effect.ShareFile(it, PDF_MIME) }
+                    ?: ShareContract.Effect.Failed
             )
         }
     }

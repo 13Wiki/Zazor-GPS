@@ -89,20 +89,29 @@
                 android:textSize="15sp" />
 
             <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/swTrack"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:minHeight="@dimen/ds_touch_min"
-                android:text="@string/share_include_track"
-                android:textColor="@color/ds_text_primary"
-                android:textSize="15sp" />
-
-            <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/swVoice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:minHeight="@dimen/ds_touch_min"
                 android:text="@string/share_include_voice"
+                android:textColor="@color/ds_text_primary"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/ds_touch_min"
+                android:text="@string/share_include_address"
+                android:textColor="@color/ds_text_primary"
+                android:textSize="15sp" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swTrack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="@dimen/ds_touch_min"
+                android:text="@string/share_include_track"
                 android:textColor="@color/ds_text_primary"
                 android:textSize="15sp" />
         </LinearLayout>

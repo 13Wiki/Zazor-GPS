@@ -10,7 +10,10 @@ class ShareContract {
     /** What travels along with the pictures. */
     data class Options(
         val coordinates: Boolean = true,
+        /** An address is a position in words; it can be dropped on its own. */
+        val address: Boolean = true,
         val track: Boolean = true,
+        /** What the person wrote or recorded about each frame. */
         val voiceNotes: Boolean = true
     )
 
@@ -19,6 +22,8 @@ class ShareContract {
         data class Load(val paths: List<String>) : Event()
 
         data class ToggleCoordinates(val on: Boolean) : Event()
+
+        data class ToggleAddress(val on: Boolean) : Event()
 
         data class ToggleTrack(val on: Boolean) : Event()
 
@@ -45,6 +50,9 @@ class ShareContract {
         data class SharePhotos(val photos: List<Photo>) : Effect()
 
         data class ShareBundle(val file: File) : Effect()
+
+        /** A file to hand over as it is, with the type the receiver's phone should open it with. */
+        data class ShareFile(val file: File, val mimeType: String) : Effect()
 
         data class ShareText(val text: String) : Effect()
 
