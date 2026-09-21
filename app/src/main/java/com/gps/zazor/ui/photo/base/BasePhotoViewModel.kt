@@ -199,9 +199,11 @@ open class BasePhotoViewModelImpl(
             address = if (moved) null else stampState.value.address
         )
         if (!moved || addressJob?.isActive == true) return
-        addressFor = location
         addressJob = launchIo {
             val address = addressResolver.resolve(location)
+            // Remembered only when the lookup answered: offline it returns nothing, and pinning
+            // the place anyway would keep the card blank until the person walked fifty metres.
+            if (address != null) addressFor = location
             stampState.value = stampState.value.copy(address = address)
         }
     }
@@ -211,6 +213,8 @@ open class BasePhotoViewModelImpl(
         locationJob = null
         compassJob?.cancel()
         compassJob = null
+        addressJob?.cancel()
+        addressJob = null
     }
 
     /**
