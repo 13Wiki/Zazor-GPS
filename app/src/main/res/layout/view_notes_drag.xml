@@ -12,9 +12,6 @@
         android:id="@+id/llNotesContainer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="160dp"
         android:background="@drawable/ds_stamp"
         android:orientation="vertical"
         android:paddingStart="@dimen/ds_space_5"
@@ -41,6 +38,15 @@
             android:textSize="15sp"
             android:textStyle="bold"
             tools:text="30.523400" />
+
+        <!-- Which way the camera looked. Written on wide frames, where it is half the address. -->
+        <TextView
+            android:id="@+id/tvBearing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/ds_text_secondary"
+            android:textSize="13sp"
+            tools:text="обзор 214°" />
 
         <TextView
             android:id="@+id/tvAccuracy"

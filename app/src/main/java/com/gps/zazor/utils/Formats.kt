@@ -22,6 +22,13 @@ object Formats {
             )
         }
 
+    /**
+     * A heading as it is read out loud: "обзор 214°". Rounded to a degree - the compass in a
+     * phone is not worth a decimal, and half a degree is not a difference anyone can walk.
+     */
+    fun bearing(context: Context, degrees: Float): String =
+        context.getString(R.string.bearing_view, Math.round(degrees) % 360)
+
     fun duration(context: Context, seconds: Long): String {
         val minutes = seconds / 60
         return if (minutes >= 60) {

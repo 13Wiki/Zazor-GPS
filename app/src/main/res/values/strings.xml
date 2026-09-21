@@ -187,6 +187,8 @@
     </plurals>
     <string name="text">Введите текст</string>
     <string name="collage_added">Коллаж создан. Используются координаты последнего фото.</string>
+    <string name="bearing_view">обзор %1$d°</string>
+    <string name="bearing_short" translatable="false">%1$d°</string>
     <string name="accuracy">Точность: %s m</string>
     <string name="display_accuracy">Отображать погрешность</string>
 </resources>

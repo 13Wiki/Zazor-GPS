@@ -99,6 +99,13 @@ class MediaListAdapter(
                 } else {
                     ""
                 }
+                // A direction is recorded for every frame but shown for the wide ones: those are
+                // the shots someone has to stand in the same place to repeat.
+                val bearing = photo.bearingDegrees.takeIf { photo.isWide }
+                tvBearing.isVisible = bearing != null
+                tvBearing.text = bearing?.let {
+                    root.context.getString(com.gps.zazor.R.string.bearing_short, Math.round(it) % 360)
+                }.orEmpty()
                 // One line under the title, as in the design: when, then where. The date is left
                 // out when it already is the title.
                 tvDate.text = listOfNotNull(

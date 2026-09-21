@@ -50,7 +50,9 @@ class BasePhotoContract {
                        val long: String?,
                        val date: String?,
                        val time: String?,
-                       val accuracy: String?) : State()
+                       val accuracy: String?,
+                       /** Degrees clockwise from north, or null when the phone has no compass. */
+                       val bearing: Float? = null) : State()
 
         class AddOverlay(val text: String?,
                          val color: Int?,

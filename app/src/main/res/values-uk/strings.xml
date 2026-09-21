@@ -163,6 +163,8 @@
     </plurals>
     <string name="text">Введіть текст</string>
     <string name="collage_added">Колаж створено. Використано координати останнього фото.</string>
+    <string name="bearing_view">огляд %1$d°</string>
+    <string name="bearing_short" translatable="false">%1$d°</string>
     <string name="accuracy">Точність: %s м</string>
     <string name="display_accuracy">Показувати похибку</string>
 </resources>

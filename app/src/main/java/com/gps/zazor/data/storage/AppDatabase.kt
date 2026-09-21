@@ -9,7 +9,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import com.gps.zazor.data.storage.dao.PhotosDao
 import com.gps.zazor.data.storage.models.PhotoDb
 
-@Database(entities = [PhotoDb::class], version = 4, exportSchema = false)
+@Database(entities = [PhotoDb::class], version = 5, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun photosDao(): PhotosDao
@@ -52,12 +52,24 @@ abstract class AppDatabase : RoomDatabase() {
         }
 
         /**
+         * Records which way the camera was pointing.
+         *
+         * Nullable rather than a default: a photo taken before this existed had no direction
+         * recorded, and zero degrees means north, which would be a lie about every old frame.
+         */
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE photos ADD COLUMN bearing_deg REAL")
+            }
+        }
+
+        /**
          * Built through DI instead of a global `lateinit` singleton, so nothing can reach the
          * database before it exists.
          */
         fun create(context: Context): AppDatabase =
             Room.databaseBuilder(context.applicationContext, AppDatabase::class.java, DATABASE_NAME)
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .build()
     }
 }

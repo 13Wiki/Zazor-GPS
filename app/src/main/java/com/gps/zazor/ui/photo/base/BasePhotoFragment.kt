@@ -27,6 +27,7 @@ import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_ON_DISTANCE
 import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_PHASE
 import com.gps.zazor.ui.photo.editPhoto.SELECTOR_BUTTON_COLOR_DEFAULT
 import com.gps.zazor.ui.photo.editPhoto.STROKE_WIDTH_FOR_DASH_LINE
+import com.gps.zazor.utils.Formats
 import com.gps.zazor.utils.PhotoComposer
 import com.gps.zazor.utils.camera.CameraController
 import com.gps.zazor.utils.location.SignalQuality
@@ -288,7 +289,12 @@ abstract class BasePhotoFragment :
             dvNotes.elevation = 5F
             evDroidArt.elevation = 0F
             vDraw.elevation = 0F
-            dvNotes.addNotes(state.notes, state.lat, state.long, state.date, state.time, state.accuracy)
+            dvNotes.addNotes(
+                state.notes, state.lat, state.long, state.date, state.time, state.accuracy,
+                // Only on a wide frame: on an ordinary close-up the direction says little, and
+                // the stamp is already four lines long.
+                state.bearing?.takeIf { useUltraWide }?.let { Formats.bearing(requireContext(), it) }
+            )
         }
     }
 

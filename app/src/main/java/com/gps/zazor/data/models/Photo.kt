@@ -18,7 +18,13 @@ data class Photo(val path: String,
                  /** Set on every frame of one approach series. */
                  val seriesId: String? = null,
                  /** Taken on the wide lens; the gallery can show those on their own. */
-                 val isWide: Boolean = false)
+                 val isWide: Boolean = false,
+                 /**
+                  * Where the camera was pointing, in degrees clockwise from true north, or null
+                  * on a phone with no compass. A wide frame of open ground is hard to place
+                  * without it.
+                  */
+                 val bearingDegrees: Float? = null)
 
 val Photo.location get() = Location("").apply {
     latitude = lat ?: 0.0
@@ -41,5 +47,6 @@ fun Photo.toDb(): PhotoDb =
           voiceNotePath,
           accuracyMeters,
           seriesId,
-          isWide
+          isWide,
+          bearingDegrees
       )

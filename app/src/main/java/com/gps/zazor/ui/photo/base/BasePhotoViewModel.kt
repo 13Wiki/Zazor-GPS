@@ -12,6 +12,7 @@ import com.gps.zazor.ui.photo.editPhoto.EditPhotoContract
 import com.gps.zazor.utils.PhotoStorage
 import com.gps.zazor.utils.camera.Camera
 import com.gps.zazor.utils.location.AddressResolver
+import com.gps.zazor.utils.location.CompassProvider
 import com.gps.zazor.utils.location.LocationProvider
 import com.gps.zazor.utils.location.SignalQuality
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -43,6 +44,7 @@ open class BasePhotoViewModelImpl(
     private val photoRepository: PhotoRepository,
     private val photoStorage: PhotoStorage,
     private val locationProvider: LocationProvider,
+    private val compassProvider: CompassProvider,
     private val addressResolver: AddressResolver
 ) : BaseViewModelImpl<BasePhotoContract.State, BasePhotoContract.Event>(), BasePhotoViewModel {
 
@@ -55,6 +57,12 @@ open class BasePhotoViewModelImpl(
     private var addNoteJob: Job? = null
 
     private var locationJob: Job? = null
+
+    private var compassJob: Job? = null
+
+    /** Which way the camera is pointing right now; null until the compass reports, or forever
+     * on a phone without one. */
+    private var lastBearing: Float? = null
 
     protected var lastLocation: Location? = null
         private set
@@ -88,12 +96,14 @@ open class BasePhotoViewModelImpl(
     override fun init() {
         super.init()
         observeLocation()
+        observeBearing()
     }
 
     override fun onEventArrived(event: BasePhotoContract.Event?) {
         when (event) {
             is BasePhotoContract.Event.Resume -> {
                 observeLocation()
+                observeBearing()
                 subscribeToAddNoteFlow()
             }
             is BasePhotoContract.Event.FlipCamera -> handleCameraFlip()
@@ -158,6 +168,19 @@ open class BasePhotoViewModelImpl(
     private fun stopObservingLocation() {
         locationJob?.cancel()
         locationJob = null
+        compassJob?.cancel()
+        compassJob = null
+    }
+
+    /**
+     * The compass runs only while the camera screen is open: it is a sensor that wakes the CPU
+     * several times a second, and nothing outside this screen needs a heading.
+     */
+    private fun observeBearing() {
+        if (compassJob?.isActive == true) return
+        compassJob = launch {
+            compassProvider.bearings { lastLocation }.collect { lastBearing = it }
+        }
     }
 
     private fun subscribeToAddNoteFlow() {
@@ -211,7 +234,8 @@ open class BasePhotoViewModelImpl(
             location?.longitude?.formatCoordinate().takeIf { showCoordinates },
             PhotoClock.formatDate(date).takeIf { prefs.isDisplayDate() },
             PhotoClock.formatTime(date).takeIf { prefs.isDisplayTime() },
-            location?.accuracy?.toInt()?.toString().takeIf { prefs.isDisplayAccuracy() && location != null }
+            location?.accuracy?.toInt()?.toString().takeIf { prefs.isDisplayAccuracy() && location != null },
+            lastBearing
         )
     }
 
@@ -254,6 +278,8 @@ open class BasePhotoViewModelImpl(
         val seriesId = openSeriesId
         // Captured before the coroutine: the fix can move on while the file is being written.
         val accuracy = signalState.value.accuracyMeters
+        // Likewise the heading: the phone is usually lowered the moment the shutter is released.
+        val bearing = lastBearing
         // The note is what the person called this shot, so it is kept beside the file as its name
         // and not only drawn into the pixels - a list of dates tells nobody which photo is which.
         val title = pendingNote.orEmpty().trim()
@@ -269,7 +295,8 @@ open class BasePhotoViewModelImpl(
                         lng = lastLocation?.longitude,
                         accuracyMeters = accuracy,
                         seriesId = seriesId,
-                        isWide = isWide
+                        isWide = isWide,
+                        bearingDegrees = bearing
                     )
                 )
                 if (seriesId != null) seriesFrames.add(accuracy)

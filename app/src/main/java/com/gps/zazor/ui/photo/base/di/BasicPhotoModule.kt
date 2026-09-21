@@ -18,6 +18,7 @@ val basicPhotoModule = module {
             get(),
             get(),
             get(),
+            get(),
             get()
         )
     }

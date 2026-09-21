@@ -8,6 +8,7 @@ import com.gps.zazor.ui.photo.base.BasePhotoViewModelImpl
 import com.gps.zazor.ui.photo.editPhoto.EditPhotoContract
 import com.gps.zazor.utils.PhotoStorage
 import com.gps.zazor.utils.location.AddressResolver
+import com.gps.zazor.utils.location.CompassProvider
 import com.gps.zazor.utils.location.LocationProvider
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,9 +26,11 @@ class CollagePhotoViewModelImpl(
     photoRepository: PhotoRepository,
     photoStorage: PhotoStorage,
     locationProvider: LocationProvider,
+    compassProvider: CompassProvider,
     addressResolver: AddressResolver
 ) : BasePhotoViewModelImpl(
-    editPhotoFlow, prefs, photoRepository, photoStorage, locationProvider, addressResolver
+    editPhotoFlow, prefs, photoRepository, photoStorage, locationProvider, compassProvider,
+    addressResolver
 ) {
 
     private var index = -1

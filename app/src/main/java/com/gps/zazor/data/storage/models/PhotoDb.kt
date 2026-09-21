@@ -9,7 +9,8 @@ import java.time.Instant
 /**
  * [date] stays epoch milliseconds, so swapping the date library needed no schema migration.
  * [voiceNotePath] arrived in schema 2, [accuracyMeters] and [seriesId] in schema 3, [isWide] in
- * schema 4; every one of them is empty for rows written before it.
+ * schema 4 and [bearingDegrees] in schema 5; every one of them is empty for rows written before
+ * it.
  */
 @Entity(tableName = "photos")
 data class PhotoDb(@PrimaryKey val path: String,
@@ -24,7 +25,9 @@ data class PhotoDb(@PrimaryKey val path: String,
                    /** Groups the frames of one approach series; null for a standalone shot. */
                    @ColumnInfo(name = "series_id") val seriesId: String? = null,
                    /** Shot on the wide lens. False for everything taken before schema 4. */
-                   @ColumnInfo(name = "is_wide") val isWide: Boolean = false)
+                   @ColumnInfo(name = "is_wide") val isWide: Boolean = false,
+                   /** Compass bearing of the shot in degrees; null when the phone had no compass. */
+                   @ColumnInfo(name = "bearing_deg") val bearingDegrees: Float? = null)
 
 fun PhotoDb.toDomain(): Photo =
       Photo(
@@ -37,5 +40,6 @@ fun PhotoDb.toDomain(): Photo =
           voiceNotePath,
           accuracyMeters,
           seriesId,
-          isWide
+          isWide,
+          bearingDegrees
       )

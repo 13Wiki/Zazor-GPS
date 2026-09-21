@@ -56,6 +56,26 @@
             android:visibility="gone"
             tools:text="55.755826, 37.617300"
             tools:visibility="visible" />
+        <!-- A panorama says where it was shot and which way it looked; the direction sits
+             opposite the coordinates so neither hides the other. -->
+        <TextView
+            android:id="@+id/tvBearing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/ds_space_3"
+            android:background="@drawable/ds_photo_pill"
+            android:paddingStart="@dimen/ds_space_3"
+            android:paddingEnd="@dimen/ds_space_3"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:text="214°"
+            tools:visibility="visible" />
+
     </androidx.cardview.widget.CardView>
 
     <CheckBox
