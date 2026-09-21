@@ -19,8 +19,10 @@ import com.gps.zazor.data.models.Outing
 import com.gps.zazor.data.models.Photo
 import com.gps.zazor.databinding.FragmentOutingsBinding
 import com.gps.zazor.ui.base.BaseFragment
+import com.gps.zazor.ui.media.MediaCallback
 import com.gps.zazor.ui.outings.di.injectViewModel
 import com.gps.zazor.utils.Formats
+import com.gps.zazor.utils.time.PhotoClock
 import com.gps.zazor.utils.export.TrackFormat
 import com.gps.zazor.utils.viewBinding.viewBinding
 import kotlinx.coroutines.launch
@@ -60,7 +62,12 @@ class OutingsFragment : BaseFragment<OutingsContract.State, OutingsContract.Even
         binding.ivDelete.setOnClickListener { confirmDelete() }
         binding.ivExport.setOnClickListener(::showExportMenu)
         binding.tvOpenInMaps.setOnClickListener { openSelectedPointInMaps() }
-        binding.vRoute.onPointSelected = { updateStats() }
+        binding.bOpenPhoto.setOnClickListener { openSelectedPhoto() }
+        binding.bSendTrack.setOnClickListener(::showExportMenu)
+        binding.vRoute.onPointSelected = {
+            updateStats()
+            renderPoint()
+        }
         observeEffects()
     }
 
@@ -82,7 +89,9 @@ class OutingsFragment : BaseFragment<OutingsContract.State, OutingsContract.Even
         binding.tvOpenInMaps.isVisible = (state.selected?.pointCount ?: 0) > 0
 
         binding.vRoute.setPhotos(state.selected?.photos.orEmpty())
+        binding.clPoint.isVisible = hasAny
         updateStats()
+        renderPoint()
     }
 
     private fun updateStats() {
@@ -105,6 +114,37 @@ class OutingsFragment : BaseFragment<OutingsContract.State, OutingsContract.Even
                 append(getString(R.string.route_point_of, point, outing.pointCount))
             }
         }
+    }
+
+    /**
+     * The selected point, in the words a person would use about it: what is on the frame, when it
+     * was taken, whether it is a panorama and which way it looked, and how tight the fix was.
+     */
+    private fun renderPoint() {
+        val photo = binding.vRoute.photoAt(binding.vRoute.selectedIndex)
+        val number = binding.vRoute.selectedIndex + 1
+        if (photo == null) {
+            binding.tvPointTitle.setText(R.string.point_none)
+            binding.tvPointMeta.text = ""
+            binding.bOpenPhoto.isEnabled = false
+            return
+        }
+        binding.bOpenPhoto.isEnabled = true
+        binding.tvPointTitle.text = photo.name.takeIf { it.isNotBlank() }
+            ?.let { getString(R.string.point_title, number, it) }
+            ?: getString(R.string.point_title_plain, number)
+        binding.tvPointMeta.text = listOfNotNull(
+            PhotoClock.formatTime(photo.date),
+            photo.bearingDegrees
+                ?.takeIf { photo.isWide }
+                ?.let { getString(R.string.point_meta_panorama, Math.round(it) % 360) },
+            photo.accuracyMeters?.let { getString(R.string.point_meta_accuracy, Math.round(it)) }
+        ).joinToString(" · ")
+    }
+
+    private fun openSelectedPhoto() {
+        val photo = binding.vRoute.photoAt(binding.vRoute.selectedIndex) ?: return
+        (activity as? MediaCallback)?.editPhoto(photo.path)
     }
 
     private fun confirmDelete() {

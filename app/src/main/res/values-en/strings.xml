@@ -77,6 +77,13 @@
     <string name="route_open_in_maps">Open in maps</string>
     <string name="route_no_maps_app">No maps app installed</string>
     <string name="route_point_of">Point %1$d of %2$d</string>
+    <string name="point_title">Point %1$d · %2$s</string>
+    <string name="point_title_plain">Point %1$d</string>
+    <string name="point_meta_panorama">panorama %1$d°</string>
+    <string name="point_meta_accuracy">±%1$d m</string>
+    <string name="point_open_photo">Open the photo</string>
+    <string name="point_send_track">Send the track</string>
+    <string name="point_none">Touch the route to pick a point</string>
     <string name="distance_m">%1$d m</string>
     <string name="distance_km">%1$s km</string>
     <string name="duration_hm">%1$d h %2$d min</string>

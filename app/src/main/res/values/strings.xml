@@ -80,6 +80,13 @@
     <string name="route_open_in_maps">Открыть в картах</string>
     <string name="route_no_maps_app">Нет приложения карт</string>
     <string name="route_point_of">Точка %1$d из %2$d</string>
+    <string name="point_title">Точка %1$d · %2$s</string>
+    <string name="point_title_plain">Точка %1$d</string>
+    <string name="point_meta_panorama">панорама %1$d°</string>
+    <string name="point_meta_accuracy">±%1$d м</string>
+    <string name="point_open_photo">Открыть снимок</string>
+    <string name="point_send_track">Отправить трек</string>
+    <string name="point_none">Коснитесь маршрута, чтобы выбрать точку</string>
     <string name="distance_m">%1$d м</string>
     <string name="distance_km">%1$s км</string>
     <string name="duration_hm">%1$d ч %2$d мин</string>

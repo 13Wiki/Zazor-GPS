@@ -67,7 +67,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/ds_space_2"
-        app:layout_constraintBottom_toTopOf="@id/rvOutings"
+        app:layout_constraintBottom_toTopOf="@id/clPoint"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivBack" />
@@ -126,6 +126,74 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/vRoute"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <!--
+      The point the finger landed on: what was photographed there, when, and how tight the fix
+      was - with the two things worth doing about it.
+    -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPoint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/ds_space_4"
+        android:layout_marginEnd="@dimen/ds_space_4"
+        android:layout_marginBottom="@dimen/ds_space_3"
+        android:background="@drawable/ds_surface_card"
+        android:padding="@dimen/ds_space_4"
+        app:layout_constraintBottom_toTopOf="@id/rvOutings"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/tvPointTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Точка 5 · Рюкзак у камня" />
+
+        <TextView
+            android:id="@+id/tvPointMeta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ds_space_1"
+            android:textColor="@color/ds_text_secondary"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPointTitle"
+            tools:text="15:34 · панорама 214° · ±4 м" />
+
+        <Button
+            android:id="@+id/bOpenPhoto"
+            style="@style/Widget.Zazor.Button.Ghost.Compact"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ds_space_3"
+            android:layout_marginEnd="@dimen/ds_space_2"
+            android:text="@string/point_open_photo"
+            app:layout_constraintEnd_toStartOf="@id/bSendTrack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvPointMeta" />
+
+        <Button
+            android:id="@+id/bSendTrack"
+            style="@style/Widget.Zazor.Button.Compact"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ds_space_3"
+            android:text="@string/point_send_track"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bOpenPhoto"
+            app:layout_constraintTop_toBottomOf="@id/tvPointMeta" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOutings"

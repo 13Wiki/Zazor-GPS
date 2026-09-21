@@ -35,6 +35,21 @@
         <item name="android:textColor">@color/ds_text_primary</item>
     </style>
 
+    <!-- Two buttons sharing one card's width: the roomy padding wraps their labels in half. -->
+    <style name="Widget.Zazor.Button.Compact">
+        <item name="android:paddingStart">@dimen/ds_space_3</item>
+        <item name="android:paddingEnd">@dimen/ds_space_3</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Widget.Zazor.Button.Ghost.Compact">
+        <item name="android:paddingStart">@dimen/ds_space_3</item>
+        <item name="android:paddingEnd">@dimen/ds_space_3</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
     <!-- Outlined input on a dark ground; the platform default assumes a light one. -->
     <style name="Widget.Zazor.TextInput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <item name="boxCornerRadiusTopStart">@dimen/ds_radius_control</item>
