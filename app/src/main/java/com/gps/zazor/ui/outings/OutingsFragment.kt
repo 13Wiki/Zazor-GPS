@@ -101,7 +101,9 @@ class OutingsFragment : BaseFragment<OutingsContract.State, OutingsContract.Even
             append(
                 getString(
                     R.string.outing_summary,
-                    outing.pointCount,
+                    resources.getQuantityString(
+                        R.plurals.outing_points, outing.pointCount, outing.pointCount
+                    ),
                     Formats.distance(requireContext(), outing.distanceMeters)
                 )
             )

@@ -71,7 +71,13 @@
     <string name="outings_title">Виходи</string>
     <string name="outing_today">Сьогодні</string>
     <string name="outing_yesterday">Учора</string>
-    <string name="outing_summary">%1$d точок · %2$s</string>
+    <string name="outing_summary">%1$s · %2$s</string>
+    <plurals name="outing_points">
+        <item quantity="one">%1$d точка</item>
+        <item quantity="few">%1$d точки</item>
+        <item quantity="many">%1$d точок</item>
+        <item quantity="other">%1$d точки</item>
+    </plurals>
     <string name="outing_time_range">%1$s — %2$s</string>
     <string name="outing_delete">Видалити вихід</string>
     <string name="outing_delete_message">Знімки цього дня та слід маршруту буде стерто з телефона. Скасувати не можна.</string>

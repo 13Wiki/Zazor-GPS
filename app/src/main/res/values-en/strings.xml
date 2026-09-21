@@ -69,7 +69,11 @@
     <string name="outings_title">Outings</string>
     <string name="outing_today">Today</string>
     <string name="outing_yesterday">Yesterday</string>
-    <string name="outing_summary">%1$d points · %2$s</string>
+    <string name="outing_summary">%1$s · %2$s</string>
+    <plurals name="outing_points">
+        <item quantity="one">%1$d point</item>
+        <item quantity="other">%1$d points</item>
+    </plurals>
     <string name="outing_time_range">%1$s — %2$s</string>
     <string name="outing_delete">Delete outing</string>
     <string name="outing_delete_message">This day\'s photos and its route trace will be erased from the phone. This cannot be undone.</string>

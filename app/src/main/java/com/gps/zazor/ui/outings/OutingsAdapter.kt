@@ -45,7 +45,9 @@ class OutingsAdapter(
             binding.tvDay.text = outing.date.label(context.resources)
             binding.tvSummary.text = context.getString(
                 R.string.outing_summary,
-                outing.pointCount,
+                context.resources.getQuantityString(
+                    R.plurals.outing_points, outing.pointCount, outing.pointCount
+                ),
                 Formats.distance(context, outing.distanceMeters)
             )
             binding.tvRange.text = outing.startedAt?.let { start ->
