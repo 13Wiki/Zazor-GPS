@@ -37,7 +37,7 @@
                 android:id="@+id/clCollageGrid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/ds_glass_pill"
+                android:background="@drawable/ds_viewfinder_pill"
                 android:orientation="horizontal"
                 android:padding="@dimen/ds_space_1"
                 android:visibility="gone"

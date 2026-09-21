@@ -24,6 +24,9 @@ import com.gps.zazor.utils.time.PhotoClock
 import java.time.Instant
 import java.util.UUID
 
+/** How far a person has to walk before the address on the card is looked up again. */
+private const val ADDRESS_STEP_METERS = 50F
+
 interface BasePhotoViewModel : BaseViewModel<BasePhotoContract.State, BasePhotoContract.Event> {
 
     /**
@@ -36,6 +39,9 @@ interface BasePhotoViewModel : BaseViewModel<BasePhotoContract.State, BasePhotoC
 
     /** Progress of the open approach series; separate from `uiState` for the same reason. */
     val series: StateFlow<SeriesProgress>
+
+    /** What the stamp would say if the shutter were pressed now. */
+    val stamp: StateFlow<StampPreview>
 }
 
 open class BasePhotoViewModelImpl(
@@ -74,6 +80,15 @@ open class BasePhotoViewModelImpl(
     )
 
     override val signal: StateFlow<SignalQuality> = signalState.asStateFlow()
+
+    private val stampState = MutableStateFlow(StampPreview())
+
+    override val stamp: StateFlow<StampPreview> = stampState.asStateFlow()
+
+    /** Where the address shown on the card was resolved, so it is not re-resolved standing still. */
+    private var addressFor: Location? = null
+
+    private var addressJob: Job? = null
 
     private val seriesState = MutableStateFlow(SeriesProgress())
 
@@ -152,6 +167,7 @@ open class BasePhotoViewModelImpl(
                     thresholdMeters = prefs.getAccuracyThresholdMeters(),
                     warnBeforeCapture = prefs.isWaitForAccurateFix()
                 )
+                updateStampPreview(location)
             }
         }
     }
@@ -164,6 +180,30 @@ open class BasePhotoViewModelImpl(
         if (!hasAccuracy()) return false
         val ageMs = (SystemClock.elapsedRealtimeNanos() - elapsedRealtimeNanos) / 1_000_000
         return ageMs in 0..SignalQuality.MAX_FIX_AGE_MS
+    }
+
+    /**
+     * The card over the viewfinder, showing what will be burned onto the next frame.
+     *
+     * The address is geocoded, which is a network call, so it is fetched once per place rather
+     * than once per fix: standing still produces a position update every couple of seconds, and
+     * the street does not change between them.
+     */
+    private fun updateStampPreview(location: Location) {
+        val previous = addressFor
+        val moved = previous == null || previous.distanceTo(location) > ADDRESS_STEP_METERS
+        stampState.value = StampPreview(
+            lat = location.latitude.takeIf { prefs.isDisplayCoordinates() },
+            lng = location.longitude.takeIf { prefs.isDisplayCoordinates() },
+            accuracyMeters = location.accuracy.takeIf { prefs.isDisplayAccuracy() },
+            address = if (moved) null else stampState.value.address
+        )
+        if (!moved || addressJob?.isActive == true) return
+        addressFor = location
+        addressJob = launchIo {
+            val address = addressResolver.resolve(location)
+            stampState.value = stampState.value.copy(address = address)
+        }
     }
 
     private fun stopObservingLocation() {

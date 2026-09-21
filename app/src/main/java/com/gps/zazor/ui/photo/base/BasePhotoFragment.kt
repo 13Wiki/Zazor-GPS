@@ -28,6 +28,7 @@ import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_ON_DISTANCE
 import com.gps.zazor.ui.photo.editPhoto.DASH_PATH_PHASE
 import com.gps.zazor.ui.photo.editPhoto.SELECTOR_BUTTON_COLOR_DEFAULT
 import com.gps.zazor.ui.photo.editPhoto.STROKE_WIDTH_FOR_DASH_LINE
+import com.gps.zazor.data.prefs.AppPreferences
 import com.gps.zazor.utils.Formats
 import com.gps.zazor.utils.PhotoComposer
 import com.gps.zazor.utils.camera.CameraController
@@ -35,7 +36,9 @@ import com.gps.zazor.utils.location.SignalQuality
 import com.gps.zazor.utils.extensions.getBitmap
 import com.gps.zazor.utils.extensions.hide
 import com.gps.zazor.utils.extensions.show
+import com.gps.zazor.utils.time.PhotoClock
 import com.gps.zazor.utils.viewBinding.viewBinding
+import org.koin.android.ext.android.inject
 import com.gps.zazor.views.ShowButtonOnSelector
 
 abstract class BasePhotoFragment :
@@ -45,6 +48,9 @@ abstract class BasePhotoFragment :
     override val screenTitle = R.string.photo
 
     /** Screens that want the widest back lens override this; see [PanoramaFragment]. */
+    /** The stamp preview must read exactly like the stamp, so it asks the same settings. */
+    private val prefs: AppPreferences by inject()
+
     protected open val useUltraWide: Boolean = false
 
     /**
@@ -200,6 +206,9 @@ abstract class BasePhotoFragment :
                 launch {
                     viewModel.series.collect(::renderSeries)
                 }
+                launch {
+                    viewModel.stamp.collect(::renderStampPreview)
+                }
                 viewModel.signal.collect { quality ->
                     lastSignal = quality
                     binding.tvSignal.text = when {
@@ -274,6 +283,33 @@ abstract class BasePhotoFragment :
      * Shows how many frames the open series holds and how good its best fix is.
      * An open series with no frames yet must read differently from no series at all.
      */
+    /**
+     * The card over the viewfinder. Each line disappears when it has nothing to say - the stamp
+     * will not print an address it does not have either, and an empty line on the card would be a
+     * promise the photo does not keep.
+     */
+    private fun renderStampPreview(preview: StampPreview) {
+        val format = prefs.getCoordinateFormat()
+        binding.tvStampCoordinates.isVisible = preview.hasPosition
+        if (preview.hasPosition) {
+            binding.tvStampCoordinates.text =
+                "${format.format(preview.lat!!)}, ${format.format(preview.lng!!)}"
+        }
+        binding.tvStampAddress.isVisible = !preview.address.isNullOrBlank()
+        binding.tvStampAddress.text = preview.address.orEmpty()
+        val now = PhotoClock.now()
+        val meta = listOfNotNull(
+            PhotoClock.formatDate(now).takeIf { prefs.isDisplayDate() },
+            PhotoClock.formatTime(now).takeIf { prefs.isDisplayTime() },
+            preview.accuracyMeters?.let { getString(R.string.accuracy, it.toInt().toString()) }
+        ).joinToString(" · ")
+        binding.tvStampMeta.isVisible = meta.isNotEmpty()
+        binding.tvStampMeta.text = meta
+        // Nothing to show at all - no fix yet, everything switched off - is no card.
+        binding.llStampPreview.isVisible =
+            preview.hasPosition || !preview.address.isNullOrBlank() || meta.isNotEmpty()
+    }
+
     private fun frames(count: Int): String =
         resources.getQuantityString(R.plurals.series_frames_count, count, count)
 
