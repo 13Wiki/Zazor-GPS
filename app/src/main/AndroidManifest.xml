@@ -161,7 +161,8 @@
         <activity
             android:name=".ui.photo.collage.photo.CollagePhotoActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Zazor.Camera" />
 
         <activity
             android:name=".ui.media.MediaActivity"

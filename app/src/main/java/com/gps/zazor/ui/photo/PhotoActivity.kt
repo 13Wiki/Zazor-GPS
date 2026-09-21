@@ -276,4 +276,4 @@ const val SERIES_EXTRA_KEY = "seriesExtra"
 private const val COLLAPSED_PEEK_HEIGHT = 250
 
 /** Breathing room under the shutter, added on top of whatever the gesture bar takes. */
-private const val PANEL_BOTTOM_PADDING = 28
+const val PANEL_BOTTOM_PADDING = 28

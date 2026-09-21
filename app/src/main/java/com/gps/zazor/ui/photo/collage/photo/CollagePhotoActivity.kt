@@ -5,12 +5,17 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.gps.zazor.R
 import com.gps.zazor.databinding.ActivityCollagePhotoBinding
 import com.gps.zazor.databinding.BottomSheetAddNoteBinding
 import com.gps.zazor.ui.photo.*
+import com.gps.zazor.ui.photo.PANEL_BOTTOM_PADDING
 import com.gps.zazor.ui.photo.editPhoto.EditPhotoBottomSheet
 import com.gps.zazor.ui.settings.SettingsActivity
 import com.gps.zazor.utils.extensions.gone
@@ -45,6 +50,10 @@ class CollagePhotoActivity : AppCompatActivity(R.layout.activity_collage_photo),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        drawEdgeToEdge()
+        // As on the camera: the sheet belongs to a shot that has been taken, and Material adds the
+        // gesture inset to its zero peek height, so left collapsed it sat over the shutter.
+        BottomSheetBehavior.from(sheetBinding.clRoot).state = BottomSheetBehavior.STATE_HIDDEN
         registerSheetBackHandling()
         binding.ivCapture.setOnClickListener {
             getCurrentPhotoHandler()?.onCapturePhoto()
@@ -54,6 +63,20 @@ class CollagePhotoActivity : AppCompatActivity(R.layout.activity_collage_photo),
         }
         intent?.getIntExtra(INDEX_EXTRA_KEY, 0)?.let {
             navigateTo(CollagePhotoFragment.newInstance(it))
+        }
+    }
+
+    /**
+     * The same arrangement as the camera: the frame runs under the system bars and the floating
+     * controls take the insets, so the shutter does not end up under the gesture handle. From
+     * Android 15 this is not optional - the window is drawn edge to edge whatever the theme says.
+     */
+    private fun drawEdgeToEdge() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.flContainer) { _, insets ->
+            val bars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            binding.clPhotoPanel.updatePadding(bottom = bars.bottom + PANEL_BOTTOM_PADDING)
+            insets
         }
     }
 
