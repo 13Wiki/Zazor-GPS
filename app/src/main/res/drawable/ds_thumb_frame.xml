@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The last shot, framed: 18dp corners and a 2dp edge so it reads against a bright frame. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@android:color/transparent" />
+    <stroke android:width="2dp" android:color="@color/ds_glass_edge_thumb" />
+    <corners android:radius="18dp" />
+</shape>

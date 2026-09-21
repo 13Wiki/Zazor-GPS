@@ -88,7 +88,9 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
                     false -> showPermissionDenied()
                     null -> Unit
                 }
-                state.photoUri?.let { binding.ivLastPhoto.loadImage(it) }
+                state.photoUri?.let {
+                    binding.ivLastPhoto.loadImage(it, circle = false, cornerRadiusDp = THUMB_RADIUS_DP)
+                }
                     ?: binding.ivLastPhoto.hide()
             }
             else -> Unit
@@ -269,6 +271,9 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
     private fun currentFragment() = adapter?.currentFragment(binding.vpPhoto)
 }
+
+/** The rounded square the design frames the last shot in. */
+private const val THUMB_RADIUS_DP = 18
 
 /** Carries an approach series from the series screen back to the camera. */
 const val SERIES_EXTRA_KEY = "seriesExtra"

@@ -19,122 +19,174 @@
         app:implementationMode="compatible"
         app:scaleType="fillCenter" />
 
-    <!-- Fix quality: the one thing worth reading before pressing the shutter. -->
-    <TextView
-        android:id="@+id/tvSignal"
+    <!--
+      The top row of the design: how good the fix is, and everything else this screen can do
+      behind one button. Both are glass at the mockup's weight - white 16 per cent over a 22 per
+      cent hairline - because they lie over a live frame that can be any colour at all.
+    -->
+    <LinearLayout
+        android:id="@+id/llSignal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/ds_space_4"
-        android:background="@drawable/ds_viewfinder_pill"
-        android:drawablePadding="@dimen/ds_space_2"
-        android:paddingStart="@dimen/ds_space_4"
-        android:paddingEnd="@dimen/ds_space_4"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textColor="@color/ds_text_primary"
-        android:textSize="13sp"
-        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ds_glass_pill"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="11dp"
+        android:paddingBottom="11dp"
         android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Сигнал ±4 м"
-        tools:visibility="visible" />
+        tools:visibility="visible">
+
+        <View
+            android:id="@+id/vSignalDot"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="9dp"
+            android:background="@drawable/ds_signal_dot" />
+
+        <TextView
+            android:id="@+id/tvSignal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope_semibold"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="13sp"
+            tools:text="Сигнал точный · 4 м" />
+
+    </LinearLayout>
 
     <ImageView
-        android:id="@+id/ivFlash"
-        android:layout_width="@dimen/ds_icon_button"
-        android:layout_height="@dimen/ds_icon_button"
-        android:layout_marginTop="@dimen/ds_space_4"
-        android:layout_marginEnd="@dimen/ds_space_2"
-        android:background="@drawable/ds_viewfinder_pill"
-        android:contentDescription="@string/flash"
+        android:id="@+id/ivMenu"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ds_glass_pill"
+        android:contentDescription="@string/camera_menu"
         android:padding="12dp"
-        android:src="@drawable/ic_flash"
-        app:layout_constraintEnd_toStartOf="@id/ivSettings"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/ds_text_primary" />
-
-    <ImageView
-        android:id="@+id/ivSettings"
-        android:layout_width="@dimen/ds_icon_button"
-        android:layout_height="@dimen/ds_icon_button"
-        android:layout_marginTop="@dimen/ds_space_4"
-        android:layout_marginEnd="@dimen/ds_space_4"
-        android:background="@drawable/ds_viewfinder_pill"
-        android:contentDescription="@string/settings"
-        android:padding="12dp"
-        android:src="@drawable/ic_settings"
+        android:src="@drawable/ic_menu_lines"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/ds_text_primary" />
-
-    <!-- Approach series: several frames of one spot, from the wide shot down to the object. -->
-    <TextView
-        android:id="@+id/tvSeries"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/ds_space_4"
-        android:layout_marginTop="@dimen/ds_space_2"
-        android:background="@drawable/ds_viewfinder_pill"
-        android:paddingStart="@dimen/ds_space_4"
-        android:paddingEnd="@dimen/ds_space_4"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:text="@string/series_start"
-        android:textColor="@color/ds_text_primary"
-        android:textSize="13sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSignal"
-        tools:text="Серия · 3 кадра" />
+        app:layout_constraintTop_toTopOf="@id/llSignal"
+        app:layout_constraintBottom_toBottomOf="@id/llSignal" />
 
     <!--
-      What the next frame will be stamped with: the same lines, in the same corner they will be
-      burned into. It answers "will this photo actually carry the address?" before the shot
-      rather than after it.
+      What the next frame will be stamped with, laid out as the design's card: the point, the
+      street, then the values as chips, then the note. It answers "will this photo carry the
+      address?" before the shutter rather than after it.
     -->
     <LinearLayout
         android:id="@+id/llStampPreview"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/ds_space_4"
-        android:layout_marginTop="@dimen/ds_space_3"
-        android:background="@drawable/ds_stamp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="28dp"
+        android:background="@drawable/ds_glass_card"
         android:orientation="vertical"
-        android:paddingStart="@dimen/ds_space_4"
-        android:paddingEnd="@dimen/ds_space_4"
-        android:paddingTop="@dimen/ds_space_3"
-        android:paddingBottom="@dimen/ds_space_3"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSeries">
+        app:layout_constraintTop_toBottomOf="@id/llSignal">
 
-        <TextView
-            android:id="@+id/tvStampCoordinates"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="@drawable/ds_card_icon"
+                android:contentDescription="@null"
+                android:padding="8dp"
+                android:src="@drawable/ic_baseline_location_24"
+                app:tint="@color/ds_on_accent" />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvStampCoordinates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/manrope_bold"
+                    android:letterSpacing="-0.01"
+                    android:textColor="@color/ds_text_primary"
+                    android:textSize="16sp"
+                    tools:text="55.755826, 37.617300" />
+
+                <TextView
+                    android:id="@+id/tvStampAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/manrope_medium"
+                    android:maxLines="2"
+                    android:textColor="@color/ds_on_glass_muted"
+                    android:textSize="13sp"
+                    tools:text="Ленинский просп. 32, Москва" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llStampChips"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/ds_text_primary"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvStampDate"
+                style="@style/Widget.Zazor.GlassChip"
+                tools:text="03.09.2026" />
+
+            <TextView
+                android:id="@+id/tvStampTime"
+                style="@style/Widget.Zazor.GlassChip"
+                android:layout_marginStart="8dp"
+                tools:text="15:30" />
+
+            <TextView
+                android:id="@+id/tvStampAccuracy"
+                style="@style/Widget.Zazor.GlassChip"
+                android:layout_marginStart="8dp"
+                tools:text="±4 м" />
+
+            <TextView
+                android:id="@+id/tvStampSeries"
+                style="@style/Widget.Zazor.GlassChip"
+                android:layout_marginStart="8dp"
+                android:visibility="gone"
+                tools:text="Серия · 3 кадра"
+                tools:visibility="visible" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvStampNote"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/manrope_medium"
+            android:textColor="@color/ds_on_glass"
             android:textSize="14sp"
-            android:textStyle="bold"
-            tools:text="50°27'00.4&quot;, 30°31'24.2&quot;" />
-
-        <TextView
-            android:id="@+id/tvStampAddress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:maxWidth="260dp"
-            android:textColor="@color/ds_text_secondary"
-            android:textSize="12sp"
-            tools:text="Ленинский просп. 32, Москва" />
-
-        <TextView
-            android:id="@+id/tvStampMeta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/ds_text_muted"
-            android:textSize="12sp"
-            tools:text="03.09.2026 · 15:30 · ±4 м" />
+            android:visibility="gone"
+            tools:text="Камень у просеки, 40 м на СВ"
+            tools:visibility="visible" />
 
     </LinearLayout>
 

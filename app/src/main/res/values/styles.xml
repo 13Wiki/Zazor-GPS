@@ -35,6 +35,28 @@
         <item name="android:textColor">@color/ds_text_primary</item>
     </style>
 
+    <!-- The mode switch's labels: 14sp semibold, as in the mockup. -->
+    <style name="TextAppearance.Zazor.Mode" parent="TextAppearance.MaterialComponents.Button">
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <!-- A value inside the glass card: 12sp semibold on white 18%, as the mockup draws it. -->
+    <style name="Widget.Zazor.GlassChip" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ds_glass_chip</item>
+        <item name="android:fontFamily">@font/manrope_semibold</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingTop">7dp</item>
+        <item name="android:paddingBottom">7dp</item>
+        <item name="android:textColor">@color/ds_text_primary</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <!-- Two buttons sharing one card's width: the roomy padding wraps their labels in half. -->
     <style name="Widget.Zazor.Button.Compact">
         <item name="android:paddingStart">@dimen/ds_space_3</item>

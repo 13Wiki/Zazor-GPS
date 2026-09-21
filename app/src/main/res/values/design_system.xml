@@ -13,6 +13,29 @@
 
     <!-- Glass sits over a live image: the camera preview and the map. -->
     <color name="ds_glass">#26FFFFFF</color>
+
+    <!--
+      Glass over the viewfinder, at the exact opacities the mockups use. White at 14-22 per cent
+      for the fills, 20-32 for the hairline around them; they are close to each other on purpose -
+      a pill, a card and a track have to read as the same material at different weights.
+    -->
+    <color name="ds_glass_track">#24FFFFFF</color>
+    <color name="ds_glass_card">#26FFFFFF</color>
+    <color name="ds_glass_pill">#29FFFFFF</color>
+    <color name="ds_glass_chip">#2EFFFFFF</color>
+    <color name="ds_glass_shutter">#38FFFFFF</color>
+    <color name="ds_glass_edge_track">#33FFFFFF</color>
+    <color name="ds_glass_edge_pill">#38FFFFFF</color>
+    <color name="ds_glass_edge_card">#3DFFFFFF</color>
+    <color name="ds_glass_edge_thumb">#4DFFFFFF</color>
+    <color name="ds_glass_edge_shutter">#52FFFFFF</color>
+
+    <!-- Text laid on glass is white with alpha, not the grey used on solid surfaces. -->
+    <color name="ds_on_glass">#EBFFFFFF</color>
+    <color name="ds_on_glass_muted">#B8FFFFFF</color>
+
+    <!-- The dot beside the signal reading: good fix, and the warning colour for a poor one. -->
+    <color name="ds_signal_good">#34D07F</color>
     <color name="ds_glass_strong">#40FFFFFF</color>
     <color name="ds_glass_outline">#3DFFFFFF</color>
     <color name="ds_scrim">#B30B0F14</color>
@@ -57,6 +80,6 @@
 
     <!-- Never below 44dp: this is used outdoors, in gloves. -->
     <dimen name="ds_touch_min">48dp</dimen>
-    <dimen name="ds_shutter">76dp</dimen>
+    <dimen name="ds_shutter">80dp</dimen>
     <dimen name="ds_icon_button">46dp</dimen>
 </resources>

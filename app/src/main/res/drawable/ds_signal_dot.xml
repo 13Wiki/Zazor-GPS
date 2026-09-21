@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Eight pixels of colour that say whether the fix is worth pressing the shutter on. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/ds_signal_good" />
+    <size android:width="8dp" android:height="8dp" />
+</shape>

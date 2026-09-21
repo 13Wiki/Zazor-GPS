@@ -12,6 +12,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import kotlinx.coroutines.launch
+import android.content.res.ColorStateList
+import androidx.appcompat.widget.PopupMenu
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
@@ -73,6 +76,12 @@ abstract class BasePhotoFragment :
 
     private var lastSignal: SignalQuality? = null
 
+    /** Mirrored here so the menu can say "turn the flash off" rather than just "flash". */
+    private var isFlashOn = false
+
+    /** Whether the card has anything to say; it hides with the rest while a shot is on screen. */
+    private var hasStampToShow = false
+
     /** True while a drawing tool is selected; then the corner button undoes instead of clearing. */
     private var isDrawing = false
 
@@ -104,7 +113,10 @@ abstract class BasePhotoFragment :
     override fun observeState(state: BasePhotoContract.State?) {
         when (state) {
             is BasePhotoContract.State.FlipCamera -> camera?.flip(viewLifecycleOwner) { showCameraError() }
-            is BasePhotoContract.State.ToggleFlash -> camera?.setTorch(state.isOn)
+            is BasePhotoContract.State.ToggleFlash -> {
+                isFlashOn = state.isOn
+                camera?.setTorch(state.isOn)
+            }
             is BasePhotoContract.State.AddNotes -> addNotes(state)
             is BasePhotoContract.State.AddOverlay -> binding.run {
                 dvNotes.elevation = 0F
@@ -156,21 +168,13 @@ abstract class BasePhotoFragment :
         binding.vDraw.onMarkAdded = ::hideMarkerHint
         resumeSeriesFromIntent()
         binding.run {
-            ivFlash.setOnClickListener {
-                viewModel.sendEvent(BasePhotoContract.Event.ToggleFlash)
-            }
             ivBack.setOnClickListener {
                 viewModel.sendEvent(BasePhotoContract.Event.BackPressed)
             }
             tvClearAll.setOnClickListener {
                 if (isDrawing) callback?.undoPaint() else callback?.clearAll()
             }
-            ivSettings.setOnClickListener {
-                callback?.openSettings()
-            }
-            tvSeries.setOnClickListener {
-                viewModel.sendEvent(BasePhotoContract.Event.ToggleSeries)
-            }
+            ivMenu.setOnClickListener(::showCameraMenu)
         }
         applyStatusBarInset()
         setupOverlayEditor()
@@ -182,7 +186,8 @@ abstract class BasePhotoFragment :
      * controls sat on top of the clock and the status icons, so the bar's height is added to them.
      */
     private fun applyStatusBarInset() {
-        val topControls = with(binding) { listOf(tvSignal, ivFlash, ivSettings, ivBack, tvClearAll) }
+        val topControls =
+            with(binding) { listOf(llSignal, ivMenu, ivBack, tvClearAll) }
         val layoutMargins = topControls.associateWith { it.marginTop }
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
             val statusBar = insets.getInsets(WindowInsetsCompat.Type.systemBars()).top
@@ -211,6 +216,14 @@ abstract class BasePhotoFragment :
                 }
                 viewModel.signal.collect { quality ->
                     lastSignal = quality
+                    // The dot the design puts beside the reading: green for a fix worth using,
+                    // the warning colour for one that is not.
+                    binding.vSignalDot.backgroundTintList = ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            requireContext(),
+                            if (quality.isAcceptable) R.color.ds_signal_good else R.color.ds_warn
+                        )
+                    )
                     binding.tvSignal.text = when {
                         !quality.hasFix -> getString(R.string.signal_waiting)
                         quality.isAcceptable ->
@@ -218,7 +231,7 @@ abstract class BasePhotoFragment :
                         else ->
                             getString(R.string.signal_weak, quality.accuracyMeters?.toInt() ?: 0)
                     }
-                    binding.tvSignal.isVisible = true
+                    binding.llSignal.isVisible = !binding.clPreviewContainer.isVisible
                 }
             }
         }
@@ -298,32 +311,39 @@ abstract class BasePhotoFragment :
         binding.tvStampAddress.isVisible = !preview.address.isNullOrBlank()
         binding.tvStampAddress.text = preview.address.orEmpty()
         val now = PhotoClock.now()
-        val meta = listOfNotNull(
-            PhotoClock.formatDate(now).takeIf { prefs.isDisplayDate() },
-            PhotoClock.formatTime(now).takeIf { prefs.isDisplayTime() },
-            preview.accuracyMeters?.let { getString(R.string.accuracy, it.toInt().toString()) }
-        ).joinToString(" · ")
-        binding.tvStampMeta.isVisible = meta.isNotEmpty()
-        binding.tvStampMeta.text = meta
+        binding.tvStampDate.isVisible = prefs.isDisplayDate()
+        binding.tvStampDate.text = PhotoClock.formatDate(now)
+        binding.tvStampTime.isVisible = prefs.isDisplayTime()
+        binding.tvStampTime.text = PhotoClock.formatTime(now)
+        binding.tvStampAccuracy.isVisible = preview.accuracyMeters != null
+        binding.tvStampAccuracy.text = preview.accuracyMeters
+            ?.let { getString(R.string.accuracy_short, it.toInt()) }
+            .orEmpty()
+        hasStampToShow = preview.hasPosition ||
+            !preview.address.isNullOrBlank() ||
+            binding.tvStampDate.isVisible ||
+            binding.tvStampTime.isVisible ||
+            binding.tvStampAccuracy.isVisible
         // Nothing to show at all - no fix yet, everything switched off - is no card.
-        binding.llStampPreview.isVisible =
-            preview.hasPosition || !preview.address.isNullOrBlank() || meta.isNotEmpty()
+        binding.llStampPreview.isVisible = hasStampToShow && !binding.clPreviewContainer.isVisible
     }
 
     private fun frames(count: Int): String =
         resources.getQuantityString(R.plurals.series_frames_count, count, count)
 
+    /**
+     * An open series is a chip on the card rather than a control of its own: the design has no
+     * second pill up there, and a person who has started a series still has to be able to see
+     * that every shutter press is joining it.
+     */
     private fun renderSeries(progress: SeriesProgress) {
         val best = progress.bestAccuracy?.toInt()
-        binding.tvSeries.text = when {
-            !progress.isOpen -> getString(R.string.series_start)
+        binding.tvStampSeries.isVisible = progress.isOpen
+        binding.tvStampSeries.text = when {
+            !progress.isOpen -> ""
             best == null -> getString(R.string.series_active, frames(progress.frameCount))
             else -> getString(R.string.series_active_accuracy, frames(progress.frameCount), best)
         }
-        // A plain shape ignores isSelected, so the active state is a different background.
-        binding.tvSeries.setBackgroundResource(
-            if (progress.isOpen) R.drawable.ds_accent_pill else R.drawable.ds_glass_pill
-        )
     }
 
     private fun startCamera() {
@@ -432,9 +452,40 @@ abstract class BasePhotoFragment :
         with(binding) {
             ivBack.isVisible = !isVisible
             tvClearAll.isVisible = !isVisible
-            ivFlash.isVisible = isVisible
-            ivSettings.isVisible = isVisible
+            ivMenu.isVisible = isVisible
+            llSignal.isVisible = isVisible && lastSignal != null
+            llStampPreview.isVisible = isVisible && hasStampToShow
         }
+    }
+
+    /**
+     * Everything the camera screen can do besides taking the picture.
+     *
+     * The design puts one button here, not a row of them: over a live frame each extra control is
+     * a piece of the photograph you cannot see. The flash and the series say their current state
+     * in the item itself, so the menu reads as a status as well as a set of actions.
+     */
+    private fun showCameraMenu(anchor: View) {
+        val series = viewModel.series.value
+        PopupMenu(requireContext(), anchor).apply {
+            menu.add(0, MENU_FLASH, 0, getString(
+                if (isFlashOn) R.string.flash_off else R.string.flash_on
+            ))
+            menu.add(0, MENU_SERIES, 1, if (series.isOpen) {
+                getString(R.string.series_close, frames(series.frameCount))
+            } else {
+                getString(R.string.series_start)
+            })
+            menu.add(0, MENU_SETTINGS, 2, getString(R.string.settings))
+            setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    MENU_FLASH -> viewModel.sendEvent(BasePhotoContract.Event.ToggleFlash)
+                    MENU_SERIES -> viewModel.sendEvent(BasePhotoContract.Event.ToggleSeries)
+                    MENU_SETTINGS -> callback?.openSettings()
+                }
+                true
+            }
+        }.show()
     }
 
     private fun capturePhoto() {
@@ -459,3 +510,8 @@ abstract class BasePhotoFragment :
         }
     }
 }
+
+/** Menu items on the camera: everything the screen does besides taking the picture. */
+private const val MENU_FLASH = 1
+private const val MENU_SERIES = 2
+private const val MENU_SETTINGS = 3

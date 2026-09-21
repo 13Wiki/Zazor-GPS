@@ -108,8 +108,13 @@
     <string name="voice_note_empty">The recording failed</string>
     <string name="voice_note_denied">Recording needs access to the microphone</string>
     <string name="signal_waiting">Looking for satellites…</string>
-    <string name="signal_good">Signal ±%1$d m</string>
-    <string name="signal_weak">Weak signal ±%1$d m</string>
+    <string name="accuracy_short">±%1$d m</string>
+    <string name="series_close">Close the series · %1$s</string>
+    <string name="flash_off">Turn the flash off</string>
+    <string name="flash_on">Turn the flash on</string>
+    <string name="camera_menu">Menu</string>
+    <string name="signal_good">Signal is good · %1$d m</string>
+    <string name="signal_weak">Signal is weak · %1$d m</string>
     <string name="signal_weak_title">Weak signal</string>
     <string name="signal_weak_message">Accuracy is about ±%1$d m — the point on the photo may be noticeably off. Wait a few seconds, or shoot anyway?</string>
     <string name="signal_none_message">No position yet. The photo will be saved without coordinates.</string>

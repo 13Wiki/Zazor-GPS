@@ -112,8 +112,13 @@
     <string name="voice_note_empty">Запис не вдався</string>
     <string name="voice_note_denied">Без доступу до мікрофона записати не можна</string>
     <string name="signal_waiting">Шукаємо супутники…</string>
-    <string name="signal_good">Сигнал ±%1$d м</string>
-    <string name="signal_weak">Слабкий сигнал ±%1$d м</string>
+    <string name="accuracy_short">±%1$d м</string>
+    <string name="series_close">Закрити серію · %1$s</string>
+    <string name="flash_off">Вимкнути спалах</string>
+    <string name="flash_on">Увімкнути спалах</string>
+    <string name="camera_menu">Меню</string>
+    <string name="signal_good">Сигнал точний · %1$d м</string>
+    <string name="signal_weak">Сигнал слабкий · %1$d м</string>
     <string name="signal_weak_title">Сигнал слабкий</string>
     <string name="signal_weak_message">Точність близько ±%1$d м — точка на знімку може бути помітно зміщена. Зачекати кілька секунд чи зняти як є?</string>
     <string name="signal_none_message">Координати ще не визначено. Знімок збережеться без них.</string>

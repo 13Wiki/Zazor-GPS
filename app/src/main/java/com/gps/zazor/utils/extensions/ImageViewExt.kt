@@ -7,6 +7,8 @@ import androidx.annotation.DrawableRes
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.gps.zazor.R
 import java.io.File
@@ -28,13 +30,29 @@ fun ImageView.loadImage(bitmap: Bitmap, @DrawableRes placeholder: Int? = null) {
     request.into(this)
 }
 
-fun ImageView.loadImage(uri: String?, circle: Boolean = true, @DrawableRes placeholder: Int? = null) {
+/**
+ * @param circle crops to a circle.
+ * @param cornerRadiusDp crops to a rounded square instead; the design frames a thumbnail that
+ *        way, and a circle cannot be made to look like one by any amount of background.
+ */
+fun ImageView.loadImage(
+    uri: String?,
+    circle: Boolean = true,
+    @DrawableRes placeholder: Int? = null,
+    cornerRadiusDp: Int? = null
+) {
     show()
     var request = Glide.with(context)
         .load(uri?.let(::File))
         .apply(RequestOptions.diskCacheStrategyOf(DiskCacheStrategy.NONE))
     placeholder?.let { request = request.placeholder(it).error(it) }
-    if (circle) request = request.circleCrop()
+    when {
+        cornerRadiusDp != null -> {
+            val radius = (cornerRadiusDp * resources.displayMetrics.density).toInt()
+            request = request.transform(CenterCrop(), RoundedCorners(radius))
+        }
+        circle -> request = request.circleCrop()
+    }
     request.into(this)
 }
 

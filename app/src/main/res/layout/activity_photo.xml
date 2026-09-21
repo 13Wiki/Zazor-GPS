@@ -82,30 +82,40 @@
                     app:tint="@color/ds_text_primary" />
             </LinearLayout>
 
+            <!--
+              The mode switch as the design draws it: one track across the width, three equal
+              thirds inside it, the chosen one a white pill. The 5dp padding is the gap between
+              the pill and the track.
+            -->
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tlPhotos"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="52dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:layout_marginTop="@dimen/ds_space_3"
                 android:background="@drawable/ds_mode_track"
+                android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/clCollageGrid"
                 app:tabBackground="@drawable/ds_mode_indicator"
-                app:tabGravity="center"
+                app:tabGravity="fill"
                 app:tabIndicator="@null"
-                app:tabPaddingEnd="@dimen/ds_space_4"
-                app:tabPaddingStart="@dimen/ds_space_4"
+                app:tabMode="fixed"
+                app:tabPaddingEnd="0dp"
+                app:tabPaddingStart="0dp"
                 app:tabRippleColor="@null"
                 app:tabSelectedTextColor="@color/ds_background"
-                app:tabTextColor="@color/ds_text_secondary" />
+                app:tabTextAppearance="@style/TextAppearance.Zazor.Mode"
+                app:tabTextColor="@color/ds_on_glass_muted" />
 
             <ImageView
                 android:id="@+id/ivLastPhoto"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                android:layout_marginStart="32dp"
-                android:background="@drawable/ds_ghost_button"
+                android:layout_marginStart="24dp"
+                android:background="@drawable/ds_thumb_frame"
                 android:contentDescription="@string/labels"
                 android:scaleType="centerCrop"
                 app:layout_constraintBottom_toBottomOf="@id/ivCapture"
@@ -116,7 +126,7 @@
                 android:id="@+id/ivCapture"
                 android:layout_width="@dimen/ds_shutter"
                 android:layout_height="@dimen/ds_shutter"
-                android:layout_marginTop="@dimen/ds_space_5"
+                android:layout_marginTop="18dp"
                 android:background="@drawable/ds_shutter"
                 android:contentDescription="@string/photo"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -127,8 +137,8 @@
                 android:id="@+id/ivFlip"
                 android:layout_width="54dp"
                 android:layout_height="54dp"
-                android:layout_marginEnd="32dp"
-                android:background="@drawable/ds_ghost_button"
+                android:layout_marginEnd="24dp"
+                android:background="@drawable/ds_glass_button"
                 android:contentDescription="@string/flip_camera"
                 android:padding="15dp"
                 android:src="@drawable/ic_flip"

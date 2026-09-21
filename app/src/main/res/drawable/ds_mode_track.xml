@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- The mode switch's track: white 14% over a 20% hairline, as in the mockup. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/ds_glass" />
-    <stroke android:width="1dp" android:color="@color/ds_glass_outline" />
+    <solid android:color="@color/ds_glass_track" />
+    <stroke android:width="1dp" android:color="@color/ds_glass_edge_track" />
     <corners android:radius="999dp" />
 </shape>

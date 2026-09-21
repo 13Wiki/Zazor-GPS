@@ -114,8 +114,13 @@
     <string name="voice_note_empty">Запись не получилась</string>
     <string name="voice_note_denied">Без доступа к микрофону записать нельзя</string>
     <string name="signal_waiting">Ищем спутники…</string>
-    <string name="signal_good">Сигнал ±%1$d м</string>
-    <string name="signal_weak">Слабый сигнал ±%1$d м</string>
+    <string name="accuracy_short">±%1$d м</string>
+    <string name="series_close">Закрыть серию · %1$s</string>
+    <string name="flash_off">Выключить вспышку</string>
+    <string name="flash_on">Включить вспышку</string>
+    <string name="camera_menu">Меню</string>
+    <string name="signal_good">Сигнал точный · %1$d м</string>
+    <string name="signal_weak">Сигнал слабый · %1$d м</string>
     <string name="signal_weak_title">Сигнал слабый</string>
     <string name="signal_weak_message">Точность около ±%1$d м — точка на снимке может быть заметно смещена. Подождать несколько секунд или снять как есть?</string>
     <string name="signal_none_message">Координаты ещё не определены. Снимок сохранится без них.</string>
