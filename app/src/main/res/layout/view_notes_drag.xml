@@ -39,6 +39,17 @@
             android:textStyle="bold"
             tools:text="30.523400" />
 
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:maxWidth="320dp"
+            android:textColor="@color/ds_text_secondary"
+            android:textSize="13sp"
+            tools:text="Ленинский просп. 32, Москва" />
+
         <!-- Which way the camera looked. Written on wide frames, where it is half the address. -->
         <TextView
             android:id="@+id/tvBearing"

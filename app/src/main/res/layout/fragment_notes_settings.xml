@@ -131,6 +131,36 @@
             app:thumbTint="@color/ds_text_primary"
             app:trackTint="@color/ds_outline" />
 
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ds_space_2"
+            android:background="@drawable/ds_surface_card"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/ds_touch_min"
+            android:paddingStart="@dimen/ds_space_4"
+            android:paddingEnd="@dimen/ds_space_4"
+            android:paddingTop="@dimen/ds_space_4"
+            android:paddingBottom="@dimen/ds_space_4"
+            android:text="@string/display_address"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAccuracy" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/sAddress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            app:layout_constraintBottom_toBottomOf="@id/tvAddress"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tvAddress"
+            app:thumbTint="@color/ds_text_primary"
+            app:trackTint="@color/ds_switch_track" />
+
         <!-- Separate block: this one changes when the shutter fires, not what the stamp says. -->
         <TextView
             android:id="@+id/tvWaitFix"
@@ -149,7 +179,7 @@
             android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvAccuracy" />
+            app:layout_constraintTop_toBottomOf="@id/tvAddress" />
 
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/sWaitFix"

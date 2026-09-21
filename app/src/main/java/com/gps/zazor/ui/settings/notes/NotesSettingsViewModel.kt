@@ -14,6 +14,7 @@ class NotesSettingsViewModelImpl(private val prefs: AppPreferences) : BaseViewMo
             prefs.isDisplayDate(),
             prefs.isDisplayTime(),
             prefs.isDisplayAccuracy(),
+            prefs.isDisplayAddress(),
             prefs.isWaitForAccurateFix()
         )
 
@@ -23,6 +24,7 @@ class NotesSettingsViewModelImpl(private val prefs: AppPreferences) : BaseViewMo
             is NotesSettingsContract.Event.DateSwitched -> prefs.putDisplayDate(event.isChecked)
             is NotesSettingsContract.Event.TimeSwitched -> prefs.putDisplayTime(event.isChecked)
             is NotesSettingsContract.Event.AccuracySwitched -> prefs.putDisplayAccuracy(event.isChecked)
+            is NotesSettingsContract.Event.AddressSwitched -> prefs.putDisplayAddress(event.isChecked)
             is NotesSettingsContract.Event.WaitForFixSwitched -> prefs.putWaitForAccurateFix(event.isChecked)
             else -> Unit
         }

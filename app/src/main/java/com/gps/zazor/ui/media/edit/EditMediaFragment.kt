@@ -64,7 +64,10 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
                 dvNotes.elevation = 5F
                 evDroidArt.elevation = 0F
                 vDraw.elevation = 0F
-                dvNotes.addNotes(state.notes, state.lat, state.long, state.date, state.time, state.accuracy)
+                dvNotes.addNotes(
+                    state.notes, state.lat, state.long, state.date, state.time, state.accuracy,
+                    address = state.address
+                )
             }
             is EditMediaContract.State.AddOverlay -> binding.run {
                 dvNotes.elevation = 0F

@@ -26,7 +26,9 @@ class EditMediaContract {
                        val long: String?,
                        val date: String?,
                        val time: String?,
-                       val accuracy: String?) : State()
+                       val accuracy: String?,
+                       /** The place in words, as stored with the photo. */
+                       val address: String? = null) : State()
 
         class AddOverlay(val text: String?,
                          val color: Int?,

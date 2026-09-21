@@ -88,7 +88,8 @@ class SettingsListViewModelImpl(
             appPrefs.isDisplayCoordinates(),
             appPrefs.isDisplayDate(),
             appPrefs.isDisplayTime(),
-            appPrefs.isDisplayAccuracy()
+            appPrefs.isDisplayAccuracy(),
+            appPrefs.isDisplayAddress()
         )
         return context.getString(R.string.stamp_fields_summary, fields.count { it }, fields.size)
     }

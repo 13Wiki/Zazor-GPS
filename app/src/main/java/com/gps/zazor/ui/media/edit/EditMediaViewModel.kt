@@ -90,7 +90,8 @@ class EditMediaViewModelImpl(
             current.lng?.formatCoordinate().takeIf { prefs.isDisplayCoordinates() && hasCoordinates },
             PhotoClock.formatDate(current.date).takeIf { prefs.isDisplayDate() },
             PhotoClock.formatTime(current.date).takeIf { prefs.isDisplayTime() },
-            null
+            null,
+            current.address?.takeIf { prefs.isDisplayAddress() && it.isNotBlank() }
         )
     }
 

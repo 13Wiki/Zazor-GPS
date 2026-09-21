@@ -205,4 +205,5 @@
     <string name="bearing_short" translatable="false">%1$d°</string>
     <string name="accuracy">Accuracy: %s m</string>
     <string name="display_accuracy">Show the margin of error</string>
+    <string name="display_address">Print the address</string>
 </resources>

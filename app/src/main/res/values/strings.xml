@@ -235,4 +235,5 @@
     <string name="bearing_short" translatable="false">%1$d°</string>
     <string name="accuracy">Точность: %s m</string>
     <string name="display_accuracy">Отображать погрешность</string>
+    <string name="display_address">Отображать адрес</string>
 </resources>

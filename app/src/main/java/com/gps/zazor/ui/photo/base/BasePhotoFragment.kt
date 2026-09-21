@@ -361,7 +361,8 @@ abstract class BasePhotoFragment :
                 state.notes, state.lat, state.long, state.date, state.time, state.accuracy,
                 // Only on a wide frame: on an ordinary close-up the direction says little, and
                 // the stamp is already four lines long.
-                state.bearing?.takeIf { useUltraWide }?.let { Formats.bearing(requireContext(), it) }
+                state.bearing?.takeIf { useUltraWide }?.let { Formats.bearing(requireContext(), it) },
+                state.address
             )
         }
     }

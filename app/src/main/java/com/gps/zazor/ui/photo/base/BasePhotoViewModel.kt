@@ -276,7 +276,9 @@ open class BasePhotoViewModelImpl(
             PhotoClock.formatDate(date).takeIf { prefs.isDisplayDate() },
             PhotoClock.formatTime(date).takeIf { prefs.isDisplayTime() },
             location?.accuracy?.toInt()?.toString().takeIf { prefs.isDisplayAccuracy() && location != null },
-            lastBearing
+            lastBearing,
+            // Whatever the card over the viewfinder was showing: the same lookup, not a second one.
+            stampState.value.address.takeIf { prefs.isDisplayAddress() }
         )
     }
 

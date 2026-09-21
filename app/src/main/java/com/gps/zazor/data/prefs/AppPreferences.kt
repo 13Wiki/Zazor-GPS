@@ -43,6 +43,11 @@ interface AppPreferences {
 
     fun putDisplayAccuracy(isDisplay: Boolean)
 
+    /** The address in words, printed on the photo under the coordinates. */
+    fun isDisplayAddress(): Boolean
+
+    fun putDisplayAddress(isDisplay: Boolean)
+
     fun isDisplayDate(): Boolean
 
     fun putDrawColor(color: Int)
@@ -97,6 +102,7 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
         private const val COORDINATE_FORMAT_KEY = "coordinateFormat"
         private const val DISPLAY_DATE_KEY = "displayDate"
         private const val DISPLAY_ACCURACY = "displayAccuracy"
+        private const val DISPLAY_ADDRESS = "displayAddress"
         private const val DISPLAY_TIME_KEY = "displayTime"
         private const val TRIAL_KEY = "trialKey"
         private const val DRAW_COLOR_KEY = "drawColor"
@@ -180,6 +186,14 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
 
     override fun isDisplayAccuracy(): Boolean {
         return preferences.getBoolean(DISPLAY_ACCURACY, true)
+    }
+
+    override fun putDisplayAddress(isDisplay: Boolean) {
+        preferences.edit().putBoolean(DISPLAY_ADDRESS, isDisplay).apply()
+    }
+
+    override fun isDisplayAddress(): Boolean {
+        return preferences.getBoolean(DISPLAY_ADDRESS, true)
     }
 
     override fun putDisplayTime(isDisplay: Boolean) {

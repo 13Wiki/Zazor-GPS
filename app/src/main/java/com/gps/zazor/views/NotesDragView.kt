@@ -80,7 +80,8 @@ class NotesDragView @JvmOverloads constructor(
                  date: String?,
                  time: String?,
                  accuracy: String?,
-                 bearing: String? = null) {
+                 bearing: String? = null,
+                 address: String? = null) {
         binding.run {
             llNotesContainer.show()
             tvLat.goneIfEmpty(lat)
@@ -88,6 +89,7 @@ class NotesDragView @JvmOverloads constructor(
             tvDate.goneIfEmpty(date)
             tvTime.goneIfEmpty(time)
             tvAccuracy.goneIfEmpty(accuracy?.let { context.getString(com.gps.zazor.R.string.accuracy, it) })
+            tvAddress.goneIfEmpty(address)
             tvBearing.goneIfEmpty(bearing)
             tvNote.goneIfEmpty(notes)
         }

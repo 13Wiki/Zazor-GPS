@@ -211,4 +211,5 @@
     <string name="bearing_short" translatable="false">%1$d°</string>
     <string name="accuracy">Точність: %s м</string>
     <string name="display_accuracy">Показувати похибку</string>
+    <string name="display_address">Показувати адресу</string>
 </resources>
