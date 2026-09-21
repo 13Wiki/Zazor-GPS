@@ -92,6 +92,22 @@
             app:layout_constraintTop_toBottomOf="@id/tvCounted" />
 
         <TextView
+            android:id="@+id/tvPolicy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ds_space_4"
+            android:background="?attr/selectableItemBackground"
+            android:gravity="center"
+            android:minHeight="@dimen/ds_touch_min"
+            android:padding="@dimen/ds_space_3"
+            android:text="@string/privacy_policy_link"
+            android:textColor="@color/ds_accent"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAccept" />
+
+        <TextView
             android:id="@+id/tvAccept"
             android:layout_width="0dp"
             android:layout_height="56dp"

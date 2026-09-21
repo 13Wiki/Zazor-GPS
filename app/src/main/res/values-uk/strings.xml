@@ -11,6 +11,8 @@
     <string name="privacy_counted">Лише знеособлені лічильники: скільки разів відкрили застосунок, якими режимами користуються, де він падає. Без імені та без прив’язки до вас — ми не знаємо, хто ви, і не хочемо знати.</string>
     <string name="privacy_help">Допомагати статистикою</string>
     <string name="privacy_accept">Зрозуміло, почати</string>
+    <string name="privacy_policy_link">Політика конфіденційності</string>
+    <string name="privacy_no_browser">Немає застосунку для посилань</string>
     <string name="wipe_code_label">КОД ОЧИЩЕННЯ</string>
     <string name="wipe_code_hint">Другий код на екрані входу. Якщо ввести його замість звичайного, застосунок відкриється порожнім, а знімки, маршрути й нотатки буде стерто з телефона без можливості повернути. Очищення відбувається мовчки.</string>
     <string name="wipe_code_set">Код задано</string>
@@ -19,7 +21,8 @@
     <string name="appearance_clock">Годинник</string>
     <string name="appearance_compass">Компас</string>
     <string name="appearance_title">Вигляд на телефоні</string>
-    <string name="appearance_hint">Значок і підпис на домашньому екрані. Зі списку застосунків Zazor не ховається.</string>
+    <string name="appearance_hint">Значок і підпис на домашньому екрані. Зі списку застосунків Zazor GPS не ховається.</string>
+    <string name="appearance_label_header">ПІДПИС ПІД ЗНАЧКОМ</string>
     <string name="appearance_changed">Значок змінено</string>
     <string name="share_summary">%1$d знімк(ів) · %2$.1f МБ</string>
     <string name="report_title">Zazor GPS · фіксація на місцевості</string>
@@ -176,7 +179,6 @@
     <string name="support_message_required">Напишіть, що сталося</string>
     <string name="support_reply_to">Відповісти на: %1$s</string>
     <string name="support_subject">Zazor GPS · %1$s</string>
-    <string name="feedback_subject">Zazor %1$s · %2$s · Android %3$d</string>
     <string name="feedback_no_mail_app">На телефоні немає застосунку пошти</string>
     <string name="camera_error_msg">Немає доступу до камери, застосунок буде закрито.</string>
     <string name="collage">Колаж</string>

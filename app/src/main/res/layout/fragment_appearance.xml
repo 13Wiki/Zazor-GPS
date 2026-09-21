@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ds_background"
@@ -48,6 +49,41 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintTop_toBottomOf="@id/ivBack" />
 
+        <!-- What the home screen will read under the icon, as the design spells it out. -->
+        <TextView
+            android:id="@+id/tvLabelHeader"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_4"
+            android:text="@string/appearance_label_header"
+            android:textColor="@color/ds_text_muted"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rvAppearances" />
+
+        <TextView
+            android:id="@+id/tvLabelValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_2"
+            android:background="@drawable/ds_surface_card"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/ds_touch_min"
+            android:paddingStart="@dimen/ds_space_4"
+            android:paddingEnd="@dimen/ds_space_4"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvLabelHeader"
+            tools:text="Zazor GPS" />
+
         <TextView
             android:id="@+id/tvHint"
             android:layout_width="0dp"
@@ -59,7 +95,7 @@
             android:textSize="13sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rvAppearances" />
+            app:layout_constraintTop_toBottomOf="@id/tvLabelValue" />
 
         <TextView
             android:id="@+id/tvWipeLabel"

@@ -7,6 +7,7 @@ import com.gps.zazor.R
 import com.gps.zazor.databinding.FragmentAppearanceBinding
 import com.gps.zazor.ui.base.BaseFragment
 import com.gps.zazor.ui.settings.appearance.di.injectViewModel
+import com.gps.zazor.utils.launcher.LauncherAppearance
 import com.gps.zazor.utils.viewBinding.viewBinding
 
 /**
@@ -41,6 +42,13 @@ class AppearanceFragment : BaseFragment<AppearanceContract.State, AppearanceCont
                             .show()
                     }
                 }
+                binding.tvLabelValue.text = getString(
+                    if (state.current == LauncherAppearance.Appearance.DEFAULT) {
+                        R.string.app_name
+                    } else {
+                        state.current.title
+                    }
+                )
                 binding.tvWipeCode.setText(
                     if (state.hasWipeCode) R.string.wipe_code_set else R.string.wipe_code_not_set
                 )

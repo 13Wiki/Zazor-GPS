@@ -1,8 +1,12 @@
 package com.gps.zazor.ui.privacy
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.gps.zazor.R
 import com.gps.zazor.databinding.FragmentPrivacyBinding
 import com.gps.zazor.ui.base.BaseFragment
@@ -84,6 +88,18 @@ class PrivacyFragment : BaseFragment<PrivacyContract.State, PrivacyContract.Even
         }
         binding.tvAccept.setOnClickListener {
             if (isFirstRun) viewModel.sendEvent(PrivacyContract.Event.Accept) else finish()
+        }
+        // The full policy, as published for the store. A promise the app makes is worth reading
+        // in full, and the design puts the link on this screen rather than only in the listing.
+        binding.tvPolicy.setOnClickListener { openPolicy() }
+    }
+
+    private fun openPolicy() {
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.privacy_policy_url)))
+        try {
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(requireContext(), R.string.privacy_no_browser, Toast.LENGTH_SHORT).show()
         }
     }
 

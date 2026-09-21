@@ -11,16 +11,20 @@
     <string name="privacy_counted">Только обезличенные счётчики: сколько раз открыли приложение, какими режимами пользуются, где падает. Без имени и без привязки к вам — мы не знаем, кто вы, и не хотим знать.</string>
     <string name="privacy_help">Помогать статистикой</string>
     <string name="privacy_accept">Понятно, начать</string>
+    <string name="privacy_policy_url" translatable="false">https://13wiki.github.io/Zazor-GPS/privacy-policy.html</string>
+    <string name="privacy_policy_link">Политика конфиденциальности</string>
+    <string name="privacy_no_browser">Нет приложения для открытия ссылок</string>
     <string name="wipe_code_label">КОД ОЧИСТКИ</string>
     <string name="wipe_code_hint">Второй код на экране входа. Если ввести его вместо обычного, приложение откроется пустым, а снимки, маршруты и заметки будут стёрты с телефона без возможности вернуть. Очистка идёт молча.</string>
     <string name="wipe_code_set">Код задан</string>
     <string name="wipe_code_not_set">Код не задан</string>
-    <string name="appearance_default" translatable="false">Zazor</string>
+    <string name="appearance_default" translatable="false">Zazor GPS</string>
     <string name="appearance_notes">Заметки</string>
     <string name="appearance_clock">Часы</string>
     <string name="appearance_compass">Компас</string>
     <string name="appearance_title">Вид на телефоне</string>
-    <string name="appearance_hint">Значок и подпись на домашнем экране. Из списка приложений Zazor не прячется.</string>
+    <string name="appearance_hint">Значок и подпись на домашнем экране. Из списка приложений Zazor GPS не прячется.</string>
+    <string name="appearance_label_header">ПОДПИСЬ ПОД ЗНАЧКОМ</string>
     <string name="appearance_changed">Значок изменён</string>
     <string name="share_summary">%1$d снимк(ов) · %2$.1f МБ</string>
     <string name="report_title">Zazor GPS · фиксация на местности</string>
@@ -179,7 +183,6 @@
     <string name="support_subject">Zazor GPS · %1$s</string>
     <!-- Owner's public address. Replace before release; the same one goes into the privacy policy. -->
     <string name="feedback_email" translatable="false">ПОЧТА@ПРИМЕР</string>
-    <string name="feedback_subject">Zazor %1$s · %2$s · Android %3$d</string>
     <string name="feedback_no_mail_app">На телефоне нет приложения для почты</string>
 
     <string-array name="fonts" translatable="false">
