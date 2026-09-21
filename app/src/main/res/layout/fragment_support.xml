@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Writing to the author, from inside the app. The letter still leaves through the person's own
+  mail app: there is no server here, and nothing is sent until they press send in it.
+-->
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ds_background"
+    android:fillViewport="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/ds_space_6">
+
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="@dimen/ds_icon_button"
+            android:layout_height="@dimen/ds_icon_button"
+            android:layout_margin="@dimen/ds_space_4"
+            android:background="@drawable/ds_ghost_button"
+            android:contentDescription="@string/back"
+            android:padding="13dp"
+            android:src="@drawable/ic_baseline_arrow_back_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/ds_text_primary" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_3"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:text="@string/support_title"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/ivBack"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivBack"
+            app:layout_constraintTop_toTopOf="@id/ivBack" />
+
+        <TextView
+            android:id="@+id/tvIntro"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_2"
+            android:text="@string/support_intro"
+            android:textColor="@color/ds_text_secondary"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivBack" />
+
+        <!-- What the letter is about: it decides who reads it first. -->
+        <LinearLayout
+            android:id="@+id/llTopics"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_4"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvIntro">
+
+            <TextView
+                android:id="@+id/tvTopicBug"
+                style="@style/Widget.Zazor.FilterPill"
+                android:text="@string/support_topic_bug" />
+
+            <TextView
+                android:id="@+id/tvTopicIdea"
+                style="@style/Widget.Zazor.FilterPill"
+                android:layout_marginStart="@dimen/ds_space_2"
+                android:text="@string/support_topic_idea" />
+
+            <TextView
+                android:id="@+id/tvTopicPayment"
+                style="@style/Widget.Zazor.FilterPill"
+                android:layout_marginStart="@dimen/ds_space_2"
+                android:text="@string/support_topic_payment" />
+
+            <TextView
+                android:id="@+id/tvTopicOther"
+                style="@style/Widget.Zazor.FilterPill"
+                android:layout_marginStart="@dimen/ds_space_2"
+                android:text="@string/support_topic_other" />
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilMessage"
+            style="@style/Widget.Zazor.TextInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_4"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llTopics">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etMessage"
+                style="@style/Widget.Zazor.TextInput.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top|start"
+                android:hint="@string/support_message_hint"
+                android:inputType="textMultiLine|textCapSentences"
+                android:minLines="5" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilEmail"
+            style="@style/Widget.Zazor.TextInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilMessage">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etEmail"
+                style="@style/Widget.Zazor.TextInput.EditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/support_email_hint"
+                android:inputType="textEmailAddress" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swDevice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_4"
+            android:minHeight="@dimen/ds_touch_min"
+            android:text="@string/support_device_info"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tilEmail" />
+
+        <TextView
+            android:id="@+id/tvDeviceHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:textColor="@color/ds_text_muted"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/swDevice"
+            tools:text="Zazor GPS 2.0 · Pixel 7 · Android 14" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/swScreenshot"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_3"
+            android:minHeight="@dimen/ds_touch_min"
+            android:text="@string/support_screenshot"
+            android:textColor="@color/ds_text_primary"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDeviceHint" />
+
+        <TextView
+            android:id="@+id/tvScreenshotHint"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:text="@string/support_nothing_without_consent"
+            android:textColor="@color/ds_text_muted"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/swScreenshot" />
+
+        <Button
+            android:id="@+id/bSend"
+            style="@style/Widget.Zazor.Button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/ds_space_4"
+            android:layout_marginEnd="@dimen/ds_space_4"
+            android:layout_marginTop="@dimen/ds_space_6"
+            android:text="@string/support_send"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvScreenshotHint" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
