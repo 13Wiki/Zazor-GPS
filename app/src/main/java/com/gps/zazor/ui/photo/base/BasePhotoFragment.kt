@@ -138,6 +138,7 @@ abstract class BasePhotoFragment :
                 vDraw.isPaintAllowed = true
                 state.color?.let { vDraw.colorRes = it }
                 vDraw.mode = state.mode
+                vDraw.strokeWidth = state.width
                 isDrawing = true
                 renderCornerAction()
             }

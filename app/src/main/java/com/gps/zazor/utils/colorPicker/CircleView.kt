@@ -14,9 +14,7 @@ class CircleView : View {
         private const val DEFAULT_STYLE_RES = 0
         private const val DEFAULT_COLOR_CIRCLE = Color.RED
         private const val DEFAULT_COLOR_BORDER = Color.WHITE
-        private const val RADIUS_CIRCLE = .6f
-        private const val BORDER_CIRCLE = .03f
-        private const val BORDER_CIRCLE_ACTIVE = .05f
+        private const val RING_WIDTH = 2F
         private const val HALF_DELIMITER = 2F
     }
 
@@ -61,23 +59,32 @@ class CircleView : View {
         setMeasuredDimension(side, side)
     }
 
+    /**
+     * The swatch as the design draws it: a full circle of the colour, and a white ring around the
+     * one in hand with a gap of the sheet's own colour between them.
+     */
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        val heightF = height.toFloat()
-        val widthF = width.toFloat()
-        val circleRadius = (Math.min(heightF, widthF) * RADIUS_CIRCLE).half()
-        val widthBorder = Math.min(heightF, widthF) * if (selection) BORDER_CIRCLE_ACTIVE else BORDER_CIRCLE
-
+        val centreX = width.half()
+        val centreY = height.half()
+        val radius = minOf(width, height).half()
         canvas.drawColor(Color.TRANSPARENT)
         with(paint) {
             style = Paint.Style.FILL
-            color = colorBorderline
-            canvas.drawCircle(widthF.half(), heightF.half(), circleRadius, this)
             color = colorLap
-            canvas.drawCircle(widthF.half(), heightF.half(), circleRadius - widthBorder, this)
+            canvas.drawCircle(centreX, centreY, radius, this)
+        }
+        if (!selection) return
+        with(paint) {
+            style = Paint.Style.STROKE
+            strokeWidth = RING_WIDTH * resources.displayMetrics.density
+            color = colorBorderline
+            canvas.drawCircle(centreX, centreY, radius + strokeWidth, this)
         }
     }
 
     private fun Float.half() = this / HALF_DELIMITER
+
+    private fun Int.half() = this / HALF_DELIMITER
 }

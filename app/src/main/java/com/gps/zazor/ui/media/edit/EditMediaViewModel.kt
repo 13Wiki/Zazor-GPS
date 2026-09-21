@@ -64,7 +64,7 @@ class EditMediaViewModelImpl(
                     }
                     is EditPhotoContract.Flow.Done -> uiState.value = EditMediaContract.State.SaveNotes
                     is EditPhotoContract.Flow.AllowPaint ->
-                        uiState.value = EditMediaContract.State.AllowDraw(flowState.color, flowState.mode)
+                        uiState.value = EditMediaContract.State.AllowDraw(flowState.color, flowState.mode, flowState.width)
                     is EditPhotoContract.Flow.DisallowPaint ->
                         uiState.value = EditMediaContract.State.DisallowDraw
                     is EditPhotoContract.Flow.ClearPaint ->

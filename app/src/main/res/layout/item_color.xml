@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- A colour to draw in: 32dp of it, with a ring around the one in hand. -->
 <com.gps.zazor.utils.colorPicker.CircleView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/cvCircle"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@android:color/transparent">
-
-</com.gps.zazor.utils.colorPicker.CircleView>
+    android:layout_width="44dp"
+    android:layout_height="32dp"
+    android:background="@android:color/transparent" />

@@ -63,7 +63,7 @@ class BasePhotoContract {
                          val color: Int?,
                          val fontId: Int?) : State()
 
-        data class AllowDraw(val color: Int?, val mode: Mode) : State()
+        data class AllowDraw(val color: Int?, val mode: Mode, val width: Int) : State()
 
         object DisallowDraw : State()
 

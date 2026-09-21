@@ -50,6 +50,11 @@ interface AppPreferences {
 
     fun isDisplayDate(): Boolean
 
+    /** How thick a drawn mark is, in the three steps the design offers. */
+    fun putDrawWidth(width: Int)
+
+    fun getDrawWidth(): Int
+
     fun putDrawColor(color: Int)
 
     fun getDrawColor(): Int?
@@ -101,6 +106,11 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
         private const val DISPLAY_COORDINATES_KEY = "displayCoordinates"
         private const val COORDINATE_FORMAT_KEY = "coordinateFormat"
         private const val DISPLAY_DATE_KEY = "displayDate"
+        private const val DRAW_WIDTH_KEY = "drawWidth"
+
+        /** The middle of the three widths, in pixels on the photo. */
+        private const val DEFAULT_DRAW_WIDTH = 24
+
         private const val DISPLAY_ACCURACY = "displayAccuracy"
         private const val DISPLAY_ADDRESS = "displayAddress"
         private const val DISPLAY_TIME_KEY = "displayTime"
@@ -203,6 +213,12 @@ class AppPreferencesImpl(context: Context) : AppPreferences {
     override fun isDisplayTime(): Boolean {
         return preferences.getBoolean(DISPLAY_TIME_KEY, true)
     }
+
+    override fun putDrawWidth(width: Int) {
+        preferences.edit().putInt(DRAW_WIDTH_KEY, width).apply()
+    }
+
+    override fun getDrawWidth(): Int = preferences.getInt(DRAW_WIDTH_KEY, DEFAULT_DRAW_WIDTH)
 
     override fun putDrawColor(color: Int) {
         preferences.edit().putInt(DRAW_COLOR_KEY, color).apply()

@@ -61,11 +61,23 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
     /** True while there is something to take back; the screen hides the button otherwise. */
     val hasMarks: Boolean get() = marks.isNotEmpty()
 
+    /**
+     * How thick a mark is drawn, in pixels on the frame. Three steps in the design; a thin line
+     * is for outlining a small thing, a thick one for a mark that has to survive being resized
+     * by a messenger.
+     */
+    var strokeWidth: Int = DEFAULT_STROKE_WIDTH
+        set(value) {
+            field = value
+            paint?.strokeWidth = value.toFloat()
+            invalidate()
+        }
+
     init {
         paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.STROKE
             color = Color.RED
-            strokeWidth = 24F
+            strokeWidth = DEFAULT_STROKE_WIDTH.toFloat()
         }
     }
 
@@ -190,6 +202,9 @@ constructor(context: Context, attrs: AttributeSet? = null) : View(context, attrs
         }
     }
 }
+
+/** The middle of the three widths the sheet offers. */
+private const val DEFAULT_STROKE_WIDTH = 24
 
 enum class Mode {
     LINE, CIRCLE, ARROW, MARKER

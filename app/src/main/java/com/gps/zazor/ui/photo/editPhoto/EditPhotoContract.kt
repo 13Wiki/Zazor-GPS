@@ -42,6 +42,9 @@ class EditPhotoContract {
                                   val fontId: Int?) : Event()
 
         data class PaintColorPicked(val color: Int) : Event()
+
+        /** One of the three line widths the design offers. */
+        data class PaintWidthPicked(val width: Int) : Event()
         object ClearPaint : Event()
 
         /** Takes back the last mark, which is what a person drawing actually wants. */
@@ -51,7 +54,11 @@ class EditPhotoContract {
     sealed class State : UiState {
 
         object NotesScreen : State()
-        data class PaintScreen(val selectedColor: Int?) : State()
+        data class PaintScreen(
+            val selectedColor: Int?,
+            val mode: Mode,
+            val width: Int
+        ) : State()
         data class TextScreen(val selectedColor: Int?, val selectedFont: Int?) : State()
         object ShowOverlay : State()
     }
@@ -64,7 +71,7 @@ class EditPhotoContract {
 
         data class AddNote(val note: String) : Flow()
         data class AddOverlay(val text: String?, val color: Int?, val fontId: Int?) : Flow()
-        data class AllowPaint(val color: Int?, val mode: Mode) : Flow()
+        data class AllowPaint(val color: Int?, val mode: Mode, val width: Int) : Flow()
         object DisallowPaint : Flow()
         object ClearPaint : Flow()
         object UndoPaint : Flow()

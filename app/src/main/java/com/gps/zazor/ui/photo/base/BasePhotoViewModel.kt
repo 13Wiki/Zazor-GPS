@@ -246,7 +246,7 @@ open class BasePhotoViewModelImpl(
                     }
                     is EditPhotoContract.Flow.AllowPaint -> {
                         uiState.value =
-                            BasePhotoContract.State.AllowDraw(flowState.color, flowState.mode)
+                            BasePhotoContract.State.AllowDraw(flowState.color, flowState.mode, flowState.width)
                     }
                     is EditPhotoContract.Flow.DisallowPaint -> {
                         uiState.value = BasePhotoContract.State.DisallowDraw

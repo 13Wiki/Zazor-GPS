@@ -89,6 +89,7 @@ class EditMediaFragment : BaseFragment<EditMediaContract.State, EditMediaContrac
                 vDraw.isPaintAllowed = true
                 state.color?.let { vDraw.colorRes = it }
                 vDraw.mode = state.mode
+                vDraw.strokeWidth = state.width
             }
             is EditMediaContract.State.DisallowDraw -> binding.vDraw.isPaintAllowed = false
             // Re-editing composes onto the stored photo at its own size; it used to save a

@@ -36,6 +36,12 @@
     -->
     <color name="ds_surface_sheer">#0FFFFFFF</color>
     <color name="ds_surface_group">#0DFFFFFF</color>
+    <color name="ds_surface_faint">#14FFFFFF</color>
+    <color name="ds_grabber">#47FFFFFF</color>
+    <color name="ds_sheet_tab_idle">#A8FFFFFF</color>
+    <color name="ds_width_dot_idle">#73FFFFFF</color>
+    <!-- The editing sheet's own dark glass, from the mockup. -->
+    <color name="ds_sheet">#D1141A21</color>
     <color name="ds_divider_sheer">#12FFFFFF</color>
     <color name="ds_text_dim">#6BFFFFFF</color>
     <color name="ds_surface_pill">#17FFFFFF</color>

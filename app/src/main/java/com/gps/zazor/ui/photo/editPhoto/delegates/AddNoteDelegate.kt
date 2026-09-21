@@ -18,7 +18,6 @@ class AddNoteDelegate(sheetBinding: BottomSheetAddNoteBinding,
         when (state) {
             is EditPhotoContract.State.NotesScreen -> {
                 binding.tilNote.show()
-                sheetBinding.tvTitle.text = getString(R.string.notes)
             }
             else -> binding.tilNote.hide()
         }

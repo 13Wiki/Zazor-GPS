@@ -6,16 +6,15 @@
         android:id="@+id/llWordSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/ds_space_5"
-        android:layout_marginEnd="@dimen/ds_space_5"
-        android:layout_marginBottom="72dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="84dp"
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
         android:visibility="invisible"
         app:behavior_hideable="true"
         app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle">
+        app:layout_constraintTop_toBottomOf="@id/llTabs">
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tilText"

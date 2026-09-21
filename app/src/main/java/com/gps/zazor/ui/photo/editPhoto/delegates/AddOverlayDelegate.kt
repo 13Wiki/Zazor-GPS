@@ -42,7 +42,6 @@ class AddOverlayDelegate(sheetBinding: BottomSheetAddNoteBinding,
             is EditPhotoContract.State.TextScreen -> {
                 updateArtState(binding.etText.text.toString(), state.selectedColor, state.selectedFont)
                 initFontsSelector(fonts.indexOf(state.selectedFont ?: 0))
-                sheetBinding.tvTitle.text = getString(R.string.add_text)
                 binding.llWordSettings.show()
             }
             else -> binding.llWordSettings.hide()

@@ -22,6 +22,13 @@ class ColorPickerAdapter(
 
     private var currentSelected = DEFAULT_POSITION
 
+    /** Marks the colour already in use, so the ring is there before anything is tapped. */
+    fun select(color: Int?) {
+        val position = all.indexOfFirst { it.colorCircle == color }
+        if (position < 0) return
+        setSelectedItem(position)
+    }
+
     override fun onClickItem(position: Int) {
         if (selectionMode) setSelectedItem(position)
         listener.get()?.onSelectedColor(getItem(position).colorCircle)

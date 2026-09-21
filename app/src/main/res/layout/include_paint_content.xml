@@ -1,83 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Drawing on the frame, laid out as the design has it: the four tools as tiles, then the colours,
+  then how thick the line is. The tool in hand is the accent one.
+-->
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/clPaintContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/ds_space_5"
-        android:layout_marginBottom="72dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         app:behavior_hideable="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitle">
+        app:layout_constraintTop_toBottomOf="@id/llTabs">
 
-        <ImageView
-            android:id="@+id/ivCircle"
-            android:layout_width="@dimen/ds_touch_min"
-            android:layout_height="@dimen/ds_touch_min"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/paint_circle"
-            android:focusable="true"
-            android:padding="@dimen/ds_space_3"
-            android:src="@drawable/ic_circle"
-            app:layout_constraintEnd_toStartOf="@id/ivLine"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:id="@+id/llTools"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
-            android:id="@+id/ivLine"
-            android:layout_width="@dimen/ds_touch_min"
-            android:layout_height="@dimen/ds_touch_min"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/paint_line"
-            android:focusable="true"
-            android:padding="@dimen/ds_space_3"
-            android:src="@drawable/ic_paint_selected"
-            app:layout_constraintEnd_toStartOf="@id/ivArrow"
-            app:layout_constraintStart_toEndOf="@id/ivCircle"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/ivArrow"
+                style="@style/Widget.Zazor.PaintTool"
+                android:contentDescription="@string/paint_arrow"
+                android:src="@drawable/ic_arrow" />
 
-        <ImageView
-            android:id="@+id/ivMarker"
-            android:layout_width="@dimen/ds_touch_min"
-            android:layout_height="@dimen/ds_touch_min"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/paint_marker"
-            android:focusable="true"
-            android:padding="@dimen/ds_space_3"
-            android:src="@drawable/ic_marker"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ivArrow"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/ivCircle"
+                style="@style/Widget.Zazor.PaintTool"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/paint_circle"
+                android:src="@drawable/ic_circle" />
 
-        <ImageView
-            android:id="@+id/ivArrow"
-            android:layout_width="@dimen/ds_touch_min"
-            android:layout_height="@dimen/ds_touch_min"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:clickable="true"
-            android:contentDescription="@string/paint_arrow"
-            android:focusable="true"
-            android:padding="@dimen/ds_space_3"
-            android:src="@drawable/ic_arrow"
-            app:layout_constraintEnd_toStartOf="@id/ivMarker"
-            app:layout_constraintStart_toEndOf="@id/ivLine"
-            app:layout_constraintTop_toTopOf="parent" />
+            <ImageView
+                android:id="@+id/ivLine"
+                style="@style/Widget.Zazor.PaintTool"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/paint_line"
+                android:src="@drawable/ic_paint_selected" />
+
+            <ImageView
+                android:id="@+id/ivMarker"
+                style="@style/Widget.Zazor.PaintTool"
+                android:layout_marginStart="10dp"
+                android:contentDescription="@string/paint_marker"
+                android:src="@drawable/ic_marker" />
+
+        </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvPaintColorPicker"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:layout_marginTop="@dimen/ds_space_4"
-            android:paddingStart="@dimen/ds_space_5"
-            android:paddingEnd="@dimen/ds_space_5"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/ivArrow" />
+            android:layout_width="0dp"
+            android:layout_height="32dp"
+            android:layout_marginTop="20dp"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toStartOf="@id/llWidths"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llTools"
+            tools:listitem="@layout/item_color" />
+
+        <!-- How thick the line is: three sizes, drawn as the sizes themselves. -->
+        <LinearLayout
+            android:id="@+id/llWidths"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/rvPaintColorPicker"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rvPaintColorPicker">
+
+            <View
+                android:id="@+id/vWidthThin"
+                android:layout_width="5dp"
+                android:layout_height="5dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/ds_width_dot" />
+
+            <View
+                android:id="@+id/vWidthMedium"
+                android:layout_width="9dp"
+                android:layout_height="9dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/ds_width_dot" />
+
+            <View
+                android:id="@+id/vWidthThick"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/ds_width_dot" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </merge>

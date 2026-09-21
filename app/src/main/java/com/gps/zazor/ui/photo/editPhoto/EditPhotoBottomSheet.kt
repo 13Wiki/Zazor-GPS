@@ -27,21 +27,9 @@ class EditPhotoBottomSheet(val binding: BottomSheetAddNoteBinding)
 
     override fun observeState(state: EditPhotoContract.State?) {
         when  (state) {
-            EditPhotoContract.State.NotesScreen -> {
-                binding.ivNote.toggle(true)
-                binding.ivPaint.toggle(false)
-                binding.ivText.toggle(false)
-            }
-            is EditPhotoContract.State.PaintScreen -> {
-                binding.ivNote.toggle(false)
-                binding.ivPaint.toggle(true)
-                binding.ivText.toggle(false)
-            }
-            is EditPhotoContract.State.TextScreen -> {
-                binding.ivNote.toggle(false)
-                binding.ivPaint.toggle(false)
-                binding.ivText.toggle(true)
-            }
+            EditPhotoContract.State.NotesScreen -> selectTab(binding.tvTabNote)
+            is EditPhotoContract.State.PaintScreen -> selectTab(binding.tvTabPaint)
+            is EditPhotoContract.State.TextScreen -> selectTab(binding.tvTabText)
             is EditPhotoContract.State.ShowOverlay -> {
                 behavior.state = STATE_COLLAPSED
             }
@@ -54,14 +42,13 @@ class EditPhotoBottomSheet(val binding: BottomSheetAddNoteBinding)
         super.onShown()
         behavior.peekHeight = PEEK_HEIGHT
         with(binding) {
-            ivNote.setOnClickListener {
-                viewModel.sendEvent(EditPhotoContract.Event
-                    .NotesTabPressed)
+            tvTabNote.setOnClickListener {
+                viewModel.sendEvent(EditPhotoContract.Event.NotesTabPressed)
             }
-            ivPaint.setOnClickListener {
+            tvTabPaint.setOnClickListener {
                 viewModel.sendEvent(EditPhotoContract.Event.PaintTabPressed(Mode.LINE))
             }
-            ivText.setOnClickListener {
+            tvTabText.setOnClickListener {
                 viewModel.sendEvent(EditPhotoContract.Event.TextTabPressed)
             }
             tvCancel.setOnClickListener {
@@ -80,6 +67,13 @@ class EditPhotoBottomSheet(val binding: BottomSheetAddNoteBinding)
     }
 
     /** One mark back, rather than everything at once - see the drawing button on the frame. */
+    /** One mode is chosen at a time, and the pill says which. */
+    private fun selectTab(tab: android.widget.TextView) {
+        listOf(binding.tvTabNote, binding.tvTabPaint, binding.tvTabText).forEach {
+            it.isSelected = it === tab
+        }
+    }
+
     /** What a panorama opens on: the drawing tab, with the pin already chosen. */
     fun startMarkerMode() {
         initDelegates()

@@ -23,10 +23,29 @@ class EditPhotoViewModelImpl(private val editPhotoFlow: MutableSharedFlow<EditPh
                 disallowPaint()
             }
             is EditPhotoContract.Event.PaintTabPressed -> {
-                uiState.value = EditPhotoContract.State.PaintScreen(prefs.getDrawColor())
+                currentPaintMode = event.paintMode
+                uiState.value = EditPhotoContract.State.PaintScreen(
+                    prefs.getDrawColor(), event.paintMode, prefs.getDrawWidth()
+                )
                 launch {
-                    currentPaintMode = event.paintMode
-                    editPhotoFlow.emit(EditPhotoContract.Flow.AllowPaint(null, event.paintMode))
+                    editPhotoFlow.emit(
+                        EditPhotoContract.Flow.AllowPaint(
+                            prefs.getDrawColor(), event.paintMode, prefs.getDrawWidth()
+                        )
+                    )
+                }
+            }
+            is EditPhotoContract.Event.PaintWidthPicked -> {
+                prefs.putDrawWidth(event.width)
+                uiState.value = EditPhotoContract.State.PaintScreen(
+                    prefs.getDrawColor(), currentPaintMode, event.width
+                )
+                launch {
+                    editPhotoFlow.emit(
+                        EditPhotoContract.Flow.AllowPaint(
+                            prefs.getDrawColor(), currentPaintMode, event.width
+                        )
+                    )
                 }
             }
             is EditPhotoContract.Event.TextTabPressed -> {
@@ -51,7 +70,11 @@ class EditPhotoViewModelImpl(private val editPhotoFlow: MutableSharedFlow<EditPh
             is EditPhotoContract.Event.PaintColorPicked -> {
                 launch {
                     prefs.putDrawColor(event.color)
-                    editPhotoFlow.emit(EditPhotoContract.Flow.AllowPaint(event.color, currentPaintMode))
+                    editPhotoFlow.emit(
+                        EditPhotoContract.Flow.AllowPaint(
+                            event.color, currentPaintMode, prefs.getDrawWidth()
+                        )
+                    )
                 }
             }
             is EditPhotoContract.Event.OverlayEntered -> {

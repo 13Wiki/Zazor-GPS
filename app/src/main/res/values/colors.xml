@@ -19,6 +19,25 @@
     <color name="gray">#474747</color>
     <color name="recording">#FF3B30</color>
 
+    <!--
+      What a mark can be drawn in. Five, as the design has it: a mark has to be found again on a
+      photograph of a forest floor, and a palette of forty is forty chances to pick one that is
+      the same colour as the ground.
+    -->
+    <color name="ds_mark_red">#FF5A4E</color>
+    <color name="ds_mark_yellow">#FFD400</color>
+    <color name="ds_mark_green">#34D07F</color>
+    <color name="ds_mark_blue">#2F86F6</color>
+    <color name="ds_mark_white">#FFFFFF</color>
+
+    <array name="ds_mark_colors">
+        <item>@color/ds_mark_red</item>
+        <item>@color/ds_mark_yellow</item>
+        <item>@color/ds_mark_green</item>
+        <item>@color/ds_mark_blue</item>
+        <item>@color/ds_mark_white</item>
+    </array>
+
     <array name="material_colors">
         <item>@color/material_color_grey_50</item>
         <item>@color/material_color_blue_grey_900</item>

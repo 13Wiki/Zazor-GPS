@@ -39,6 +39,41 @@
         <item name="android:textColor">@color/ds_text_primary</item>
     </style>
 
+    <!-- A drawing tool as the design tiles it: 56dp tall, 18dp corners, a 24dp glyph. -->
+    <style name="Widget.Zazor.PaintTool" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/ds_tool_button</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:padding">16dp</item>
+        <item name="android:scaleType">fitCenter</item>
+        <item name="tint">@color/ds_tool_icon</item>
+    </style>
+
+    <!-- One of the sheet's three modes. -->
+    <style name="Widget.Zazor.SheetTab" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/ds_tab_pill</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textColor">@color/ds_sheet_tab_text</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <!-- The two buttons that end an edit. -->
+    <style name="Widget.Zazor.Button.Sheet" parent="Widget.Zazor.Button">
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
     <!-- The pair of buttons the design puts at the foot of the series screen. -->
     <style name="Widget.Zazor.Button.Series" parent="Widget.Zazor.Button">
         <item name="android:textFontWeight">600</item>

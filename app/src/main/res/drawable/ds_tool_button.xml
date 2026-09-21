@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A drawing tool: accent while it is the one in hand, white at eight per cent otherwise. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape>
+            <solid android:color="@color/ds_accent" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/ds_surface_pill" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/ds_surface_faint" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+</selector>

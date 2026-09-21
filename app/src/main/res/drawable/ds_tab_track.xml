@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The track behind the sheet's three modes. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_surface_faint" />
+    <corners android:radius="999dp" />
+</shape>

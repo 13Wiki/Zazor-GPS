@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- White on the chosen mode, white at two thirds on the others. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:color="@color/ds_text_primary" android:state_selected="true" />
+    <item android:color="@color/ds_sheet_tab_idle" />
+</selector>
