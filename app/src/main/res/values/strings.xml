@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">Zazor</string>
+    <string name="app_name" translatable="false">Zazor GPS</string>
     <string name="privacy_setting">Приватность и статистика</string>
     <string name="pro_setting">Убрать рекламу</string>
     <string name="pro_unavailable">Покупка пока недоступна: товар не настроен в Google Play</string>
