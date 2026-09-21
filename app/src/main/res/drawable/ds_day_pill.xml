@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Which day a card's track belongs to, named over the track itself. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_day_pill" />
+    <corners android:radius="999dp" />
+</shape>

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The frame around the point being looked at, in the colour nothing else on the map wears. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_danger" />
+    <corners android:radius="16dp" />
+</shape>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- A small square action beside a card's text: white at a tenth, 13dp corners. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/ds_surface_pill" />
+            <corners android:radius="13dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/ds_surface_round" />
+            <corners android:radius="13dp" />
+        </shape>
+    </item>
+</selector>

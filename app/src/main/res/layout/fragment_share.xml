@@ -37,7 +37,7 @@
             android:layout_marginStart="12dp"
             android:layout_marginEnd="16dp"
             android:text="@string/share_title"
-            android:textAppearance="@style/TextAppearance.Zazor.Screen"
+            style="@style/Widget.Zazor.ScreenTitle"
             app:layout_constraintBottom_toBottomOf="@id/ivClose"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivClose"
@@ -133,8 +133,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="18dp"
+            style="@style/Widget.Zazor.Caption"
             android:text="@string/share_include"
-            android:textAppearance="@style/TextAppearance.Zazor.Caption"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/clSummary" />
@@ -185,8 +185,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginTop="18dp"
+            style="@style/Widget.Zazor.Caption"
             android:text="@string/share_how"
-            android:textAppearance="@style/TextAppearance.Zazor.Caption"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cgInclude" />

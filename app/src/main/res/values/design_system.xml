@@ -43,6 +43,19 @@
     <color name="ds_include_pill_idle">#B3FFFFFF</color>
     <color name="ds_option_hint">#8CFFFFFF</color>
     <color name="ds_hint">#57FFFFFF</color>
+    <!-- The ground a track is drawn on, and the colours of a warning that cannot be undone. -->
+    <color name="ds_map">#16201C</color>
+    <color name="ds_danger_surface">#17FF5A4E</color>
+    <color name="ds_danger_round">#29FF5A4E</color>
+    <color name="ds_danger_text">#FFB3AC</color>
+    <color name="ds_danger_icon">#FF7A70</color>
+    <!-- Glass over a drawn map: dark rather than white, so the track keeps its contrast. -->
+    <color name="ds_dark_glass">#9E0B0F14</color>
+    <color name="ds_dark_glass_stat">#AD0B0F14</color>
+    <color name="ds_dark_glass_edge">#24FFFFFF</color>
+    <color name="ds_dark_glass_edge_soft">#1FFFFFFF</color>
+    <color name="ds_day_pill">#B30B0F14</color>
+    <color name="ds_map_sheet">#E6141A21</color>
     <color name="ds_caption">#8CFFFFFF</color>
     <!-- The editing sheet's own dark glass, from the mockup. -->
     <color name="ds_sheet">#D1141A21</color>

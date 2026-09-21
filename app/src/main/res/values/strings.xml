@@ -79,8 +79,6 @@
     </plurals>
     <string name="series_best_fix">Координата серии: кадр %1$d, ±%2$d м</string>
     <string name="series_no_fix">У серии нет координат</string>
-    <string name="route_scale_m">%1$d м</string>
-    <string name="route_scale_km">%1$.0f км</string>
     <string name="outings_title">Выходы</string>
     <string name="outing_today">Сегодня</string>
     <string name="outing_yesterday">Вчера</string>
@@ -98,7 +96,6 @@
     <string name="outings_empty">Здесь появятся дни, когда вы снимали</string>
     <string name="route_open_in_maps">Открыть в картах</string>
     <string name="route_no_maps_app">Нет приложения карт</string>
-    <string name="route_point_of">Точка %1$d из %2$d</string>
     <string name="point_title">Точка %1$d · %2$s</string>
     <string name="point_title_plain">Точка %1$d</string>
     <string name="point_meta_panorama">панорама %1$d°</string>
@@ -110,6 +107,7 @@
     <string name="distance_km">%1$s км</string>
     <string name="duration_hm">%1$d ч %2$d мин</string>
     <string name="duration_m">%1$d мин</string>
+    <string name="duration_clock">%1$d:%2$02d</string>
     <string name="delete">Удалить</string>
     <string name="cancel_action">Отмена</string>
     <string name="back">Назад</string>
@@ -262,4 +260,14 @@
     <string name="accuracy">Точность: %s m</string>
     <string name="display_accuracy">Отображать погрешность</string>
     <string name="display_address">Отображать адрес</string>
+    <!-- The outings log, and the map of one outing. -->
+    <string name="outings_note">Маршрут не хранится отдельно — он собирается из снимков. Удалили снимки за день, и след того дня исчез вместе с ними. Отдельная кнопка стирает весь выход целиком.</string>
+    <string name="outings_delete_all">Удалить все выходы</string>
+    <string name="outings_delete_all_message">Все снимки со всех дней будут стёрты с телефона вместе со следами маршрутов. Отменить нельзя.</string>
+    <string name="outing_share_track">Отправить трек</string>
+    <string name="map_stat_route">маршрут</string>
+    <string name="map_stat_points">точек</string>
+    <string name="map_stat_moving">в пути</string>
+    <string name="map_recenter">Вписать маршрут</string>
+    <string name="map_point_counter">%1$d/%2$d</string>
 </resources>

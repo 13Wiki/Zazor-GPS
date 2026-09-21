@@ -26,7 +26,7 @@
         android:layout_marginStart="@dimen/ds_space_3"
         android:layout_marginEnd="@dimen/ds_space_4"
         android:text="@string/settings"
-        android:textAppearance="@style/TextAppearance.Zazor.Screen"
+        style="@style/Widget.Zazor.ScreenTitle"
         app:layout_constraintBottom_toBottomOf="@id/ivBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivBack"

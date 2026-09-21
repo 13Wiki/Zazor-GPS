@@ -1,5 +1,6 @@
 package com.gps.zazor.ui.outings
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -14,21 +15,15 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
 
+/**
+ * A card per day: that day's track drawn small, what it adds up to, and the two things worth
+ * doing with it. The card itself opens the day's map.
+ */
 class OutingsAdapter(
-    private val onClick: (Outing) -> Unit
+    private val onClick: (Outing) -> Unit,
+    private val onDelete: (Outing) -> Unit,
+    private val onShare: (Outing) -> Unit
 ) : ListAdapter<Outing, OutingsAdapter.OutingHolder>(DIFF) {
-
-    var selectedDate: LocalDate? = null
-        set(value) {
-            val previous = field
-            field = value
-            // Repaint only the two rows whose selection changed, not the whole strip.
-            listOf(previous, value).forEach { date ->
-                currentList.indexOfFirst { it.date == date }
-                    .takeIf { it >= 0 }
-                    ?.let(::notifyItemChanged)
-            }
-        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
         OutingHolder(ItemOutingBinding.inflate(LayoutInflater.from(parent.context), parent, false))
@@ -50,23 +45,36 @@ class OutingsAdapter(
                 ),
                 Formats.distance(context, outing.distanceMeters)
             )
-            binding.tvRange.text = outing.startedAt?.let { start ->
-                outing.finishedAt?.let { end ->
-                    context.getString(
-                        R.string.outing_time_range,
-                        PhotoClock.formatTime(start),
-                        PhotoClock.formatTime(end)
-                    )
-                }
-            }.orEmpty()
-            binding.vSelected.visibility =
-                if (outing.date == selectedDate) android.view.View.VISIBLE
-                else android.view.View.INVISIBLE
-            binding.root.setOnClickListener { onClick(outing) }
+            // The hours walked, and where - whichever of the two the day actually carries.
+            binding.tvRange.text = listOfNotNull(
+                outing.startedAt?.let { start ->
+                    outing.finishedAt?.let { end ->
+                        context.getString(
+                            R.string.outing_time_range,
+                            PhotoClock.formatTime(start),
+                            PhotoClock.formatTime(end)
+                        )
+                    }
+                },
+                outing.photos.firstNotNullOfOrNull { it.address?.takeIf(String::isNotBlank) }
+            ).joinToString(" · ")
+
+            binding.vRoute.isCompact = true
+            binding.vRoute.setPhotos(outing.photos)
+
+            // Accent on the day still being walked, plain on the days already closed.
+            binding.ivShare.setBackgroundResource(
+                if (outing.date == LocalDate.now()) R.drawable.ds_tile_button_accent
+                else R.drawable.ds_tile_button
+            )
+
+            binding.clRoot.setOnClickListener { onClick(outing) }
+            binding.ivDelete.setOnClickListener { onDelete(outing) }
+            binding.ivShare.setOnClickListener { onShare(outing) }
         }
     }
 
-    private fun LocalDate.label(resources: android.content.res.Resources): String = when (this) {
+    private fun LocalDate.label(resources: Resources): String = when (this) {
         LocalDate.now() -> resources.getString(R.string.outing_today)
         LocalDate.now().minusDays(1) -> resources.getString(R.string.outing_yesterday)
         else -> format(DateTimeFormatter.ofPattern("d MMMM", Locale.getDefault()))

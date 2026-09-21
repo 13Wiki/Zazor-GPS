@@ -30,7 +30,7 @@
         android:layout_marginTop="@dimen/ds_space_5"
         android:gravity="center"
         android:text="@string/welcome"
-        android:textAppearance="@style/TextAppearance.Zazor.Screen"
+        style="@style/Widget.Zazor.ScreenTitle"
         app:layout_constraintBottom_toTopOf="@id/tilText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -73,8 +73,6 @@
     </plurals>
     <string name="series_best_fix">Series position: frame %1$d, ±%2$d m</string>
     <string name="series_no_fix">This series has no coordinates</string>
-    <string name="route_scale_m">%1$d m</string>
-    <string name="route_scale_km">%1$.0f km</string>
     <string name="outings_title">Outings</string>
     <string name="outing_today">Today</string>
     <string name="outing_yesterday">Yesterday</string>
@@ -90,7 +88,6 @@
     <string name="outings_empty">Days you shot on will appear here</string>
     <string name="route_open_in_maps">Open in maps</string>
     <string name="route_no_maps_app">No maps app installed</string>
-    <string name="route_point_of">Point %1$d of %2$d</string>
     <string name="point_title">Point %1$d · %2$s</string>
     <string name="point_title_plain">Point %1$d</string>
     <string name="point_meta_panorama">panorama %1$d°</string>
@@ -102,6 +99,7 @@
     <string name="distance_km">%1$s km</string>
     <string name="duration_hm">%1$d h %2$d min</string>
     <string name="duration_m">%1$d min</string>
+    <string name="duration_clock">%1$d:%2$02d</string>
     <string name="delete">Delete</string>
     <string name="cancel_action">Cancel</string>
     <string name="back">Back</string>
@@ -227,4 +225,14 @@
     <string name="accuracy">Accuracy: %s m</string>
     <string name="display_accuracy">Show the margin of error</string>
     <string name="display_address">Print the address</string>
+    <!-- The outings log, and the map of one outing. -->
+    <string name="outings_note">The route is not stored on its own — it is built from the shots. Delete the shots from a day and the trail of that day goes with them. The separate button wipes a whole outing at once.</string>
+    <string name="outings_delete_all">Delete every outing</string>
+    <string name="outings_delete_all_message">Every shot from every day will be wiped from the phone, along with the trails. This cannot be undone.</string>
+    <string name="outing_share_track">Send the track</string>
+    <string name="map_stat_route">route</string>
+    <string name="map_stat_points">points</string>
+    <string name="map_stat_moving">moving</string>
+    <string name="map_recenter">Fit the route</string>
+    <string name="map_point_counter">%1$d/%2$d</string>
 </resources>

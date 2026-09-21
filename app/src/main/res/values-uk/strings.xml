@@ -77,8 +77,6 @@
     </plurals>
     <string name="series_best_fix">Координата серії: кадр %1$d, ±%2$d м</string>
     <string name="series_no_fix">Серія не має координат</string>
-    <string name="route_scale_m">%1$d м</string>
-    <string name="route_scale_km">%1$.0f км</string>
     <string name="outings_title">Виходи</string>
     <string name="outing_today">Сьогодні</string>
     <string name="outing_yesterday">Учора</string>
@@ -96,7 +94,6 @@
     <string name="outings_empty">Тут з’являться дні, коли ви знімали</string>
     <string name="route_open_in_maps">Відкрити в картах</string>
     <string name="route_no_maps_app">Немає застосунку карт</string>
-    <string name="route_point_of">Точка %1$d з %2$d</string>
     <string name="point_title">Точка %1$d · %2$s</string>
     <string name="point_title_plain">Точка %1$d</string>
     <string name="point_meta_panorama">панорама %1$d°</string>
@@ -108,6 +105,7 @@
     <string name="distance_km">%1$s км</string>
     <string name="duration_hm">%1$d год %2$d хв</string>
     <string name="duration_m">%1$d хв</string>
+    <string name="duration_clock">%1$d:%2$02d</string>
     <string name="delete">Видалити</string>
     <string name="cancel_action">Скасувати</string>
     <string name="back">Назад</string>
@@ -237,4 +235,14 @@
     <string name="accuracy">Точність: %s м</string>
     <string name="display_accuracy">Показувати похибку</string>
     <string name="display_address">Показувати адресу</string>
+    <!-- The outings log, and the map of one outing. -->
+    <string name="outings_note">Маршрут не зберігається окремо — він складається зі знімків. Видалили знімки за день, і слід того дня зник разом з ними. Окрема кнопка стирає весь вихід цілком.</string>
+    <string name="outings_delete_all">Видалити всі виходи</string>
+    <string name="outings_delete_all_message">Усі знімки з усіх днів буде стерто з телефона разом зі слідами маршрутів. Скасувати не можна.</string>
+    <string name="outing_share_track">Надіслати трек</string>
+    <string name="map_stat_route">маршрут</string>
+    <string name="map_stat_points">точок</string>
+    <string name="map_stat_moving">у дорозі</string>
+    <string name="map_recenter">Вписати маршрут</string>
+    <string name="map_point_counter">%1$d/%2$d</string>
 </resources>

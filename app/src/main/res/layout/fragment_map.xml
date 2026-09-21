@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One outing, drawn. The track and its numbered points fill the screen; what floats over them is
+  the day being looked at, what it adds up to, and the point currently chosen.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/ds_map">
+
+    <com.gps.zazor.views.RouteView
+        android:id="@+id/vRoute"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!--
+      The chosen point, shown as what was photographed there rather than as another numbered disc.
+      Its position comes from the drawn track, so it moves with the point it belongs to.
+    -->
+    <LinearLayout
+        android:id="@+id/llMarker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ds_marker_frame"
+            android:padding="4dp">
+
+            <ImageView
+                android:id="@+id/ivMarker"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:contentDescription="@string/photo"
+                android:scaleType="centerCrop"
+                tools:background="@color/ds_surface_raised" />
+
+        </FrameLayout>
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_marker_pointer" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ds_dark_glass_button"
+        android:contentDescription="@string/back"
+        android:padding="13dp"
+        android:src="@drawable/ic_back_line"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/ds_text_primary" />
+
+    <!-- Which day is drawn; tapping it moves to another one without going back first. -->
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ds_dark_glass_pill"
+        android:drawableEnd="@drawable/ic_chevron_down_small"
+        android:drawablePadding="8dp"
+        android:fontFamily="@font/manrope"
+        android:gravity="center_vertical"
+        android:paddingStart="18dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="18dp"
+        android:paddingBottom="12dp"
+        android:textColor="@color/ds_text_primary"
+        android:textFontWeight="700"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:drawableTint="@color/ds_on_glass_muted"
+        app:layout_constraintBottom_toBottomOf="@id/ivBack"
+        app:layout_constraintEnd_toStartOf="@id/ivRecenter"
+        app:layout_constraintStart_toEndOf="@id/ivBack"
+        app:layout_constraintTop_toTopOf="@id/ivBack"
+        tools:text="3 сентября" />
+
+    <ImageView
+        android:id="@+id/ivRecenter"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ds_dark_glass_button"
+        android:contentDescription="@string/map_recenter"
+        android:padding="13dp"
+        android:src="@drawable/ic_crosshair"
+        app:layout_constraintBottom_toBottomOf="@id/ivBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivBack"
+        app:tint="@color/ds_text_primary" />
+
+    <LinearLayout
+        android:id="@+id/llStats"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivBack">
+
+        <include
+            android:id="@+id/statDistance"
+            layout="@layout/item_map_stat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp" />
+
+        <include
+            android:id="@+id/statPoints"
+            layout="@layout/item_map_stat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp" />
+
+        <include
+            android:id="@+id/statDuration"
+            layout="@layout/item_map_stat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:fontFamily="@font/manrope"
+        android:gravity="center"
+        android:text="@string/outings_empty"
+        android:textColor="@color/ds_text_muted"
+        android:textSize="15sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <!-- The point in hand, and the two things worth doing about it. -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clSheet"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ds_map_sheet"
+        android:paddingStart="20dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="28dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:id="@+id/vGrabber"
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:background="@drawable/ds_grabber"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivPoint"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_marginTop="16dp"
+            android:contentDescription="@string/photo"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vGrabber"
+            tools:background="@color/ds_surface_raised" />
+
+        <TextView
+            android:id="@+id/tvPointTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/manrope"
+            android:maxLines="1"
+            android:textColor="@color/ds_text_primary"
+            android:textFontWeight="700"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@id/tvPointMeta"
+            app:layout_constraintEnd_toStartOf="@id/tvCounter"
+            app:layout_constraintStart_toEndOf="@id/ivPoint"
+            app:layout_constraintTop_toTopOf="@id/ivPoint"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:text="Точка 5 · Рюкзак у камня" />
+
+        <TextView
+            android:id="@+id/tvPointMeta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/manrope"
+            android:maxLines="1"
+            android:textColor="@color/ds_text_faint"
+            android:textFontWeight="500"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@id/ivPoint"
+            app:layout_constraintEnd_toEndOf="@id/tvPointTitle"
+            app:layout_constraintStart_toStartOf="@id/tvPointTitle"
+            app:layout_constraintTop_toBottomOf="@id/tvPointTitle"
+            tools:text="15:34 · панорама 214° · ±4 м" />
+
+        <TextView
+            android:id="@+id/tvCounter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ds_counter_pill"
+            android:fontFamily="@font/manrope"
+            android:paddingStart="11dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="11dp"
+            android:paddingBottom="6dp"
+            android:textColor="@color/ds_text_primary"
+            android:textFontWeight="700"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/ivPoint"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivPoint"
+            tools:text="5/5" />
+
+        <Button
+            android:id="@+id/bOpenPhoto"
+            style="@style/Widget.Zazor.Button.Sheet"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/ds_ghost_button_sheet"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:text="@string/point_open_photo"
+            android:textColor="@color/ds_text_primary"
+            app:layout_constraintEnd_toStartOf="@id/bSendTrack"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivPoint" />
+
+        <Button
+            android:id="@+id/bSendTrack"
+            style="@style/Widget.Zazor.Button.Sheet"
+            android:layout_width="0dp"
+            android:layout_height="52dp"
+            android:background="@drawable/ds_accent_button_sheet"
+            android:insetLeft="0dp"
+            android:insetRight="0dp"
+            android:paddingStart="6dp"
+            android:paddingEnd="6dp"
+            android:text="@string/point_send_track"
+            android:textFontWeight="700"
+            app:icon="@drawable/ic_share_nodes"
+            app:iconGravity="textStart"
+            app:iconPadding="8dp"
+            app:iconSize="18dp"
+            app:iconTint="@color/ds_on_accent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bOpenPhoto"
+            app:layout_constraintTop_toTopOf="@id/bOpenPhoto" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

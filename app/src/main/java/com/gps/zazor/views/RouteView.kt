@@ -15,12 +15,9 @@ import androidx.core.content.ContextCompat
 import com.gps.zazor.R
 import com.gps.zazor.data.models.Outing
 import com.gps.zazor.data.models.Photo
-import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.hypot
-import kotlin.math.log10
 import kotlin.math.max
-import kotlin.math.pow
 
 /**
  * Draws where the person walked and where each shot was taken.
@@ -40,10 +37,15 @@ class RouteView @JvmOverloads constructor(
     companion object {
 
         private const val PADDING_DP = 40F
-        private const val POINT_RADIUS_DP = 13F
-        private const val TRACK_WIDTH_DP = 3F
+        private const val COMPACT_PADDING_DP = 18F
+        /** Radii to the middle of the ring: half the drawn disc, less half its stroke. */
+        private const val COMPACT_POINT_DP = 3.75F
+        private const val POINT_RADIUS_DP = 12.5F
+        private const val COMPACT_RING_DP = 2.5F
+        private const val RING_DP = 3F
+        private const val COMPACT_TRACK_DP = 3F
+        private const val TRACK_WIDTH_DP = 4F
         private const val TOUCH_SLOP_DP = 24F
-        private const val SCALE_BAR_MAX_FRACTION = 0.35F
         /** Metres of span assumed when every shot was taken from one spot. */
         private const val SINGLE_POINT_SPAN_M = 60.0
     }
@@ -51,7 +53,6 @@ class RouteView @JvmOverloads constructor(
     private val accent = ContextCompat.getColor(context, R.color.ds_accent)
     private val danger = ContextCompat.getColor(context, R.color.ds_danger)
     private val ink = ContextCompat.getColor(context, R.color.ds_text_primary)
-    private val muted = ContextCompat.getColor(context, R.color.ds_text_muted)
     private val surface = ContextCompat.getColor(context, R.color.ds_background)
 
     private val haloPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
@@ -74,14 +75,10 @@ class RouteView @JvmOverloads constructor(
         textAlign = Paint.Align.CENTER
         isFakeBoldText = true
     }
-    private val scalePaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        color = muted
-        style = Paint.Style.STROKE
-    }
-    private val scaleTextPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = muted }
-
-    private val padding = PADDING_DP.dp()
-    private val pointRadius = POINT_RADIUS_DP.dp()
+    private val padding get() = if (isCompact) COMPACT_PADDING_DP.dp() else PADDING_DP.dp()
+    private val pointRadius get() = if (isCompact) COMPACT_POINT_DP.dp() else POINT_RADIUS_DP.dp()
+    private val trackWidth get() = if (isCompact) COMPACT_TRACK_DP.dp() else TRACK_WIDTH_DP.dp()
+    private val ringWidth get() = if (isCompact) COMPACT_RING_DP.dp() else RING_DP.dp()
     private val touchSlop = TOUCH_SLOP_DP.dp()
 
     private val projected = mutableListOf<PointF>()
@@ -90,9 +87,6 @@ class RouteView @JvmOverloads constructor(
 
     /** Located photos only, oldest first - the order the track is walked in. */
     private var points: List<Photo> = emptyList()
-
-    /** Metres represented by one pixel, recomputed on every layout. */
-    private var metersPerPixel = 1.0
 
     var selectedIndex: Int = -1
         set(value) {
@@ -103,13 +97,54 @@ class RouteView @JvmOverloads constructor(
     /** Invoked with the index into the located points, or -1 when the tap missed. */
     var onPointSelected: ((Int) -> Unit)? = null
 
+    /**
+     * Invoked whenever the points have been laid out afresh. Anything pinned to a drawn point -
+     * the map screen's photo callout - repositions itself from here.
+     */
+    var onProjected: (() -> Unit)? = null
+
+    /**
+     * Leaves the chosen point undrawn, for a screen that marks it with something of its own and
+     * would otherwise show a disc peeking out from behind it.
+     */
+    var hidesSelected: Boolean = false
+        set(value) {
+            field = value
+            invalidate()
+        }
+
+    /**
+     * Room kept clear at the top and bottom, in pixels, for whatever floats over the drawing. The
+     * track is fitted into what is left, so a bottom sheet never sits on top of half the walk.
+     */
+    var topInset: Float = 0F
+        set(value) {
+            field = value
+            project()
+            invalidate()
+        }
+
+    var bottomInset: Float = 0F
+        set(value) {
+            field = value
+            project()
+            invalidate()
+        }
+
+    /**
+     * A thumbnail of the track rather than a map to work on: smaller points, no scale bar and no
+     * touch. It is what a day's card in the outings list carries.
+     */
+    var isCompact: Boolean = false
+        set(value) {
+            field = value
+            isClickable = !value
+            requestLayout()
+            invalidate()
+        }
+
     init {
-        trackPaint.strokeWidth = TRACK_WIDTH_DP.dp()
-        haloPaint.strokeWidth = TRACK_WIDTH_DP.dp() * 4
-        ringPaint.strokeWidth = 3F.dp()
         labelPaint.textSize = 12F.sp()
-        scalePaint.strokeWidth = 2F.dp()
-        scaleTextPaint.textSize = 11F.sp()
         isClickable = true
         isFocusable = true
     }
@@ -124,6 +159,9 @@ class RouteView @JvmOverloads constructor(
 
     /** The photo behind a drawn point, or null when the index is out of range. */
     fun photoAt(index: Int): Photo? = points.getOrNull(index)
+
+    /** Where a point sits inside the view, for a callout pinned to it. */
+    fun pointPosition(index: Int): PointF? = projected.getOrNull(index)
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
@@ -152,7 +190,7 @@ class RouteView @JvmOverloads constructor(
         val spanY = (ys.max() - ys.min()).takeIf { it > 0 } ?: 0.0
 
         val usableW = (width - padding * 2).coerceAtLeast(1F)
-        val usableH = (height - padding * 2).coerceAtLeast(1F)
+        val usableH = (height - padding * 2 - topInset - bottomInset).coerceAtLeast(1F)
 
         // A single point, or several from one spot, has no span: centre it at a fixed zoom.
         val degreesPerMeter = 1.0 / 111_320.0
@@ -165,70 +203,57 @@ class RouteView @JvmOverloads constructor(
         val centreX = (xs.max() + xs.min()) / 2
         val centreY = (ys.max() + ys.min()) / 2
 
+        // The middle of what is left once the floating chrome has had its share.
+        val midY = (height + topInset - bottomInset) / 2F
+
         points.indices.forEach { i ->
             val x = (width / 2F + ((xs[i] - centreX) * scale)).toFloat()
-            val y = (height / 2F + ((ys[i] - centreY) * scale)).toFloat()
+            val y = (midY + ((ys[i] - centreY) * scale)).toFloat()
             projected.add(PointF(x, y))
             if (i == 0) trackPath.moveTo(x, y) else trackPath.lineTo(x, y)
         }
 
-        // One pixel in metres: latitude degrees are constant, so derive from the vertical scale.
-        metersPerPixel = 1.0 / (scale * degreesPerMeter)
+        onProjected?.invoke()
     }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (projected.isEmpty()) return
 
+        trackPaint.strokeWidth = trackWidth
+        haloPaint.strokeWidth = trackWidth * 4
+        ringPaint.strokeWidth = ringWidth
         if (projected.size > 1) {
             canvas.drawPath(trackPath, haloPaint)
             canvas.drawPath(trackPath, trackPaint)
         }
 
         projected.forEachIndexed { index, point ->
-            val isSelected = index == selectedIndex
+            val isSelected = index == selectedIndex && !isCompact
+            if (isSelected && hidesSelected) return@forEachIndexed
+            // Where the walking stopped, filled rather than hollow, as the design ends a track.
+            if (isCompact && index == projected.lastIndex && projected.size > 1) {
+                discPaint.color = danger
+                canvas.drawCircle(point.x, point.y, pointRadius + ringWidth / 2F, discPaint)
+                ringPaint.color = surface
+                canvas.drawCircle(point.x, point.y, pointRadius + ringWidth, ringPaint)
+                return@forEachIndexed
+            }
             discPaint.color = surface
             canvas.drawCircle(point.x, point.y, pointRadius, discPaint)
             ringPaint.color = if (isSelected) danger else accent
             canvas.drawCircle(point.x, point.y, pointRadius, ringPaint)
 
+            // A card's points are too small to number, and nothing there is chosen anyway.
+            if (isCompact) return@forEachIndexed
             val label = (index + 1).toString()
             labelPaint.getTextBounds(label, 0, label.length, textBounds)
             canvas.drawText(label, point.x, point.y + textBounds.height() / 2F, labelPaint)
         }
-
-        drawScaleBar(canvas)
-    }
-
-    /** A bar of a round number of metres, so distances can be read off the drawing. */
-    private fun drawScaleBar(canvas: Canvas) {
-        if (projected.size < 2) return
-        val maxPixels = width * SCALE_BAR_MAX_FRACTION
-        val rawMeters = maxPixels * metersPerPixel
-        if (rawMeters <= 0 || rawMeters.isNaN()) return
-
-        val magnitude = 10.0.pow(log10(rawMeters).toInt().toDouble())
-        val niceMeters = listOf(5.0, 2.0, 1.0)
-            .map { it * magnitude }
-            .firstOrNull { it <= rawMeters } ?: magnitude
-        val barPixels = (niceMeters / metersPerPixel).toFloat()
-        if (barPixels < 1F || barPixels > width) return
-
-        val left = padding
-        val bottom = height - padding / 2F
-        canvas.drawLine(left, bottom, left + barPixels, bottom, scalePaint)
-        canvas.drawLine(left, bottom - 5F.dp(), left, bottom, scalePaint)
-        canvas.drawLine(left + barPixels, bottom - 5F.dp(), left + barPixels, bottom, scalePaint)
-
-        val text = if (niceMeters >= 1000) {
-            context.getString(R.string.route_scale_km, niceMeters / 1000)
-        } else {
-            context.getString(R.string.route_scale_m, niceMeters.toInt())
-        }
-        canvas.drawText(text, left, bottom - 8F.dp(), scaleTextPaint)
     }
 
     override fun onTouchEvent(event: MotionEvent): Boolean {
+        if (isCompact) return false
         if (event.action != MotionEvent.ACTION_UP || projected.isEmpty()) {
             return super.onTouchEvent(event)
         }

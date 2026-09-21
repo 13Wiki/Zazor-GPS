@@ -8,6 +8,7 @@ import com.gps.zazor.ui.base.BaseActivity
 import com.gps.zazor.ui.media.di.injectViewModel
 import com.gps.zazor.ui.media.edit.EditMediaFragment
 import com.gps.zazor.ui.media.list.MediaListFragment
+import com.gps.zazor.ui.outings.OutingMapFragment
 import com.gps.zazor.ui.outings.OutingsFragment
 import com.gps.zazor.ui.photo.PhotoActivity
 import com.gps.zazor.ui.series.SeriesFragment
@@ -35,6 +36,10 @@ class MediaActivity : BaseActivity<MediaContract.State, MediaContract.Event>(R.l
 
     override fun openOutings() {
         navigateTo(OutingsFragment(), R.id.flContainer, true)
+    }
+
+    override fun openOutingMap(epochDay: Long) {
+        navigateTo(OutingMapFragment.newInstance(epochDay), R.id.flContainer, true)
     }
 
     override fun openShare(paths: List<String>) {

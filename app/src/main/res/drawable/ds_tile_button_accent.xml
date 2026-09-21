@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The one action a card is really for. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/ds_accent_pressed" />
+            <corners android:radius="13dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/ds_accent" />
+            <corners android:radius="13dp" />
+        </shape>
+    </item>
+</selector>

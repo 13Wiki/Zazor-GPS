@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  The outings log: a card per day walked, newest first. The map of any one day is a screen of its
+  own - tapping a card opens it.
+-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,7 +14,8 @@
         android:id="@+id/ivBack"
         android:layout_width="46dp"
         android:layout_height="46dp"
-        android:layout_margin="@dimen/ds_space_4"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/ds_round_button"
         android:contentDescription="@string/back"
         android:padding="13dp"
@@ -23,189 +28,120 @@
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/ds_space_3"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
         android:text="@string/outings_title"
-        android:textColor="@color/ds_text_primary"
-        android:textSize="24sp"
-        android:textStyle="bold"
+        style="@style/Widget.Zazor.ScreenTitle"
         app:layout_constraintBottom_toBottomOf="@id/ivBack"
-        app:layout_constraintEnd_toStartOf="@id/ivExport"
+        app:layout_constraintEnd_toStartOf="@id/ivDeleteAll"
         app:layout_constraintStart_toEndOf="@id/ivBack"
         app:layout_constraintTop_toTopOf="@id/ivBack" />
 
+    <!-- Everything at once, and nothing else on this screen is red. -->
     <ImageView
-        android:id="@+id/ivExport"
-        android:layout_width="@dimen/ds_icon_button"
-        android:layout_height="@dimen/ds_icon_button"
-        android:layout_marginEnd="@dimen/ds_space_2"
-        android:background="@drawable/ds_ghost_button"
-        android:contentDescription="@string/export_gpx"
-        android:padding="12dp"
-        android:src="@drawable/ic_baseline_location_24"
-        app:layout_constraintBottom_toBottomOf="@id/ivBack"
-        app:layout_constraintEnd_toStartOf="@id/ivDelete"
-        app:layout_constraintTop_toTopOf="@id/ivBack"
-        app:tint="@color/ds_text_primary" />
-
-    <ImageView
-        android:id="@+id/ivDelete"
-        android:layout_width="@dimen/ds_icon_button"
-        android:layout_height="@dimen/ds_icon_button"
-        android:layout_marginEnd="@dimen/ds_space_4"
-        android:background="@drawable/ds_ghost_button"
-        android:contentDescription="@string/outing_delete"
-        android:padding="12dp"
+        android:id="@+id/ivDeleteAll"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ds_round_button_danger"
+        android:contentDescription="@string/outings_delete_all"
+        android:padding="13dp"
         android:src="@drawable/ic_baseline_delete_24"
         app:layout_constraintBottom_toBottomOf="@id/ivBack"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/ivBack"
-        app:tint="@color/ds_danger" />
+        app:tint="@color/ds_danger_icon" />
 
-    <!-- The track itself: drawn, not a tile map, so it works with no signal and no key. -->
-    <com.gps.zazor.views.RouteView
-        android:id="@+id/vRoute"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsvContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="@dimen/ds_space_2"
-        app:layout_constraintBottom_toTopOf="@id/clPoint"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ivBack" />
-
-    <LinearLayout
-        android:id="@+id/llStats"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/ds_space_4"
-        android:background="@drawable/ds_glass_pill"
-        android:orientation="horizontal"
-        android:paddingStart="@dimen/ds_space_4"
-        android:paddingEnd="@dimen/ds_space_4"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/vRoute">
-
-        <TextView
-            android:id="@+id/tvStats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="13sp"
-            android:textStyle="bold"
-            tools:text="5 точек · 2,4 км" />
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/tvEmpty"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/outings_empty"
-        android:textColor="@color/ds_text_muted"
-        android:textSize="15sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@id/vRoute"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/vRoute" />
-
-    <TextView
-        android:id="@+id/tvOpenInMaps"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/ds_space_4"
-        android:background="@drawable/ds_ghost_button"
-        android:paddingStart="@dimen/ds_space_4"
-        android:paddingEnd="@dimen/ds_space_4"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:text="@string/route_open_in_maps"
-        android:textColor="@color/ds_text_primary"
-        android:textSize="14sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/vRoute"
-        app:layout_constraintEnd_toEndOf="parent" />
-
-    <!--
-      The point the finger landed on: what was photographed there, when, and how tight the fix
-      was - with the two things worth doing about it.
-    -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clPoint"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/ds_space_4"
-        android:layout_marginEnd="@dimen/ds_space_4"
-        android:layout_marginBottom="@dimen/ds_space_3"
-        android:background="@drawable/ds_surface_card"
-        android:padding="@dimen/ds_space_4"
-        app:layout_constraintBottom_toTopOf="@id/rvOutings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
-
-        <TextView
-            android:id="@+id/tvPointTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Точка 5 · Рюкзак у камня" />
-
-        <TextView
-            android:id="@+id/tvPointMeta"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_1"
-            android:textColor="@color/ds_text_secondary"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvPointTitle"
-            tools:text="15:34 · панорама 214° · ±4 м" />
-
-        <Button
-            android:id="@+id/bOpenPhoto"
-            style="@style/Widget.Zazor.Button.Ghost.Compact"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_3"
-            android:layout_marginEnd="@dimen/ds_space_2"
-            android:text="@string/point_open_photo"
-            app:layout_constraintEnd_toStartOf="@id/bSendTrack"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvPointMeta" />
-
-        <Button
-            android:id="@+id/bSendTrack"
-            style="@style/Widget.Zazor.Button.Compact"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_3"
-            android:text="@string/point_send_track"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/bOpenPhoto"
-            app:layout_constraintTop_toBottomOf="@id/tvPointMeta" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvOutings"
-        android:layout_width="match_parent"
-        android:layout_height="128dp"
+        android:layout_marginTop="14dp"
         android:clipToPadding="false"
-        android:orientation="horizontal"
-        android:paddingStart="@dimen/ds_space_4"
-        android:paddingEnd="@dimen/ds_space_4"
-        android:paddingBottom="@dimen/ds_space_4"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:paddingBottom="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:listitem="@layout/item_outing" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivBack">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvOutings"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:nestedScrollingEnabled="false"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_outing" />
+
+            <!--
+              Said here rather than only in the confirmation dialog: a person deleting a day's
+              photos elsewhere in the app should already know the track goes with them.
+            -->
+            <LinearLayout
+                android:id="@+id/llNote"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/ds_note_danger"
+                android:orientation="horizontal"
+                android:paddingStart="16dp"
+                android:paddingTop="15dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="15dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rvOutings">
+
+                <ImageView
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="11dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_baseline_delete_24"
+                    app:tint="@color/ds_danger_icon" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/manrope"
+                    android:lineSpacingExtra="6sp"
+                    android:text="@string/outings_note"
+                    android:textColor="@color/ds_danger_text"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvEmpty"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="120dp"
+                android:layout_marginEnd="16dp"
+                android:fontFamily="@font/manrope"
+                android:gravity="center"
+                android:text="@string/outings_empty"
+                android:textColor="@color/ds_text_muted"
+                android:textSize="15sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="visible" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

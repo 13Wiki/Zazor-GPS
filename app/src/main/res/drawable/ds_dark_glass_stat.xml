@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One number worth reading off the map without touching it. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_dark_glass_stat" />
+    <stroke android:width="1dp" android:color="@color/ds_dark_glass_edge_soft" />
+    <corners android:radius="18dp" />
+</shape>

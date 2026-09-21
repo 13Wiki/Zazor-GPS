@@ -1,62 +1,116 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+  One day's walking, as the design draws it: the track itself at the top of the card with the day
+  named over it, then what it adds up to, and the two things worth doing with it. The card itself
+  opens that day's map.
+-->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clRoot"
-    android:layout_width="176dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/ds_space_3"
-    android:background="@drawable/ds_surface_card"
-    android:clickable="true"
-    android:focusable="true"
-    android:padding="@dimen/ds_space_4">
+    android:layout_marginBottom="12dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/ds_surface_sheer"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="0dp">
 
-    <TextView
-        android:id="@+id/tvDay"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/ds_text_primary"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Сегодня" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tvSummary"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/ds_space_1"
-        android:textColor="@color/ds_text_secondary"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvDay"
-        tools:text="5 точек · 2,4 км" />
+        <!-- Drawn, not a tile map: it has to be right in a field with no signal. -->
+        <com.gps.zazor.views.RouteView
+            android:id="@+id/vRoute"
+            android:layout_width="0dp"
+            android:layout_height="116dp"
+            android:background="@color/ds_map"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvRange"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/ds_space_1"
-        android:textColor="@color/ds_text_muted"
-        android:textSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvSummary"
-        tools:text="14:22 — 15:34" />
+        <TextView
+            android:id="@+id/tvDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:background="@drawable/ds_day_pill"
+            android:fontFamily="@font/manrope"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="6dp"
+            android:textColor="@color/ds_text_primary"
+            android:textFontWeight="700"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Сегодня" />
 
-    <View
-        android:id="@+id/vSelected"
-        android:layout_width="28dp"
-        android:layout_height="3dp"
-        android:layout_marginTop="@dimen/ds_space_3"
-        android:background="@color/ds_accent"
-        android:visibility="invisible"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvRange" />
+        <TextView
+            android:id="@+id/tvSummary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="12dp"
+            android:fontFamily="@font/manrope"
+            android:textColor="@color/ds_text_primary"
+            android:textFontWeight="700"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/ivDelete"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vRoute"
+            tools:text="5 точек · 2,4 км" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/tvRange"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="14dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/manrope"
+            android:maxLines="1"
+            android:textColor="@color/ds_text_faint"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tvSummary"
+            app:layout_constraintStart_toStartOf="@id/tvSummary"
+            app:layout_constraintTop_toBottomOf="@id/tvSummary"
+            tools:text="14:22 — 15:34 · Ленинский просп." />
+
+        <ImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/ds_tile_button"
+            android:contentDescription="@string/outing_delete"
+            android:padding="11dp"
+            android:src="@drawable/ic_baseline_delete_24"
+            app:layout_constraintBottom_toBottomOf="@id/tvRange"
+            app:layout_constraintEnd_toStartOf="@id/ivShare"
+            app:layout_constraintTop_toTopOf="@id/tvSummary"
+            app:tint="@color/ds_on_glass_muted" />
+
+        <!-- Accent on the day still being walked, plain on the days already closed. -->
+        <ImageView
+            android:id="@+id/ivShare"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ds_tile_button"
+            android:contentDescription="@string/outing_share_track"
+            android:padding="11dp"
+            android:src="@drawable/ic_share_nodes"
+            app:layout_constraintBottom_toBottomOf="@id/ivDelete"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ivDelete"
+            app:tint="@color/ds_on_glass_muted" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

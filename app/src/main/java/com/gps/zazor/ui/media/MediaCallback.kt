@@ -7,6 +7,9 @@ interface MediaCallback {
     /** Opens the outings log: the days walked, with each day's track. */
     fun openOutings()
 
+    /** Opens one day's track full screen. @param epochDay the day, as days since the epoch. */
+    fun openOutingMap(epochDay: Long)
+
     /** Opens the transfer screen for the given photos. */
     fun openShare(paths: List<String>)
 

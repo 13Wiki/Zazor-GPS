@@ -37,4 +37,13 @@ object Formats {
             context.getString(R.string.duration_m, minutes)
         }
     }
+
+    /**
+     * Hours and minutes on a clock face, for the map's stat pill: the design has three of them
+     * side by side, and "5 ч 18 мин" does not fit beside the other two.
+     */
+    fun durationShort(context: Context, seconds: Long): String {
+        val minutes = seconds / 60
+        return context.getString(R.string.duration_clock, minutes / 60, minutes % 60)
+    }
 }
