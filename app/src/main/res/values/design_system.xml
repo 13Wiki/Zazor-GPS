@@ -40,6 +40,9 @@
     <color name="ds_grabber">#47FFFFFF</color>
     <color name="ds_sheet_tab_idle">#A8FFFFFF</color>
     <color name="ds_width_dot_idle">#73FFFFFF</color>
+    <color name="ds_include_pill_idle">#B3FFFFFF</color>
+    <color name="ds_option_hint">#8CFFFFFF</color>
+    <color name="ds_caption">#8CFFFFFF</color>
     <!-- The editing sheet's own dark glass, from the mockup. -->
     <color name="ds_sheet">#D1141A21</color>
     <color name="ds_divider_sheer">#12FFFFFF</color>

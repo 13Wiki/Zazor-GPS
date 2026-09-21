@@ -26,7 +26,6 @@
     <string name="appearance_hint">Значок и подпись на домашнем экране. Из списка приложений Zazor GPS не прячется.</string>
     <string name="appearance_label_header">ПОДПИСЬ ПОД ЗНАЧКОМ</string>
     <string name="appearance_changed">Значок изменён</string>
-    <string name="share_summary">%1$d снимк(ов) · %2$.1f МБ</string>
     <string name="report_title">Zazor GPS · фиксация на местности</string>
     <string name="report_count">Снимков: %1$d</string>
     <string name="report_accuracy">точность ±%1$d м</string>
@@ -39,6 +38,15 @@
     <string name="share_report">Отчётом PDF</string>
     <string name="share_report_hint">Снимки, координаты и заметки на одном листе</string>
     <string name="share_include">Что вложить</string>
+    <string name="share_how">КАК ОТПРАВИТЬ</string>
+    <string name="share_megabytes">%1$.1f МБ</string>
+    <string name="share_best_accuracy">лучшая точность ±%1$d м</string>
+    <plurals name="share_photos_count">
+        <item quantity="one">%1$d снимок</item>
+        <item quantity="few">%1$d снимка</item>
+        <item quantity="many">%1$d снимков</item>
+        <item quantity="other">%1$d снимка</item>
+    </plurals>
     <string name="share_include_coordinates">Координаты</string>
     <string name="share_include_track">Маршрут GPX</string>
     <string name="share_include_voice">Заметки</string>

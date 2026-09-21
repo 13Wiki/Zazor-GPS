@@ -52,6 +52,34 @@
         <item name="tint">@color/ds_tool_icon</item>
     </style>
 
+    <!-- What travels with the photos: a pill that is on or off, as the design has it. -->
+    <style name="Widget.Zazor.IncludePill" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ds_include_pill</item>
+        <item name="android:drawablePadding">7dp</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">14dp</item>
+        <item name="android:paddingEnd">14dp</item>
+        <item name="android:paddingTop">9dp</item>
+        <item name="android:paddingBottom">9dp</item>
+        <item name="android:textColor">@color/ds_include_pill_text</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <!-- A caption over a group, as the design sets it. -->
+    <style name="TextAppearance.Zazor.Caption" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:letterSpacing">0.04</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/ds_caption</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <!-- One of the sheet's three modes. -->
     <style name="Widget.Zazor.SheetTab" parent="">
         <item name="android:layout_width">0dp</item>

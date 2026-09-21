@@ -24,7 +24,6 @@
     <string name="appearance_hint">The icon and label on the home screen. Zazor GPS never hides from the app list.</string>
     <string name="appearance_label_header">LABEL UNDER THE ICON</string>
     <string name="appearance_changed">Icon changed</string>
-    <string name="share_summary">%1$d photo(s) · %2$.1f MB</string>
     <string name="report_title">Zazor GPS · site record</string>
     <string name="report_count">Photos: %1$d</string>
     <string name="report_accuracy">accuracy ±%1$d m</string>
@@ -37,6 +36,13 @@
     <string name="share_report">As a PDF report</string>
     <string name="share_report_hint">Frames, coordinates and notes on one sheet</string>
     <string name="share_include">What to include</string>
+    <string name="share_how">HOW TO SEND</string>
+    <string name="share_megabytes">%1$.1f MB</string>
+    <string name="share_best_accuracy">best accuracy ±%1$d m</string>
+    <plurals name="share_photos_count">
+        <item quantity="one">%1$d photo</item>
+        <item quantity="other">%1$d photos</item>
+    </plurals>
     <string name="share_include_coordinates">Coordinates</string>
     <string name="share_include_track">GPX route</string>
     <string name="share_include_voice">Notes</string>

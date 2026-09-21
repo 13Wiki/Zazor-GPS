@@ -16,6 +16,9 @@ import com.gps.zazor.data.models.Photo
 import com.gps.zazor.databinding.FragmentShareBinding
 import com.gps.zazor.ui.base.BaseFragment
 import com.gps.zazor.ui.share.di.injectViewModel
+import android.view.ViewGroup
+import androidx.core.view.updateLayoutParams
+import com.gps.zazor.utils.extensions.loadImage
 import com.gps.zazor.utils.viewBinding.viewBinding
 import kotlinx.coroutines.launch
 import java.io.File
@@ -33,6 +36,15 @@ class ShareFragment : BaseFragment<ShareContract.State, ShareContract.Event>(R.l
         private const val ARG_PATHS = "paths"
         private const val MIME_IMAGE = "image/*"
         private const val MIME_TEXT = "text/plain"
+
+        /** The corner the design rounds the stacked frames to. */
+        private const val STACK_RADIUS_DP = 14
+
+        /** How far each card of the pile is offset from the one under it. */
+        private const val STACK_STEP_DP = 44
+
+        /** The gap between the pile and the words beside it. */
+        private const val STACK_GAP_DP = 10
 
         fun newInstance(paths: List<String>) = ShareFragment().apply {
             arguments = Bundle().apply { putStringArrayList(ARG_PATHS, ArrayList(paths)) }
@@ -55,34 +67,42 @@ class ShareFragment : BaseFragment<ShareContract.State, ShareContract.Event>(R.l
 
         binding.optMessenger.tvOptionTitle.setText(R.string.share_to_messenger)
         binding.optMessenger.tvOptionHint.setText(R.string.share_to_messenger_hint)
+        binding.optMessenger.ivOptionIcon.setImageResource(R.drawable.ic_share_nodes)
         binding.optBundle.tvOptionTitle.setText(R.string.share_bundle)
         binding.optBundle.tvOptionHint.setText(R.string.share_bundle_hint)
+        binding.optBundle.ivOptionIcon.setImageResource(R.drawable.ic_archive)
         binding.optReport.tvOptionTitle.setText(R.string.share_report)
         binding.optReport.tvOptionHint.setText(R.string.share_report_hint)
+        binding.optReport.ivOptionIcon.setImageResource(R.drawable.ic_document)
+        // The first way is the one in hand until another is touched, as the design shows it.
+        selectOption(binding.optMessenger.clOption)
 
         binding.ivClose.setOnClickListener {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
         binding.optMessenger.clOption.setOnClickListener {
+            selectOption(it)
             viewModel.sendEvent(ShareContract.Event.SendPhotos)
         }
         binding.optBundle.clOption.setOnClickListener {
+            selectOption(it)
             viewModel.sendEvent(ShareContract.Event.SendBundle)
         }
         binding.optReport.clOption.setOnClickListener {
+            selectOption(it)
             viewModel.sendEvent(ShareContract.Event.SendReport)
         }
-        binding.swCoordinates.setOnCheckedChangeListener { button, checked ->
-            if (button.isPressed) viewModel.sendEvent(ShareContract.Event.ToggleCoordinates(checked))
+        binding.swCoordinates.setOnClickListener {
+            viewModel.sendEvent(ShareContract.Event.ToggleCoordinates(!it.isSelected))
         }
-        binding.swAddress.setOnCheckedChangeListener { button, checked ->
-            if (button.isPressed) viewModel.sendEvent(ShareContract.Event.ToggleAddress(checked))
+        binding.swAddress.setOnClickListener {
+            viewModel.sendEvent(ShareContract.Event.ToggleAddress(!it.isSelected))
         }
-        binding.swTrack.setOnCheckedChangeListener { button, checked ->
-            if (button.isPressed) viewModel.sendEvent(ShareContract.Event.ToggleTrack(checked))
+        binding.swTrack.setOnClickListener {
+            viewModel.sendEvent(ShareContract.Event.ToggleTrack(!it.isSelected))
         }
-        binding.swVoice.setOnCheckedChangeListener { button, checked ->
-            if (button.isPressed) viewModel.sendEvent(ShareContract.Event.ToggleVoiceNotes(checked))
+        binding.swVoice.setOnClickListener {
+            viewModel.sendEvent(ShareContract.Event.ToggleVoiceNotes(!it.isSelected))
         }
 
         observeEffects()
@@ -95,23 +115,63 @@ class ShareFragment : BaseFragment<ShareContract.State, ShareContract.Event>(R.l
         val bytes = state.photos.sumOf { photo ->
             File(photo.path).takeIf { it.exists() }?.length() ?: 0L
         }
-        binding.tvSummary.text = getString(
-            R.string.share_summary,
-            state.photos.size,
-            bytes / (1024f * 1024f)
+        binding.tvSummary.text = resources.getQuantityString(
+            R.plurals.share_photos_count, state.photos.size, state.photos.size
         )
-        // Only reflect state here; the listeners ignore programmatic changes via isPressed.
-        binding.swCoordinates.isChecked = state.options.coordinates
-        binding.swTrack.isChecked = state.options.track
-        binding.swAddress.isChecked = state.options.address
+        // Size, and the tightest fix in the set: the two things worth knowing before sending.
+        val best = state.photos.mapNotNull { it.accuracyMeters }.minOrNull()
+        binding.tvSummaryDetail.text = listOfNotNull(
+            getString(R.string.share_megabytes, bytes / (1024f * 1024f)),
+            best?.let { getString(R.string.share_best_accuracy, Math.round(it)) }
+        ).joinToString(" \u00b7 ")
+        showStack(state.photos)
+        listOf(
+            binding.swCoordinates to state.options.coordinates,
+            binding.swAddress to state.options.address,
+            binding.swVoice to state.options.voiceNotes,
+            binding.swTrack to state.options.track
+        ).forEach { (pill, on) ->
+            pill.isSelected = on
+            // The tick belongs to what is actually coming along.
+            pill.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                if (on) R.drawable.ic_check_small else 0, 0, 0, 0
+            )
+        }
         binding.swAddress.isEnabled = state.photos.any { !it.address.isNullOrBlank() }
-        binding.swVoice.isChecked = state.options.voiceNotes
         // Notes cover both what was typed and what was recorded.
         binding.swVoice.isEnabled = state.photos.any {
             it.voiceNotePath != null || it.name.isNotBlank()
         }
         binding.swTrack.isEnabled = state.photos.any { it.lat != null && it.lng != null }
         binding.pbPreparing.isVisible = state.isPreparing
+    }
+
+    /**
+     * The first three frames, stacked the way the design piles them.
+     *
+     * The text beside them starts where the pile actually ends: with one photo to send there is
+     * one card, not a gap where the other two would have been.
+     */
+    private fun showStack(photos: List<Photo>) {
+        val slots = listOf(binding.ivStackFirst, binding.ivStackSecond, binding.ivStackThird)
+        slots.forEachIndexed { index, view ->
+            val photo = photos.getOrNull(index)
+            view.isVisible = photo != null
+            photo?.let { view.loadImage(it.path, circle = false, cornerRadiusDp = STACK_RADIUS_DP) }
+        }
+        val shown = minOf(photos.size, slots.size).coerceAtLeast(1)
+        val density = resources.displayMetrics.density
+        binding.tvSummary.updateLayoutParams<ViewGroup.MarginLayoutParams> {
+            marginStart = (((shown - 1) * STACK_STEP_DP + STACK_GAP_DP) * density).toInt()
+        }
+    }
+
+    private fun selectOption(chosen: View) {
+        listOf(binding.optMessenger, binding.optBundle, binding.optReport).forEach { option ->
+            val isChosen = option.clOption === chosen
+            option.clOption.isSelected = isChosen
+            option.ivOptionIcon.isSelected = isChosen
+        }
     }
 
     private fun observeEffects() {

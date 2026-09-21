@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The tile behind an option's icon: accent on the chosen one. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_selected="true">
+        <shape>
+            <solid android:color="@color/ds_accent" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/ds_surface_round" />
+            <corners android:radius="14dp" />
+        </shape>
+    </item>
+</selector>

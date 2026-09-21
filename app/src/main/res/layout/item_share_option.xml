@@ -1,38 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  One way of handing the photos over, as the design draws it: an icon tile, what it is called, and
+  one line saying what actually happens. The way in hand is outlined in accent.
+-->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clOption"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/ds_surface_card"
+    android:background="@drawable/ds_option_card"
     android:clickable="true"
     android:focusable="true"
-    android:minHeight="72dp"
-    android:padding="@dimen/ds_space_4">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="15dp"
+    android:paddingBottom="15dp">
+
+    <ImageView
+        android:id="@+id/ivOptionIcon"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:background="@drawable/ds_option_icon"
+        android:contentDescription="@null"
+        android:padding="11dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/ds_text_primary"
+        tools:src="@drawable/ic_share_nodes" />
 
     <TextView
         android:id="@+id/tvOptionTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:fontFamily="@font/manrope"
         android:textColor="@color/ds_text_primary"
-        android:textSize="16sp"
+        android:textFontWeight="700"
+        android:textSize="15sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tvOptionHint"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivOptionIcon"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="В мессенджер" />
 
     <TextView
         android:id="@+id/tvOptionHint"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/ds_space_1"
-        android:textColor="@color/ds_text_muted"
-        android:textSize="13sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="2dp"
+        android:fontFamily="@font/manrope"
+        android:lineSpacingExtra="2sp"
+        android:textColor="@color/ds_option_hint"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@id/tvOptionTitle"
+        app:layout_constraintStart_toStartOf="@id/tvOptionTitle"
         app:layout_constraintTop_toBottomOf="@id/tvOptionTitle"
-        tools:text="Снимки уходят как есть" />
+        tools:text="Фото уходят как есть — метаданных в них нет" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
