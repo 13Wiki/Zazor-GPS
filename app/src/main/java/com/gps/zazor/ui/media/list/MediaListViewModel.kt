@@ -4,8 +4,6 @@ import com.gps.zazor.data.models.Photo
 import com.gps.zazor.data.repositories.PhotoRepository
 import com.gps.zazor.ui.base.BaseViewModel
 import com.gps.zazor.ui.base.BaseViewModelImpl
-import com.gps.zazor.utils.export.TrackFileWriter
-import com.gps.zazor.utils.export.TrackFormat
 import com.gps.zazor.utils.time.PhotoClock
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -21,8 +19,7 @@ interface MediaListViewModel : BaseViewModel<MediaListContract.State, MediaListC
 }
 
 class MediaListViewModelImpl(
-    private val photoRepository: PhotoRepository,
-    private val trackFileWriter: TrackFileWriter
+    private val photoRepository: PhotoRepository
 ) : BaseViewModelImpl<MediaListContract.State, MediaListContract.Event>(), MediaListViewModel {
 
     private val effectFlow = MutableSharedFlow<MediaListContract.Effect>(extraBufferCapacity = 8)
@@ -78,7 +75,6 @@ class MediaListViewModelImpl(
                 if (selectedPhotos == null) selectedPhotos = mutableListOf()
             }
             is MediaListContract.Event.DeleteSelected -> deleteSelected()
-            is MediaListContract.Event.ExportTrack -> exportTrack(event.format)
             is MediaListContract.Event.FilterSelected -> {
                 filter = event.filter
                 uiState.value = contentState()
@@ -127,29 +123,6 @@ class MediaListViewModelImpl(
         }
     }
 
-    private fun exportTrack(format: TrackFormat) {
-        launchIo {
-            // Read fresh rather than trusting the cached list: init() fills it asynchronously, so
-            // an export tapped immediately after opening the gallery would otherwise export nothing.
-            val exported = selectedPhotos?.takeIf { it.isNotEmpty() }
-                ?: photoRepository.getPhotos().also { allPhotos = it }
-            val name = "Zazor " + PhotoClock.formatDate(PhotoClock.now())
-            val file = trackFileWriter.write(exported, format, name)
-            effectFlow.emit(
-                when {
-                    exported.none { it.lat != null && it.lng != null } ->
-                        MediaListContract.Effect.ExportEmpty
-                    file == null -> MediaListContract.Effect.ExportFailed
-                    else -> MediaListContract.Effect.TrackExported(file, format)
-                }
-            )
-        }
-    }
-
-    /**
-     * Leaves selection mode afterwards: with every ticked photo gone there is nothing left to act
-     * on, and a selection toolbar over an empty selection is a dead end.
-     */
     private fun deleteSelected() {
         val chosen = selectedPhotos?.toList().orEmpty()
         if (chosen.isEmpty()) return

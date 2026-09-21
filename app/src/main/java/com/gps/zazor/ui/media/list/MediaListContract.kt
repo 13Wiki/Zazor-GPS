@@ -1,7 +1,6 @@
 package com.gps.zazor.ui.media.list
 
 import com.gps.zazor.data.models.Photo
-import com.gps.zazor.utils.export.TrackFormat
 import com.gps.zazor.ui.base.UiEvent
 import com.gps.zazor.ui.base.UiState
 import java.io.File
@@ -32,9 +31,6 @@ class MediaListContract {
         /** Removes everything currently ticked, after the user has confirmed it. */
         object DeleteSelected : Event()
 
-        /** Writes the visible photos out as a track file for another app to open. */
-        data class ExportTrack(val format: TrackFormat) : Event()
-
         data class FilterSelected(val filter: Filter) : Event()
     }
 
@@ -57,8 +53,6 @@ class MediaListContract {
      * exporting the same file twice would be conflated away and appear to do nothing.
      */
     sealed class Effect {
-
-        data class TrackExported(val file: File, val format: TrackFormat) : Effect()
 
         object ExportEmpty : Effect()
 

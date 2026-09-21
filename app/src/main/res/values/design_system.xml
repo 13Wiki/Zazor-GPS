@@ -30,6 +30,15 @@
     <color name="ds_glass_edge_thumb">#4DFFFFFF</color>
     <color name="ds_glass_edge_shutter">#52FFFFFF</color>
 
+    <!--
+      On the dark screens the design builds surfaces out of white at low opacity rather than out
+      of solid greys: a card at 6 per cent, an unchosen pill at 9, a round button at 10.
+    -->
+    <color name="ds_surface_sheer">#0FFFFFFF</color>
+    <color name="ds_surface_pill">#17FFFFFF</color>
+    <color name="ds_surface_round">#1AFFFFFF</color>
+    <color name="ds_text_faint">#80FFFFFF</color>
+
     <!-- Text laid on glass is white with alpha, not the grey used on solid surfaces. -->
     <color name="ds_on_glass">#EBFFFFFF</color>
     <color name="ds_on_glass_muted">#B8FFFFFF</color>
@@ -80,6 +89,10 @@
 
     <!-- Never below 44dp: this is used outdoors, in gloves. -->
     <dimen name="ds_touch_min">48dp</dimen>
+    <!-- How tall a photo stands on its card, and how tall a panorama does. -->
+    <dimen name="ds_card_photo">168dp</dimen>
+    <dimen name="ds_card_photo_wide">116dp</dimen>
+
     <dimen name="ds_shutter">80dp</dimen>
     <dimen name="ds_icon_button">46dp</dimen>
 </resources>

@@ -8,7 +8,7 @@ import org.koin.androidx.viewmodel.ext.android.getViewModel
 import org.koin.dsl.module
 
 val mediaListModule = module {
-    viewModel { MediaListViewModelImpl(get(), get()) }
+    viewModel { MediaListViewModelImpl(get()) }
 }
 
 fun MediaListFragment.injectViewModel(): Lazy<MediaListViewModel> =

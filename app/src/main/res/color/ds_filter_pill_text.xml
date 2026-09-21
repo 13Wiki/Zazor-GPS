@@ -2,5 +2,5 @@
 <!-- Dark text on the light chosen pill, secondary text on the rest. -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:color="@color/ds_background" android:state_selected="true" />
-    <item android:color="@color/ds_text_secondary" />
+    <item android:color="@color/ds_on_glass_muted" />
 </selector>

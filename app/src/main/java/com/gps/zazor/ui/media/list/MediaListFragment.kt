@@ -28,10 +28,8 @@ import com.gps.zazor.ui.media.list.di.injectViewModel
 import com.gps.zazor.ads.AdSlot
 import com.gps.zazor.billing.ProStatus
 import com.gps.zazor.utils.audio.VoiceNotePlayer
-import com.gps.zazor.utils.export.TrackFormat
 import com.gps.zazor.utils.viewBinding.viewBinding
 import org.koin.android.ext.android.inject
-import androidx.appcompat.widget.PopupMenu
 import java.io.File
 
 class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContract.Event>(R.layout.fragment_media_list) {
@@ -89,7 +87,11 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
             viewModel.sendEvent(MediaListContract.Event.SharePhotos)
         }
         binding.ivDeleteSelected.setOnClickListener { confirmDeleteSelected() }
-        binding.ivExport.setOnClickListener(::showExportMenu)
+        // The design's accent button is the screen's one action: hand these photos over. The
+        // track is an option inside the transfer screen, so it needs no separate button here.
+        binding.ivExport.setOnClickListener {
+            viewModel.sendEvent(MediaListContract.Event.SharePhotos)
+        }
         binding.ivOutings.setOnClickListener { mediaCallback?.openOutings() }
         filterPills().forEach { (pill, filter) ->
             pill.setOnClickListener {
@@ -270,8 +272,6 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.effects.collect { effect ->
                     when (effect) {
-                        is MediaListContract.Effect.TrackExported ->
-                            shareTrack(effect.file, effect.format)
                         is MediaListContract.Effect.OpenShare ->
                             mediaCallback?.openShare(effect.paths)
                         is MediaListContract.Effect.ExportEmpty ->
@@ -296,42 +296,6 @@ class MediaListFragment : BaseFragment<MediaListContract.State, MediaListContrac
 
     private fun toast(text: String) {
         Toast.makeText(requireContext(), text, Toast.LENGTH_SHORT).show()
-    }
-
-    /** GPX opens in navigators, KML in Google Earth - let the user pick rather than guessing. */
-    private fun showExportMenu(anchor: View) {
-        PopupMenu(requireContext(), anchor).apply {
-            menu.add(0, 0, 0, R.string.export_gpx)
-            menu.add(0, 1, 1, R.string.export_kml)
-            setOnMenuItemClickListener { item ->
-                val format = if (item.itemId == 0) TrackFormat.GPX else TrackFormat.KML
-                viewModel.sendEvent(MediaListContract.Event.ExportTrack(format))
-                true
-            }
-        }.show()
-    }
-
-    private fun shareTrack(file: File, format: TrackFormat) {
-        val uri = try {
-            FileProvider.getUriForFile(
-                requireContext(),
-                "${BuildConfig.APPLICATION_ID}.fileprovider",
-                file
-            )
-        } catch (e: IllegalArgumentException) {
-            Toast.makeText(requireContext(), R.string.export_failed, Toast.LENGTH_SHORT).show()
-            return
-        }
-        startActivity(
-            Intent.createChooser(
-                Intent(ACTION_SEND).apply {
-                    putExtra(Intent.EXTRA_STREAM, uri)
-                    type = format.mimeType
-                    addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                },
-                getString(R.string.share)
-            )
-        )
     }
 
     private fun uriFor(photo: Photo): Uri? =

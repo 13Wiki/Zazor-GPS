@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
+import androidx.core.view.updateLayoutParams
 import com.ernestoyaquello.dragdropswiperecyclerview.DragDropSwipeAdapter
 import com.gps.zazor.data.models.CoordinateFormat
 import com.gps.zazor.data.models.Photo
@@ -89,6 +90,14 @@ class MediaListAdapter(
                     if (checked) selected.add(photo.path) else selected.remove(photo.path)
                     onCheckListener(photo, checked)
                 }
+                // A wide frame gets the shorter card the design gives it: a panorama is mostly
+                // sky and ground, and 168dp of it says no more than 116 do.
+                ivPreview.updateLayoutParams {
+                    height = root.resources.getDimensionPixelSize(
+                        if (photo.isWide) com.gps.zazor.R.dimen.ds_card_photo_wide
+                        else com.gps.zazor.R.dimen.ds_card_photo
+                    )
+                }
                 ivPreview.loadImage(photo.path, circle = false)
                 val hasPosition = photo.lat != null && photo.lng != null
                 // The note the person typed is what this photo is called; a date is what it is
@@ -122,11 +131,14 @@ class MediaListAdapter(
                 tvBearing.text = bearing?.let {
                     root.context.getString(com.gps.zazor.R.string.bearing_short, Math.round(it) % 360)
                 }.orEmpty()
-                // One line under the title, as in the design: when, then where. The date is left
-                // out when it already is the title.
+                // The design's line under the title: the day, the time, then where - and for a
+                // wide frame with no street to name, that it is a panorama.
                 tvDate.text = listOfNotNull(
-                    date.takeIf { photo.name.isNotBlank() },
+                    PhotoClock.formatDate(photo.date),
+                    PhotoClock.formatTime(photo.date),
                     photo.address?.takeIf { it.isNotBlank() }
+                        ?: root.context.getString(com.gps.zazor.R.string.panorama)
+                            .takeIf { photo.isWide }
                 ).joinToString(" · ")
                 tvDate.isVisible = tvDate.text.isNotEmpty()
                 // The voice button appears only for photos that actually carry a recording.
