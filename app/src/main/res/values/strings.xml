@@ -108,6 +108,10 @@
     <string name="flash">Вспышка</string>
     <string name="flip_camera">Сменить камеру</string>
     <string name="setting_wait_fix">Предупреждать о слабом сигнале</string>
+    <string name="appearance_row_title">Вид на телефоне и код очистки</string>
+    <string name="setting_wait_fix_subtitle">Предупредить, если хуже %1$d м</string>
+    <string name="setting_off">Выключен</string>
+    <string name="setting_on">Включён</string>
     <string name="voice_note_record">Записать голосовую заметку</string>
     <string name="voice_note_recording">Идёт запись… нажмите, чтобы остановить</string>
     <string name="voice_note_saved">Голосовая заметка сохранена</string>

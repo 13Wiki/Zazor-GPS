@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The knob: 27dp of white, with the 2dp of track showing around it. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/ds_text_primary" />
+    <size android:width="27dp" android:height="27dp" />
+</shape>

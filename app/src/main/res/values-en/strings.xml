@@ -102,6 +102,10 @@
     <string name="flash">Flash</string>
     <string name="flip_camera">Switch camera</string>
     <string name="setting_wait_fix">Warn about a weak signal</string>
+    <string name="appearance_row_title">Look on the phone, and the wipe code</string>
+    <string name="setting_wait_fix_subtitle">Warn when worse than %1$d m</string>
+    <string name="setting_off">Off</string>
+    <string name="setting_on">On</string>
     <string name="voice_note_record">Record a voice note</string>
     <string name="voice_note_recording">Recording… tap to stop</string>
     <string name="voice_note_saved">Voice note saved</string>

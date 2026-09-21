@@ -25,6 +25,24 @@ class SettingsListViewModelImpl(
      * Grouped the way the screen is used rather than the way the code is laid out: what ends up on
      * the picture, what keeps other people out of it, and everything else.
      */
+    /**
+     * Marks where each row sits inside its group, so the screen can draw a group as one block
+     * with hairlines in it rather than as a stack of separate cards.
+     */
+    private fun grouped(rows: List<SettingRow>): List<SettingRow> = rows.mapIndexed { index, row ->
+        if (row !is SettingRow.Item) return@mapIndexed row
+        val first = rows.getOrNull(index - 1) !is SettingRow.Item
+        val last = rows.getOrNull(index + 1) !is SettingRow.Item
+        row.copy(
+            place = when {
+                first && last -> SettingRow.Place.ONLY
+                first -> SettingRow.Place.FIRST
+                last -> SettingRow.Place.LAST
+                else -> SettingRow.Place.MIDDLE
+            }
+        )
+    }
+
     private fun rows(): List<SettingRow> = listOfNotNull(
         SettingRow.Header(R.string.settings_group_capture),
         SettingRow.Item(
@@ -37,25 +55,36 @@ class SettingsListViewModelImpl(
             type = MainSettingType.COORDINATE_FORMAT,
             titleRes = R.string.coordinate_format_setting,
             iconRes = R.drawable.ic_row_coordinates,
-            value = appPrefs.getCoordinateFormat().sample
+            value = context.getString(appPrefs.getCoordinateFormat().titleRes)
+        ),
+        // A switch in the list, as the design has it: this one is a yes or no, and opening a
+        // screen to flip it would be a screen with one line on it.
+        SettingRow.Item(
+            type = MainSettingType.WAIT_FIX,
+            titleRes = R.string.setting_wait_fix,
+            iconRes = R.drawable.ic_row_coordinates,
+            subtitle = context.getString(
+                R.string.setting_wait_fix_subtitle,
+                appPrefs.getAccuracyThresholdMeters()
+            ),
+            isChecked = appPrefs.isWaitForAccurateFix()
         ),
 
         SettingRow.Header(R.string.settings_group_protection),
+        // The passcode says whether it is on and opens the screen that sets it; the wipe code
+        // lives on the disguise screen, which is where the design keeps it.
         SettingRow.Item(
             type = MainSettingType.PIN_CODE,
             titleRes = R.string.pin_code_setting,
             iconRes = R.drawable.ic_row_lock,
-            isChecked = appPrefs.hasPin()
-        ),
-        SettingRow.Item(
-            type = MainSettingType.CLEAR_CODE,
-            titleRes = R.string.clear_code_setting,
-            iconRes = R.drawable.ic_row_wipe,
-            isChecked = appPrefs.hasClearCode()
+            value = context.getString(
+                if (appPrefs.hasPin()) R.string.setting_on else R.string.setting_off
+            ),
+            isValueGood = appPrefs.hasPin()
         ),
         SettingRow.Item(
             type = MainSettingType.APPEARANCE,
-            titleRes = R.string.appearance_title,
+            titleRes = R.string.appearance_row_title,
             iconRes = R.drawable.ic_row_disguise,
             subtitleRes = R.string.appearance_row_subtitle
         ),
@@ -94,8 +123,17 @@ class SettingsListViewModelImpl(
         return context.getString(R.string.stamp_fields_summary, fields.count { it }, fields.size)
     }
 
-    override suspend fun initialState(): SettingsListContract.State =
-        SettingsListContract.State.Initial(rows())
+    override fun onEventArrived(event: SettingsListContract.Event?) {
+        when (event) {
+            is SettingsListContract.Event.ToggleWaitForFix -> {
+                appPrefs.putWaitForAccurateFix(!appPrefs.isWaitForAccurateFix())
+                uiState.value = SettingsListContract.State.Initial(grouped(rows()))
+            }
+            else -> Unit
+        }
+    }
 
-    override fun onEventArrived(event: SettingsListContract.Event?) = Unit
+    override suspend fun initialState(): SettingsListContract.State =
+        SettingsListContract.State.Initial(grouped(rows()))
+
 }

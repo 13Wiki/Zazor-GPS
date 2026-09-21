@@ -32,6 +32,9 @@ class SettingsListFragment : BaseFragment<SettingsListContract.State, SettingsLi
                         MainSettingType.PRIVACY -> settingsCallback?.openPrivacy()
                         MainSettingType.PRO -> settingsCallback?.openPro()
                         MainSettingType.FEEDBACK -> settingsCallback?.openFeedback()
+                        // Flipped in place: it is a yes or no, not a screen.
+                        MainSettingType.WAIT_FIX ->
+                            viewModel.sendEvent(SettingsListContract.Event.ToggleWaitForFix)
                     }
                 }
             }

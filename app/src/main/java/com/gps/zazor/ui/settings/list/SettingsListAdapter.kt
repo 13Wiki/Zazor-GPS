@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.widget.SwitchCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.gps.zazor.R
@@ -58,11 +59,24 @@ class SettingsListAdapter(
 
         fun bind(item: SettingRow.Item) {
             itemView.run {
+                // One block per group: the ends are rounded, the middles are not, and every row
+                // but the last carries the hairline under it.
+                setBackgroundResource(
+                    when (item.place) {
+                        SettingRow.Place.ONLY -> R.drawable.ds_group_single
+                        SettingRow.Place.FIRST -> R.drawable.ds_group_top
+                        SettingRow.Place.MIDDLE -> R.drawable.ds_group_middle
+                        SettingRow.Place.LAST -> R.drawable.ds_group_bottom
+                    }
+                )
+                findViewById<View>(R.id.vDivider).isVisible =
+                    item.place == SettingRow.Place.FIRST || item.place == SettingRow.Place.MIDDLE
                 findViewById<ImageView>(R.id.ivIcon).setImageResource(item.iconRes)
                 findViewById<TextView>(R.id.tvTitle).setText(item.titleRes)
                 findViewById<TextView>(R.id.tvSubtitle).run {
-                    isVisible = item.subtitleRes != null
+                    isVisible = item.subtitleRes != null || item.subtitle != null
                     item.subtitleRes?.let(::setText)
+                    item.subtitle?.let { text = it }
                 }
                 // A switch and a value would say the same thing twice, so a row shows one or the
                 // other: the switch when the setting is on or off, the value when it is a choice.
@@ -73,6 +87,12 @@ class SettingsListAdapter(
                 findViewById<TextView>(R.id.tvValue).run {
                     isVisible = item.value != null
                     text = item.value
+                    setTextColor(
+                        ContextCompat.getColor(
+                            context,
+                            if (item.isValueGood) R.color.ds_signal_good else R.color.ds_text_dim
+                        )
+                    )
                 }
                 findViewById<ImageView>(R.id.ivArrow).isVisible = item.isChecked == null
                 setOnClickListener { onItemClick(item.type) }

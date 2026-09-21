@@ -6,8 +6,12 @@
       colour and radius attributes, so a palette change stays a one-file change.
     -->
 
+    <!-- A screen's name, as the design sets it: 24sp at weight 800, tracked slightly tighter. -->
     <style name="TextAppearance.Zazor.Screen" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:letterSpacing">-0.02</item>
         <item name="android:textColor">@color/ds_text_primary</item>
+        <item name="android:textFontWeight">800</item>
         <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
     </style>

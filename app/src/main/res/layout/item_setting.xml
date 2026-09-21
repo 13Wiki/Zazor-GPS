@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  A row is a card, not a divided list line: dividers read as noise on a dark ground.
+  A row of the settings screen, as the design draws it: the rows of a group share one block with
+  a hairline between them, rather than each floating in a card of its own.
 
-  The row says what the setting is set to, at its end - a settings screen that only lists names
+  The row says what the setting is set to at its end - a settings screen that only lists names
   makes you open every one of them to find out where you stand.
 -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,18 +11,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/ds_space_2"
-    android:background="@drawable/ds_surface_card"
-    android:minHeight="@dimen/ds_touch_min"
-    android:paddingStart="@dimen/ds_space_4"
-    android:paddingEnd="@dimen/ds_space_4"
-    android:paddingTop="@dimen/ds_space_4"
-    android:paddingBottom="@dimen/ds_space_4">
+    android:background="@drawable/ds_group_middle"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
     <ImageView
         android:id="@+id/ivIcon"
-        android:layout_width="22dp"
-        android:layout_height="22dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:contentDescription="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,10 +30,13 @@
         android:id="@+id/tvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/ds_space_3"
-        android:layout_marginEnd="@dimen/ds_space_3"
+        android:layout_marginStart="13dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/manrope"
         android:textColor="@color/ds_text_primary"
-        android:textSize="16sp"
+        android:textFontWeight="600"
+        android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@id/tvSubtitle"
         app:layout_constraintEnd_toStartOf="@id/tvValue"
         app:layout_constraintStart_toEndOf="@id/ivIcon"
@@ -49,8 +49,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:textColor="@color/ds_text_muted"
-        android:textSize="13sp"
+        android:layout_marginBottom="15dp"
+        android:fontFamily="@font/manrope"
+        android:textColor="@color/ds_text_dim"
+        android:textSize="12sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@id/tvTitle"
@@ -63,9 +65,10 @@
         android:id="@+id/tvValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/ds_space_2"
-        android:textColor="@color/ds_text_secondary"
-        android:textSize="14sp"
+        android:layout_marginEnd="13dp"
+        android:fontFamily="@font/manrope"
+        android:textColor="@color/ds_text_dim"
+        android:textSize="13sp"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/ivArrow"
@@ -78,25 +81,36 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:contentDescription="@null"
-        android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+        android:src="@drawable/ic_chevron_right"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/ds_text_muted" />
+        app:tint="@color/ds_text_dim" />
 
     <!-- The switch reserves a 48dp touch height; the whole row is the target, so it may overhang. -->
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/sValue"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-12dp"
-        android:layout_marginBottom="-12dp"
+        android:layout_width="51dp"
+        android:layout_height="31dp"
+        android:layout_marginTop="-10dp"
+        android:layout_marginBottom="-10dp"
         android:clickable="false"
+        android:thumb="@drawable/ds_switch_thumb"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:thumbTint="@color/ds_text_primary"
-        app:trackTint="@color/ds_switch_track" />
+        app:showText="false"
+        app:track="@drawable/ds_switch_track" />
+
+    <!-- The hairline between rows of one group; the last row of a group hides it. -->
+    <View
+        android:id="@+id/vDivider"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/ds_divider_sheer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

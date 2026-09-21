@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 
 enum class MainSettingType {
-    PIN_CODE, NOTES, CLEAR_CODE, APPEARANCE, PRO, PRIVACY, FEEDBACK, COORDINATE_FORMAT
+    PIN_CODE, NOTES, CLEAR_CODE, APPEARANCE, PRO, PRIVACY, FEEDBACK, COORDINATE_FORMAT, WAIT_FIX
 }
 
 /**
@@ -27,7 +27,18 @@ sealed class SettingRow {
         @StringRes val titleRes: Int,
         @DrawableRes val iconRes: Int,
         @StringRes val subtitleRes: Int? = null,
+        /** A subtitle that carries a number, so it cannot be a bare string resource. */
+        val subtitle: String? = null,
         val value: String? = null,
-        val isChecked: Boolean? = null
+        /** Draws the value in the good-signal green: the design marks a protection that is on. */
+        val isValueGood: Boolean = false,
+        val isChecked: Boolean? = null,
+        /**
+         * Where the row sits in its group. The design draws a group as one block with hairlines
+         * inside it, so a row has to know whether it is an end of that block or the middle of it.
+         */
+        val place: Place = Place.ONLY
     ) : SettingRow()
+
+    enum class Place { FIRST, MIDDLE, LAST, ONLY }
 }

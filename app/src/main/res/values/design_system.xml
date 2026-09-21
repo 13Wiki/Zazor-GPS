@@ -35,6 +35,9 @@
       of solid greys: a card at 6 per cent, an unchosen pill at 9, a round button at 10.
     -->
     <color name="ds_surface_sheer">#0FFFFFFF</color>
+    <color name="ds_surface_group">#0DFFFFFF</color>
+    <color name="ds_divider_sheer">#12FFFFFF</color>
+    <color name="ds_text_dim">#6BFFFFFF</color>
     <color name="ds_surface_pill">#17FFFFFF</color>
     <color name="ds_surface_round">#1AFFFFFF</color>
     <color name="ds_text_faint">#80FFFFFF</color>

@@ -106,6 +106,10 @@
     <string name="flash">Спалах</string>
     <string name="flip_camera">Змінити камеру</string>
     <string name="setting_wait_fix">Попереджати про слабкий сигнал</string>
+    <string name="appearance_row_title">Вигляд на телефоні та код очищення</string>
+    <string name="setting_wait_fix_subtitle">Попередити, якщо гірше ніж %1$d м</string>
+    <string name="setting_off">Вимкнено</string>
+    <string name="setting_on">Увімкнено</string>
     <string name="voice_note_record">Записати голосову нотатку</string>
     <string name="voice_note_recording">Триває запис… натисніть, щоб зупинити</string>
     <string name="voice_note_saved">Голосову нотатку збережено</string>
