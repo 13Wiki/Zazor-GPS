@@ -216,6 +216,12 @@
     <!-- Kept so screens not yet migrated still resolve. -->
     <style name="Stromee.Widget.Design.TextInputLayout" parent="Widget.Zazor.TextInput" />
 
+    <!-- The corner the design rounds a launcher icon's preview to. -->
+    <style name="ShapeAppearance.Zazor.AliasTile" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">18dp</item>
+    </style>
+
     <style name="Button.Primary" parent="Widget.Zazor.Button" />
 
     <style name="DialogStyle" parent="Theme.Zazor.BottomSheet" />

@@ -1,31 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  One icon the home screen could carry. The picture is the real launcher icon rather than a drawn
+  stand-in, because the whole point of the row is "this is what you will see on your home screen".
+-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/llRoot"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_marginEnd="@dimen/ds_space_3"
+    android:layout_marginEnd="12dp"
     android:clickable="true"
     android:focusable="true"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    android:padding="@dimen/ds_space_2">
+    android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/ivIcon"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:background="@drawable/ds_surface_card"
-        android:contentDescription="@string/appearance_title"
-        android:padding="14dp"
-        tools:src="@drawable/ic_appearance_notes" />
+    <!-- The ring sits clear of the tile, so it reads over an icon of any colour. -->
+    <FrameLayout
+        android:id="@+id/flRing"
+        android:layout_width="72dp"
+        android:layout_height="72dp">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_gravity="center"
+            android:contentDescription="@string/appearance_title"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Zazor.AliasTile"
+            tools:src="@drawable/ic_appearance_notes" />
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/ds_space_2"
-        android:textColor="@color/ds_text_secondary"
-        android:textSize="12sp"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/manrope"
+        android:textColor="@color/ds_text_dim"
+        android:textFontWeight="600"
+        android:textSize="11sp"
         tools:text="Заметки" />
+
 </LinearLayout>

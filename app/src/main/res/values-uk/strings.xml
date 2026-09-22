@@ -14,14 +14,14 @@
     <string name="privacy_policy_link">Політика конфіденційності</string>
     <string name="privacy_no_browser">Немає застосунку для посилань</string>
     <string name="wipe_code_label">КОД ОЧИЩЕННЯ</string>
-    <string name="wipe_code_hint">Другий код на екрані входу. Якщо ввести його замість звичайного, застосунок відкриється порожнім, а знімки, маршрути й нотатки буде стерто з телефона без можливості повернути. Очищення відбувається мовчки.</string>
-    <string name="wipe_code_set">Код задано</string>
-    <string name="wipe_code_not_set">Код не задано</string>
+    <string name="wipe_code_hint">Другий код на екрані входу. Якщо ввести його замість звичайного, додаток відкриється порожнім, а всі знімки, маршрути та нотатки буде стерто з телефона без можливості повернути.</string>
+    <string name="wipe_code_set">Задано</string>
+    <string name="wipe_code_not_set">Не задано</string>
     <string name="appearance_notes">Нотатки</string>
     <string name="appearance_clock">Годинник</string>
     <string name="appearance_compass">Компас</string>
     <string name="appearance_title">Вигляд на телефоні</string>
-    <string name="appearance_hint">Значок і підпис на домашньому екрані. Зі списку застосунків Zazor GPS не ховається.</string>
+    <string name="appearance_hint">На домашньому екрані буде видно обраний значок і цей підпис. Сам додаток зі списку не ховається.</string>
     <string name="appearance_label_header">ПІДПИС ПІД ЗНАЧКОМ</string>
     <string name="appearance_changed">Значок змінено</string>
     <string name="report_title">Zazor GPS · фіксація на місцевості</string>
@@ -245,4 +245,7 @@
     <string name="map_stat_moving">у дорозі</string>
     <string name="map_recenter">Вписати маршрут</string>
     <string name="map_point_counter">%1$d/%2$d</string>
+    <string name="wipe_code_note">Очищення йде мовчки: ні попередження, ні підтвердження, ні сліду в інтерфейсі. Запам’ятайте код — відновити стерте неможливо.</string>
+    <string name="appearance_icon_header">ЗНАЧОК</string>
+    <string name="appearance_default_option">Звичайний</string>
 </resources>

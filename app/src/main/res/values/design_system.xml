@@ -49,6 +49,9 @@
     <color name="ds_danger_round">#29FF5A4E</color>
     <color name="ds_danger_text">#FFB3AC</color>
     <color name="ds_danger_icon">#FF7A70</color>
+    <color name="ds_danger_edge">#4DFF5A4E</color>
+    <!-- Quieter than sheer: an aside, not a surface. -->
+    <color name="ds_surface_whisper">#0DFFFFFF</color>
     <!-- Glass over a drawn map: dark rather than white, so the track keeps its contrast. -->
     <color name="ds_dark_glass">#9E0B0F14</color>
     <color name="ds_dark_glass_stat">#AD0B0F14</color>
@@ -64,6 +67,10 @@
     <color name="ds_surface_pill">#17FFFFFF</color>
     <color name="ds_surface_round">#1AFFFFFF</color>
     <color name="ds_text_faint">#80FFFFFF</color>
+    <!-- The design's three quieter greys, by the weight it gives each kind of aside. -->
+    <color name="ds_text_quiet">#73FFFFFF</color>
+    <color name="ds_text_note">#8CFFFFFF</color>
+    <color name="ds_text_soft">#9EFFFFFF</color>
 
     <!-- Text laid on glass is white with alpha, not the grey used on solid surfaces. -->
     <color name="ds_on_glass">#EBFFFFFF</color>
@@ -115,6 +122,7 @@
     <dimen name="ds_space_2">8dp</dimen>
     <dimen name="ds_space_3">12dp</dimen>
     <dimen name="ds_space_4">16dp</dimen>
+    <dimen name="ds_wipe_dot">9dp</dimen>
     <dimen name="ds_space_5">20dp</dimen>
     <dimen name="ds_space_6">24dp</dimen>
 

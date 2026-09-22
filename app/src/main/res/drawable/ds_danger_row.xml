@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The row for the one code that destroys things, in the colour of what it does. -->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/ds_danger_round" />
+            <stroke android:width="1dp" android:color="@color/ds_danger_edge" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/ds_danger_soft" />
+            <stroke android:width="1dp" android:color="@color/ds_danger_edge" />
+            <corners android:radius="18dp" />
+        </shape>
+    </item>
+</selector>

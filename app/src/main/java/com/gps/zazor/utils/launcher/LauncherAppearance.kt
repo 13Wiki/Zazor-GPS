@@ -19,15 +19,33 @@ import com.gps.zazor.R
  */
 class LauncherAppearance(private val context: Context) {
 
+    /**
+     * @param title what the home screen reads under the icon.
+     * @param option what this choice is called on the picker. The same as the label everywhere
+     *        except the plain icon, where the label is the app's own name.
+     */
     enum class Appearance(
         val aliasSuffix: String,
         @DrawableRes val previewIcon: Int,
-        @StringRes val title: Int
+        @StringRes val title: Int,
+        @StringRes val option: Int
     ) {
-        DEFAULT(".ui.auth.AuthActivity", R.mipmap.ic_launcher, R.string.appearance_default),
-        NOTES(".Alias.Notes", R.drawable.ic_appearance_notes, R.string.appearance_notes),
-        CLOCK(".Alias.Clock", R.drawable.ic_appearance_clock, R.string.appearance_clock),
-        COMPASS(".Alias.Compass", R.drawable.ic_appearance_compass, R.string.appearance_compass)
+        DEFAULT(
+            ".ui.auth.AuthActivity", R.mipmap.ic_launcher,
+            R.string.appearance_default, R.string.appearance_default_option
+        ),
+        NOTES(
+            ".Alias.Notes", R.drawable.ic_appearance_notes,
+            R.string.appearance_notes, R.string.appearance_notes
+        ),
+        CLOCK(
+            ".Alias.Clock", R.drawable.ic_appearance_clock,
+            R.string.appearance_clock, R.string.appearance_clock
+        ),
+        COMPASS(
+            ".Alias.Compass", R.drawable.ic_appearance_compass,
+            R.string.appearance_compass, R.string.appearance_compass
+        )
     }
 
     private val packageManager: PackageManager get() = context.packageManager

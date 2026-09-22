@@ -15,15 +15,18 @@
     <string name="privacy_policy_link">Политика конфиденциальности</string>
     <string name="privacy_no_browser">Нет приложения для открытия ссылок</string>
     <string name="wipe_code_label">КОД ОЧИСТКИ</string>
-    <string name="wipe_code_hint">Второй код на экране входа. Если ввести его вместо обычного, приложение откроется пустым, а снимки, маршруты и заметки будут стёрты с телефона без возможности вернуть. Очистка идёт молча.</string>
-    <string name="wipe_code_set">Код задан</string>
-    <string name="wipe_code_not_set">Код не задан</string>
+    <string name="wipe_code_hint">Второй код на экране входа. Если ввести его вместо обычного, приложение откроется пустым, а все снимки, маршруты и заметки будут стёрты с телефона без возможности вернуть.</string>
+    <string name="wipe_code_note">Очистка идёт молча: ни предупреждения, ни подтверждения, ни следа в интерфейсе. Запомните код — восстановить стёртое нельзя.</string>
+    <string name="appearance_icon_header">ЗНАЧОК</string>
+    <string name="appearance_default_option">Обычный</string>
+    <string name="wipe_code_set">Задан</string>
+    <string name="wipe_code_not_set">Не задан</string>
     <string name="appearance_default" translatable="false">Zazor GPS</string>
     <string name="appearance_notes">Заметки</string>
     <string name="appearance_clock">Часы</string>
     <string name="appearance_compass">Компас</string>
     <string name="appearance_title">Вид на телефоне</string>
-    <string name="appearance_hint">Значок и подпись на домашнем экране. Из списка приложений Zazor GPS не прячется.</string>
+    <string name="appearance_hint">На домашнем экране будет видно выбранный значок и эту подпись. Само приложение из списка не прячется.</string>
     <string name="appearance_label_header">ПОДПИСЬ ПОД ЗНАЧКОМ</string>
     <string name="appearance_changed">Значок изменён</string>
     <string name="report_title">Zazor GPS · фиксация на местности</string>

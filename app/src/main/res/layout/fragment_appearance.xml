@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  How the phone shows this app, and the one code that empties it. Both live here because both are
+  about what someone looking over a shoulder would find.
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -10,13 +14,14 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingBottom="@dimen/ds_space_6">
+        android:paddingBottom="30dp">
 
         <ImageView
             android:id="@+id/ivBack"
             android:layout_width="46dp"
             android:layout_height="46dp"
-            android:layout_margin="@dimen/ds_space_4"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/ds_round_button"
             android:contentDescription="@string/back"
             android:padding="13dp"
@@ -27,58 +32,79 @@
 
         <TextView
             android:id="@+id/tvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_3"
+            style="@style/Widget.Zazor.ScreenTitle"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/appearance_title"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="22sp"
-            android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/ivBack"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/ivBack"
             app:layout_constraintTop_toTopOf="@id/ivBack" />
+
+        <TextView
+            android:id="@+id/tvIconHeader"
+            style="@style/Widget.Zazor.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="14dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/appearance_icon_header"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivBack" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAppearances"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_3"
+            android:layout_marginTop="7dp"
+            android:clipToPadding="false"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/ds_space_4"
-            android:paddingEnd="@dimen/ds_space_4"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintTop_toBottomOf="@id/ivBack" />
+            app:layout_constraintTop_toBottomOf="@id/tvIconHeader"
+            tools:itemCount="4"
+            tools:listitem="@layout/item_appearance" />
 
-        <!-- What the home screen will read under the icon, as the design spells it out. -->
         <TextView
             android:id="@+id/tvLabelHeader"
+            style="@style/Widget.Zazor.Caption"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_4"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="16dp"
             android:text="@string/appearance_label_header"
-            android:textColor="@color/ds_text_muted"
-            android:textSize="12sp"
-            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvAppearances" />
 
+        <!--
+          The label cannot be typed: Android takes it from whichever activity alias is enabled, so
+          choosing a label is choosing an icon. The row says which one is in force and opens the
+          same four to pick from.
+        -->
         <TextView
             android:id="@+id/tvLabelValue"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_2"
-            android:background="@drawable/ds_surface_card"
+            android:layout_height="54dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ds_field_row"
+            android:drawableEnd="@drawable/ic_pencil"
+            android:fontFamily="@font/manrope"
             android:gravity="center_vertical"
-            android:minHeight="@dimen/ds_touch_min"
-            android:paddingStart="@dimen/ds_space_4"
-            android:paddingEnd="@dimen/ds_space_4"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
             android:textColor="@color/ds_text_primary"
-            android:textSize="16sp"
+            android:textFontWeight="600"
+            android:textSize="15sp"
+            app:drawableTint="@color/ds_text_faint"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvLabelHeader"
@@ -88,58 +114,136 @@
             android:id="@+id/tvHint"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/ds_space_4"
-            android:lineSpacingExtra="4dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/manrope"
+            android:lineSpacingExtra="6sp"
             android:text="@string/appearance_hint"
-            android:textColor="@color/ds_text_muted"
-            android:textSize="13sp"
+            android:textColor="@color/ds_text_quiet"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvLabelValue" />
 
-        <TextView
-            android:id="@+id/tvWipeLabel"
+        <View
+            android:id="@+id/vDivider"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_4"
-            android:text="@string/wipe_code_label"
-            android:textColor="@color/ds_danger"
-            android:textSize="12sp"
-            android:textStyle="bold"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/ds_divider_sheer"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvHint" />
 
         <TextView
+            android:id="@+id/tvWipeLabel"
+            style="@style/Widget.Zazor.Caption"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/wipe_code_label"
+            android:textColor="@color/ds_danger_icon"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/vDivider" />
+
+        <TextView
             android:id="@+id/tvWipeHint"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/ds_space_4"
-            android:lineSpacingExtra="5dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/manrope"
+            android:lineSpacingExtra="7sp"
             android:text="@string/wipe_code_hint"
-            android:textColor="@color/ds_text_secondary"
+            android:textColor="@color/ds_text_soft"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvWipeLabel" />
 
-        <TextView
-            android:id="@+id/tvWipeCode"
+        <!-- The code itself is never shown, only how many digits it has. -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clWipeCode"
             android:layout_width="0dp"
-            android:layout_height="56dp"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:background="@drawable/ds_surface_card"
-            android:gravity="center_vertical"
-            android:paddingStart="@dimen/ds_space_4"
-            android:paddingEnd="@dimen/ds_space_4"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="15sp"
+            android:layout_height="54dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ds_danger_row"
+            android:paddingStart="18dp"
+            android:paddingEnd="18dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvWipeHint" />
+            app:layout_constraintTop_toBottomOf="@id/tvWipeHint">
+
+            <LinearLayout
+                android:id="@+id/llWipeDots"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvWipeCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope"
+                android:textColor="@color/ds_danger_icon"
+                android:textFontWeight="700"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Задан" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/llWipeNote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/ds_note_soft"
+            android:orientation="horizontal"
+            android:paddingStart="16dp"
+            android:paddingTop="14dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="14dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/clWipeCode">
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_marginTop="1dp"
+                android:layout_marginEnd="11dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_info"
+                app:tint="@color/ds_text_faint" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/manrope"
+                android:lineSpacingExtra="6sp"
+                android:text="@string/wipe_code_note"
+                android:textColor="@color/ds_text_note"
+                android:textSize="12sp" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

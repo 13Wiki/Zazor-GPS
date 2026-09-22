@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- An aside under a setting: quieter than the setting itself. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_surface_whisper" />
+    <corners android:radius="18dp" />
+</shape>

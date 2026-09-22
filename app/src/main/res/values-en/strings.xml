@@ -14,14 +14,14 @@
     <string name="privacy_policy_link">Privacy policy</string>
     <string name="privacy_no_browser">No app to open links</string>
     <string name="wipe_code_label">WIPE CODE</string>
-    <string name="wipe_code_hint">A second code on the lock screen. Enter it instead of the usual one and the app opens empty: photos, routes and notes are erased from the phone with no way back. The wipe happens silently.</string>
-    <string name="wipe_code_set">Code set</string>
-    <string name="wipe_code_not_set">No code set</string>
+    <string name="wipe_code_hint">A second code on the lock screen. Enter it instead of the usual one and the app opens empty: every photo, route and note is erased from the phone with no way back.</string>
+    <string name="wipe_code_set">Set</string>
+    <string name="wipe_code_not_set">Not set</string>
     <string name="appearance_notes">Notes</string>
     <string name="appearance_clock">Clock</string>
     <string name="appearance_compass">Compass</string>
     <string name="appearance_title">Look on your phone</string>
-    <string name="appearance_hint">The icon and label on the home screen. Zazor GPS never hides from the app list.</string>
+    <string name="appearance_hint">The home screen will show the chosen icon and this label. The app itself never hides from the app list.</string>
     <string name="appearance_label_header">LABEL UNDER THE ICON</string>
     <string name="appearance_changed">Icon changed</string>
     <string name="report_title">Zazor GPS · site record</string>
@@ -235,4 +235,7 @@
     <string name="map_stat_moving">moving</string>
     <string name="map_recenter">Fit the route</string>
     <string name="map_point_counter">%1$d/%2$d</string>
+    <string name="wipe_code_note">The wipe happens silently: no warning, no confirmation, no trace in the interface. Remember the code — what it erases cannot be brought back.</string>
+    <string name="appearance_icon_header">ICON</string>
+    <string name="appearance_default_option">Plain</string>
 </resources>
