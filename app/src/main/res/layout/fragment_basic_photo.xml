@@ -231,31 +231,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <!--
-          Shown on a panorama and only until the first pin is placed: a wide frame is where a
-          marker earns its keep, and an instruction that stays on screen forever is noise.
-        -->
-        <TextView
-            android:id="@+id/tvMarkerHint"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/ds_space_4"
-            android:layout_marginEnd="@dimen/ds_space_4"
-            android:layout_marginTop="@dimen/ds_space_4"
-            android:background="@drawable/ds_photo_pill"
-            android:paddingStart="@dimen/ds_space_4"
-            android:paddingEnd="@dimen/ds_space_4"
-            android:paddingTop="@dimen/ds_space_3"
-            android:paddingBottom="@dimen/ds_space_3"
-            android:text="@string/panorama_marker_hint"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="13sp"
-            android:visibility="gone"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:visibility="visible" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!--

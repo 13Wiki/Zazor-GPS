@@ -168,7 +168,6 @@ abstract class BasePhotoFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         camera = CameraController(requireContext(), binding.vCamera)
-        binding.vDraw.onMarkAdded = ::hideMarkerHint
         resumeSeriesFromIntent()
         binding.run {
             ivBack.setOnClickListener {
@@ -370,10 +369,6 @@ abstract class BasePhotoFragment :
         viewModel.sendEvent(BasePhotoContract.Event.ResumeSeries(seriesId))
     }
 
-    private fun hideMarkerHint() {
-        binding.tvMarkerHint.isVisible = false
-    }
-
     private fun addNotes(state: BasePhotoContract.State.AddNotes) {
         binding.run {
             clPreviewContainer.show()
@@ -485,7 +480,8 @@ abstract class BasePhotoFragment :
         vDraw.isVisible = true
         vDraw.isPaintAllowed = true
         vDraw.mode = Mode.MARKER
-        vDraw.colorRes = R.color.ds_danger
+        // A colour, not a colour resource: the property is misnamed and takes the packed value.
+        vDraw.colorRes = ContextCompat.getColor(requireContext(), R.color.ds_danger)
         isDrawing = true
     }
 
@@ -525,7 +521,8 @@ abstract class BasePhotoFragment :
     private fun toggleSettingsPanelVisibility(isVisible: Boolean) {
         with(binding) {
             ivBack.isVisible = !isVisible
-            tvClearAll.isVisible = !isVisible
+            // The panorama's review screen has its own two buttons and a header to keep clear.
+            tvClearAll.isVisible = !isVisible && !useUltraWide
             ivMenu.isVisible = isVisible
             llSignal.isVisible = isVisible && lastSignal != null
             llStampPreview.isVisible = isVisible && hasStampToShow
