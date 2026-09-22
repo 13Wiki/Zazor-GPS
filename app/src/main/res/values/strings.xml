@@ -277,4 +277,6 @@
     <string name="map_stat_moving">в пути</string>
     <string name="map_recenter">Вписать маршрут</string>
     <string name="map_point_counter">%1$d/%2$d</string>
+    <string name="panorama_mark">Метка</string>
+    <string name="panorama_save">Сохранить</string>
 </resources>

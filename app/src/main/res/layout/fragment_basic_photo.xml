@@ -295,4 +295,197 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!--
+      The panorama's review screen, as the design draws it. It replaces the editing sheet on the
+      wide tab: the frame sits in a band with the fix under it and two buttons at the foot, rather
+      than filling the screen behind a sheet of tabs. The frame above is the same preview
+      container the other tabs use, re-laid into the band while this is up.
+    -->
+    <LinearLayout
+        android:id="@+id/llPanoTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/ivBack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/ivBack">
+
+        <TextView
+            android:id="@+id/tvPanoTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope"
+            android:text="@string/panorama"
+            android:textColor="@color/ds_text_primary"
+            android:textFontWeight="700"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvPanoBearing"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/manrope"
+            android:textColor="@color/ds_signal_good"
+            android:textFontWeight="600"
+            android:textSize="12sp"
+            tools:text="обзор 214°" />
+
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clPanoCard"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ds_card_pano"
+        android:paddingStart="20dp"
+        android:paddingTop="18dp"
+        android:paddingEnd="20dp"
+        android:paddingBottom="18dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/tvPanoHint"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/clPreviewContainer">
+
+        <ImageView
+            android:id="@+id/ivPanoPin"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:background="@drawable/ds_pin_tile"
+            android:contentDescription="@null"
+            android:padding="8dp"
+            android:src="@drawable/ic_pin"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/ds_on_accent" />
+
+        <TextView
+            android:id="@+id/tvPanoCoordinates"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/manrope"
+            android:maxLines="1"
+            android:textColor="@color/ds_text_primary"
+            android:textFontWeight="700"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivPanoPin"
+            app:layout_constraintTop_toTopOf="@id/ivPanoPin"
+            tools:text="55.755826, 37.617300" />
+
+        <TextView
+            android:id="@+id/tvPanoAddress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:fontFamily="@font/manrope"
+            android:maxLines="1"
+            android:textColor="@color/ds_text_note"
+            android:textFontWeight="500"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="@id/tvPanoCoordinates"
+            app:layout_constraintStart_toStartOf="@id/tvPanoCoordinates"
+            app:layout_constraintTop_toBottomOf="@id/tvPanoCoordinates"
+            tools:text="Ленинский просп. 32" />
+
+        <LinearLayout
+            android:id="@+id/llPanoChips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivPanoPin">
+
+            <TextView
+                android:id="@+id/tvPanoDate"
+                style="@style/Widget.Zazor.PanoChip"
+                tools:text="03.09.2026" />
+
+            <TextView
+                android:id="@+id/tvPanoTime"
+                style="@style/Widget.Zazor.PanoChip"
+                android:layout_marginStart="8dp"
+                tools:text="15:34" />
+
+            <TextView
+                android:id="@+id/tvPanoAccuracy"
+                style="@style/Widget.Zazor.PanoChip"
+                android:layout_marginStart="8dp"
+                tools:text="±4 м" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tvPanoHint"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="14dp"
+        android:fontFamily="@font/manrope"
+        android:lineSpacingExtra="6sp"
+        android:text="@string/panorama_marker_hint"
+        android:textColor="@color/ds_text_note"
+        android:textSize="13sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/bPanoMark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/bPanoMark"
+        style="@style/Widget.Zazor.Button.Sheet"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/ds_ghost_button_pano"
+        android:insetLeft="0dp"
+        android:insetRight="0dp"
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:text="@string/panorama_mark"
+        android:textColor="@color/ds_text_primary"
+        android:visibility="gone"
+        app:icon="@drawable/ic_pin"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconSize="20dp"
+        app:iconTint="@color/ds_text_primary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/bPanoSave"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/bPanoSave"
+        style="@style/Widget.Zazor.Button.Sheet"
+        android:layout_width="0dp"
+        android:layout_height="54dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ds_accent_button_privacy"
+        android:insetLeft="0dp"
+        android:insetRight="0dp"
+        android:text="@string/panorama_save"
+        android:textFontWeight="700"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/bPanoMark"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/bPanoMark"
+        app:layout_constraintTop_toTopOf="@id/bPanoMark" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

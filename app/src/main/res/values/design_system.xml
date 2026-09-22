@@ -52,6 +52,17 @@
     <color name="ds_danger_edge">#4DFF5A4E</color>
     <!-- Quieter than sheer: an aside, not a surface. -->
     <color name="ds_surface_whisper">#0DFFFFFF</color>
+    <color name="ds_surface_card_soft">#12FFFFFF</color>
+    <color name="ds_text_chip">#D9FFFFFF</color>
+    <!--
+      Frosted rather than painted: the mode in use is a translucent capsule that lets the frame
+      show through it, lit a little more at the top than at the bottom.
+    -->
+    <color name="ds_glass_lit_top">#CCFFFFFF</color>
+    <color name="ds_glass_lit_bottom">#ADFFFFFF</color>
+    <color name="ds_glass_lit_edge">#66FFFFFF</color>
+    <color name="ds_glass_lit_top_pressed">#DBFFFFFF</color>
+    <color name="ds_glass_lit_bottom_pressed">#BFFFFFFF</color>
     <!-- Glass over a drawn map: dark rather than white, so the track keeps its contrast. -->
     <color name="ds_dark_glass">#9E0B0F14</color>
     <color name="ds_dark_glass_stat">#AD0B0F14</color>
@@ -124,6 +135,8 @@
     <dimen name="ds_space_3">12dp</dimen>
     <dimen name="ds_space_4">16dp</dimen>
     <dimen name="ds_wipe_dot">9dp</dimen>
+    <!-- The band the design holds a reviewed panorama in. -->
+    <dimen name="ds_panorama_band">210dp</dimen>
     <dimen name="ds_space_5">20dp</dimen>
     <dimen name="ds_space_6">24dp</dimen>
 

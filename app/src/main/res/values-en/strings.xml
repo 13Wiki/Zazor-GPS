@@ -242,4 +242,6 @@
     <string name="wipe_code_note">The wipe happens silently: no warning, no confirmation, no trace in the interface. Remember the code — what it erases cannot be brought back.</string>
     <string name="appearance_icon_header">ICON</string>
     <string name="appearance_default_option">Plain</string>
+    <string name="panorama_mark">Pin</string>
+    <string name="panorama_save">Save</string>
 </resources>

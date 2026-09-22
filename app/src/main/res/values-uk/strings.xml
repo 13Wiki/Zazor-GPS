@@ -252,4 +252,6 @@
     <string name="wipe_code_note">Очищення йде мовчки: ні попередження, ні підтвердження, ні сліду в інтерфейсі. Запам’ятайте код — відновити стерте неможливо.</string>
     <string name="appearance_icon_header">ЗНАЧОК</string>
     <string name="appearance_default_option">Звичайний</string>
+    <string name="panorama_mark">Мітка</string>
+    <string name="panorama_save">Зберегти</string>
 </resources>

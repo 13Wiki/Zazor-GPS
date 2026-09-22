@@ -159,9 +159,10 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
         }
     }
 
-    override fun onCaptured() {
+    override fun onCaptured(isWide: Boolean) {
         binding.clPhotoPanel.gone()
-        addNoteSheet.show()
+        // A panorama has a review screen of its own, and the sheet would cover it.
+        if (!isWide) addNoteSheet.show()
     }
 
     override fun onCollageShown() {
@@ -208,10 +209,6 @@ class PhotoActivity : BaseActivity<PhotoContract.State, PhotoContract.Event>(R.l
 
     override fun undoPaint() {
         addNoteSheet.undoPaint()
-    }
-
-    override fun startMarkerMode() {
-        addNoteSheet.startMarkerMode()
     }
 
     /**

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- What the frame is about to carry, on the softest card in the design. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/ds_surface_card_soft" />
+    <stroke android:width="1dp" android:color="@color/ds_surface_round" />
+    <corners android:radius="26dp" />
+</shape>

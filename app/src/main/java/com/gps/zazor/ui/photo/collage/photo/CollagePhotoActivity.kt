@@ -94,7 +94,7 @@ class CollagePhotoActivity : AppCompatActivity(R.layout.activity_collage_photo),
         }
     }
 
-    override fun onCaptured() {
+    override fun onCaptured(isWide: Boolean) {
         binding.clPhotoPanel.gone()
         addNoteSheet.show()
     }
@@ -130,10 +130,6 @@ class CollagePhotoActivity : AppCompatActivity(R.layout.activity_collage_photo),
 
     override fun undoPaint() {
         addNoteSheet.undoPaint()
-    }
-
-    override fun startMarkerMode() {
-        addNoteSheet.startMarkerMode()
     }
 
     private fun getCurrentPhotoHandler(): PhotoHandler? =

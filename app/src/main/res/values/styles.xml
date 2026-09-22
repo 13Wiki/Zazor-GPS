@@ -222,6 +222,21 @@
         <item name="cornerSize">18dp</item>
     </style>
 
+    <!-- One fact about a reviewed frame: date, time, or how tight the fix was. -->
+    <style name="Widget.Zazor.PanoChip" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/ds_chip_soft</item>
+        <item name="android:fontFamily">@font/manrope</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingTop">7dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:paddingBottom">7dp</item>
+        <item name="android:textColor">@color/ds_text_chip</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
     <style name="Button.Primary" parent="Widget.Zazor.Button" />
 
     <style name="DialogStyle" parent="Theme.Zazor.BottomSheet" />

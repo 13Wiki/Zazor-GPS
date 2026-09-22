@@ -18,6 +18,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.marginTop
 import androidx.core.view.updateLayoutParams
 import com.gps.zazor.R
@@ -42,6 +43,7 @@ import com.gps.zazor.utils.extensions.show
 import com.gps.zazor.utils.time.PhotoClock
 import com.gps.zazor.utils.viewBinding.viewBinding
 import org.koin.android.ext.android.inject
+import com.gps.zazor.views.Mode
 import com.gps.zazor.views.ShowButtonOnSelector
 
 abstract class BasePhotoFragment :
@@ -409,7 +411,7 @@ abstract class BasePhotoFragment :
 
     private fun showPreview(state: BasePhotoContract.State.ShowPreview) {
         camera?.stop()
-        callback?.onCaptured()
+        callback?.onCaptured(isWide = useUltraWide)
         with(binding) {
             vCamera.hide()
             toggleSettingsPanelVisibility(false)
@@ -423,13 +425,84 @@ abstract class BasePhotoFragment :
             }
         }
         addNotes(state.notes)
-        // A panorama opens ready to be pinned: on a wide frame the one thing the receiver needs
-        // is which of the things in it the photo is about.
-        binding.tvMarkerHint.isVisible = useUltraWide
-        if (useUltraWide) callback?.startMarkerMode()
+        // A panorama gets the design's review screen rather than the editing sheet, and opens
+        // ready to be pinned: on a wide frame the one thing the receiver needs is which of the
+        // things in it the photo is about.
+        if (useUltraWide) showPanoramaReview(state.notes)
+    }
+
+    /**
+     * The wide tab's review screen: the frame in a band, what it is about to carry underneath,
+     * and the two buttons the mockup gives it.
+     */
+    private fun showPanoramaReview(notes: BasePhotoContract.State.AddNotes) = with(binding) {
+        clPreviewContainer.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            height = resources.getDimensionPixelSize(R.dimen.ds_panorama_band)
+            topToTop = ConstraintLayout.LayoutParams.UNSET
+            bottomToBottom = ConstraintLayout.LayoutParams.UNSET
+            topToBottom = R.id.llPanoTitle
+            bottomToTop = R.id.clPanoCard
+            verticalChainStyle = ConstraintLayout.LayoutParams.CHAIN_PACKED
+        }
+        tvPanoBearing.isVisible = notes.bearing != null
+        notes.bearing?.let { tvPanoBearing.text = Formats.bearing(requireContext(), it) }
+        // Each line goes when it has nothing to say, exactly as the stamp itself drops it.
+        val hasPosition = notes.lat != null && notes.long != null
+        ivPanoPin.isVisible = hasPosition
+        tvPanoCoordinates.isVisible = hasPosition
+        tvPanoCoordinates.text = "${notes.lat}, ${notes.long}"
+        tvPanoAddress.isVisible = !notes.address.isNullOrBlank()
+        tvPanoAddress.text = notes.address.orEmpty()
+        tvPanoDate.isVisible = !notes.date.isNullOrBlank()
+        tvPanoDate.text = notes.date.orEmpty()
+        tvPanoTime.isVisible = !notes.time.isNullOrBlank()
+        tvPanoTime.text = notes.time.orEmpty()
+        val meters = notes.accuracy?.toIntOrNull()
+        tvPanoAccuracy.isVisible = meters != null
+        meters?.let { tvPanoAccuracy.text = getString(R.string.point_meta_accuracy, it) }
+        setPanoramaReviewVisible(true)
+        bPanoMark.setOnClickListener { armMarker() }
+        bPanoSave.setOnClickListener { composeSavedPhoto()?.let(::onPhotoReady) }
+        armMarker()
+    }
+
+    private fun setPanoramaReviewVisible(isVisible: Boolean) = with(binding) {
+        llPanoTitle.isVisible = isVisible
+        clPanoCard.isVisible = isVisible
+        tvPanoHint.isVisible = isVisible
+        bPanoMark.isVisible = isVisible
+        bPanoSave.isVisible = isVisible
+    }
+
+    /**
+     * The pin, armed without the editing sheet: the review screen has one button for it, and the
+     * sheet it would otherwise come from is not on screen.
+     */
+    private fun armMarker() = with(binding) {
+        dvNotes.elevation = 0F
+        evDroidArt.elevation = 0F
+        vDraw.elevation = 5F
+        vDraw.isVisible = true
+        vDraw.isPaintAllowed = true
+        vDraw.mode = Mode.MARKER
+        vDraw.colorRes = R.color.ds_danger
+        isDrawing = true
+    }
+
+    /** Puts the frame back across the whole screen, for the tabs that fill it. */
+    private fun restorePreviewToFullScreen() {
+        binding.clPreviewContainer.updateLayoutParams<ConstraintLayout.LayoutParams> {
+            height = ConstraintLayout.LayoutParams.MATCH_PARENT
+            topToBottom = ConstraintLayout.LayoutParams.UNSET
+            bottomToTop = ConstraintLayout.LayoutParams.UNSET
+            topToTop = ConstraintLayout.LayoutParams.PARENT_ID
+            bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID
+        }
     }
 
     private fun hidePreview() {
+        setPanoramaReviewVisible(false)
+        restorePreviewToFullScreen()
         startCamera()
         callback?.onPhotoEditCancel()
         // The next shot starts with nothing drawn, so the button starts as Clear all again.

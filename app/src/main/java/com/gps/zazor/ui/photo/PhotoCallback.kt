@@ -2,7 +2,8 @@ package com.gps.zazor.ui.photo
 
 interface PhotoCallback {
 
-    fun onCaptured()
+    /** @param isWide a panorama, which reviews itself on its own screen rather than in a sheet. */
+    fun onCaptured(isWide: Boolean)
 
     fun onPhotoEditCancel()
 
@@ -10,9 +11,6 @@ interface PhotoCallback {
 
     /** Takes back the last drawn mark; what the corner button does while drawing. */
     fun undoPaint()
-
-    /** Opens the editor on the marker tool, the way a panorama starts. */
-    fun startMarkerMode()
 
     fun onCollageShown()
 

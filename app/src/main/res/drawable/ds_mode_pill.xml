@@ -1,9 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The mode in use, filled white as the mockup fills it. -->
+<!--
+  The mode in use. Frosted glass rather than solid white: the capsule keeps a little of the frame
+  behind it, is lit from the top, and is edged with a brighter hairline - the way the system's own
+  glass controls read. A real backdrop blur needs API 31, so the effect is carried by the gradient
+  and the edge, which cost nothing and look the same over a moving viewfinder.
+-->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape>
+            <gradient
+                android:angle="270"
+                android:endColor="@color/ds_glass_lit_bottom_pressed"
+                android:startColor="@color/ds_glass_lit_top_pressed"
+                android:type="linear" />
+            <stroke android:width="1dp" android:color="@color/ds_glass_lit_edge" />
+            <corners android:radius="999dp" />
+        </shape>
+    </item>
     <item android:state_selected="true">
         <shape>
-            <solid android:color="@color/ds_text_primary" />
+            <gradient
+                android:angle="270"
+                android:endColor="@color/ds_glass_lit_bottom"
+                android:startColor="@color/ds_glass_lit_top"
+                android:type="linear" />
+            <stroke android:width="1dp" android:color="@color/ds_glass_lit_edge" />
             <corners android:radius="999dp" />
         </shape>
     </item>
