@@ -25,7 +25,7 @@
             android:background="@drawable/ds_round_button"
             android:contentDescription="@string/back"
             android:padding="13dp"
-            android:src="@drawable/ic_back_line"
+            android:src="@drawable/ic_close"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tint="@color/ds_text_primary" />

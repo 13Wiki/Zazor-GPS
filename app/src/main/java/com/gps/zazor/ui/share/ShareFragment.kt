@@ -67,7 +67,7 @@ class ShareFragment : BaseFragment<ShareContract.State, ShareContract.Event>(R.l
 
         binding.optMessenger.tvOptionTitle.setText(R.string.share_to_messenger)
         binding.optMessenger.tvOptionHint.setText(R.string.share_to_messenger_hint)
-        binding.optMessenger.ivOptionIcon.setImageResource(R.drawable.ic_share_nodes)
+        binding.optMessenger.ivOptionIcon.setImageResource(R.drawable.ic_message)
         binding.optBundle.tvOptionTitle.setText(R.string.share_bundle)
         binding.optBundle.tvOptionHint.setText(R.string.share_bundle_hint)
         binding.optBundle.ivOptionIcon.setImageResource(R.drawable.ic_archive)
