@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_selected="true">
-        <shape>
-            <solid android:color="@color/ds_text_primary" />
-            <corners android:radius="999dp" />
-        </shape>
-    </item>
-    <item>
-        <shape>
-            <solid android:color="@android:color/transparent" />
-        </shape>
-    </item>
-</selector>
+<!--
+  Inset rather than padded. A tab layout does not hand its own top padding to the strip inside it,
+  so the white pill came out flush with the top of the track and hanging below it; insetting the
+  pill's own drawable puts the mockup's 5dp of track back on both sides of it.
+-->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ds_mode_pill"
+    android:insetBottom="5dp"
+    android:insetTop="5dp" />

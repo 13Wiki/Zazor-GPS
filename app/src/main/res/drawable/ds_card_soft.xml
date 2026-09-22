@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The badge a screen wears when its whole subject is that nothing leaves. -->
+<!-- A setting resting on its own card, at the design's lightest surface. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
-    <solid android:color="@color/ds_good_surface" />
+    <solid android:color="@color/ds_surface_sheer" />
     <corners android:radius="20dp" />
 </shape>

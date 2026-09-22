@@ -80,6 +80,7 @@
     <color name="ds_signal_good">#34D07F</color>
     <color name="ds_on_good">#06210F</color>
     <color name="ds_good_surface">#1A34D07F</color>
+    <color name="ds_good_badge">#2934D07F</color>
     <color name="ds_good_edge">#8034D07F</color>
     <color name="ds_good_text">#9BE3BE</color>
     <color name="ds_accuracy_track">#1FFFFFFF</color>

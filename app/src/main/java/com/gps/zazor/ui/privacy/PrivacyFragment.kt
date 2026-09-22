@@ -52,6 +52,9 @@ class PrivacyFragment : BaseFragment<PrivacyContract.State, PrivacyContract.Even
     private val isFirstRun: Boolean
         get() = arguments?.getBoolean(ARG_FIRST_RUN, true) ?: true
 
+    /** Set while the switch is being put where the state says, so it is not read back as a tap. */
+    private var isRendering = false
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         host = context as? Host
@@ -68,10 +71,13 @@ class PrivacyFragment : BaseFragment<PrivacyContract.State, PrivacyContract.Even
             // offer disappears instead of standing there promising something that cannot happen.
             is PrivacyContract.State.Content -> binding.run {
                 val visibility = if (state.analyticsAvailable) View.VISIBLE else View.GONE
+                vDivider.visibility = visibility
                 tvCountedLabel.visibility = visibility
                 tvCounted.visibility = visibility
-                swAnalytics.visibility = visibility
+                clAnalytics.visibility = visibility
+                isRendering = true
                 swAnalytics.isChecked = state.analyticsEnabled
+                isRendering = false
             }
             is PrivacyContract.State.Accepted -> finish()
             else -> Unit
@@ -80,11 +86,16 @@ class PrivacyFragment : BaseFragment<PrivacyContract.State, PrivacyContract.Even
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.rowPhotos.tvNever.setText(R.string.privacy_never_photos)
+        binding.rowLocation.tvNever.setText(R.string.privacy_never_location)
+        binding.rowNotes.tvNever.setText(R.string.privacy_never_notes)
+        binding.rowContacts.tvNever.setText(R.string.privacy_never_contacts)
         binding.tvAccept.setText(if (isFirstRun) R.string.privacy_accept else R.string.done)
-        binding.swAnalytics.setOnCheckedChangeListener { button, checked ->
-            if (button.isPressed) {
-                viewModel.sendEvent(PrivacyContract.Event.ToggleAnalytics(checked))
-            }
+        // The whole card, not only the switch: the hint under the title is part of the target.
+        binding.clAnalytics.setOnClickListener { binding.swAnalytics.toggle() }
+        binding.swAnalytics.setOnCheckedChangeListener { _, checked ->
+            // Ignores the set in render, which would otherwise echo straight back as a change.
+            if (!isRendering) viewModel.sendEvent(PrivacyContract.Event.ToggleAnalytics(checked))
         }
         binding.tvAccept.setOnClickListener {
             if (isFirstRun) viewModel.sendEvent(PrivacyContract.Event.Accept) else finish()

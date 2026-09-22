@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One thing that never leaves the phone, crossed out. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:layout_marginEnd="11dp"
+        android:contentDescription="@null"
+        android:src="@drawable/ic_cross"
+        app:tint="@color/ds_danger_icon" />
+
+    <TextView
+        android:id="@+id/tvNever"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/manrope"
+        android:textColor="@color/ds_text_primary"
+        android:textFontWeight="600"
+        android:textSize="15sp"
+        tools:text="Фотографии и панорамы" />
+
+</LinearLayout>

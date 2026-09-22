@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  The promise the app makes, said before anything else happens. Four things crossed out, one
+  paragraph about what is counted, and the switch that refuses even that.
+-->
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/ds_background"
@@ -9,118 +14,246 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/ds_space_6">
+        android:paddingBottom="30dp">
+
+        <ImageView
+            android:id="@+id/ivBadge"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/ds_badge_good"
+            android:contentDescription="@null"
+            android:padding="14dp"
+            android:src="@drawable/ic_row_lock"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/ds_signal_good" />
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_6"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/manrope"
+            android:letterSpacing="-0.025"
+            android:lineSpacingMultiplier="0.9"
             android:text="@string/privacy_title"
             android:textColor="@color/ds_text_primary"
+            android:textFontWeight="800"
             android:textSize="27sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/ivBadge" />
 
         <TextView
             android:id="@+id/tvNeverLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_6"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="26dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/manrope"
+            android:letterSpacing="0.08"
             android:text="@string/privacy_never_label"
-            android:textColor="@color/ds_danger"
+            android:textColor="@color/ds_danger_icon"
+            android:textFontWeight="800"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvTitle" />
 
-        <TextView
-            android:id="@+id/tvNever"
+        <!-- Crossed out one by one: a list of four reads as four promises, not as a paragraph. -->
+        <LinearLayout
+            android:id="@+id/llNever"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_3"
-            android:lineSpacingExtra="6dp"
-            android:text="@string/privacy_never"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="15sp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvNeverLabel" />
+            app:layout_constraintTop_toBottomOf="@id/tvNeverLabel">
+
+            <include
+                android:id="@+id/rowPhotos"
+                layout="@layout/item_privacy_never" />
+
+            <include
+                android:id="@+id/rowLocation"
+                layout="@layout/item_privacy_never"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+            <include
+                android:id="@+id/rowNotes"
+                layout="@layout/item_privacy_never"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+            <include
+                android:id="@+id/rowContacts"
+                layout="@layout/item_privacy_never"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/vDivider"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="24dp"
+            android:background="@color/ds_divider_sheer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llNever" />
 
         <TextView
             android:id="@+id/tvCountedLabel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_6"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/manrope"
+            android:letterSpacing="0.08"
             android:text="@string/privacy_counted_label"
-            android:textColor="@color/ds_text_muted"
+            android:textColor="@color/ds_text_quiet"
+            android:textFontWeight="800"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvNever" />
+            app:layout_constraintTop_toBottomOf="@id/vDivider" />
 
         <TextView
             android:id="@+id/tvCounted"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_3"
-            android:lineSpacingExtra="5dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:fontFamily="@font/manrope"
+            android:lineSpacingExtra="7sp"
             android:text="@string/privacy_counted"
-            android:textColor="@color/ds_text_secondary"
+            android:textColor="@color/ds_text_soft"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvCountedLabel" />
 
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/swAnalytics"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clAnalytics"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_5"
-            android:background="@drawable/ds_surface_card"
-            android:minHeight="@dimen/ds_touch_min"
-            android:padding="@dimen/ds_space_4"
-            android:text="@string/privacy_help"
-            android:textColor="@color/ds_text_primary"
-            android:textSize="15sp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/ds_card_soft"
+            android:paddingStart="18dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="18dp"
+            android:paddingBottom="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvCounted" />
+            app:layout_constraintTop_toBottomOf="@id/tvCounted">
 
-        <TextView
-            android:id="@+id/tvPolicy"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/ds_space_4"
-            android:background="?attr/selectableItemBackground"
-            android:gravity="center"
-            android:minHeight="@dimen/ds_touch_min"
-            android:padding="@dimen/ds_space_3"
-            android:text="@string/privacy_policy_link"
-            android:textColor="@color/ds_accent"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvAccept" />
+            <TextView
+                android:id="@+id/tvAnalyticsTitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="14dp"
+                android:fontFamily="@font/manrope"
+                android:text="@string/privacy_help"
+                android:textColor="@color/ds_text_primary"
+                android:textFontWeight="700"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toStartOf="@id/swAnalytics"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tvAnalyticsHint"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/manrope"
+                android:text="@string/privacy_help_hint"
+                android:textColor="@color/ds_text_faint"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/tvAnalyticsTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvAnalyticsTitle" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/swAnalytics"
+                android:layout_width="51dp"
+                android:layout_height="31dp"
+                android:thumb="@drawable/ds_switch_thumb"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:showText="false"
+                app:track="@drawable/ds_switch_track" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
             android:id="@+id/tvAccept"
             android:layout_width="0dp"
             android:layout_height="56dp"
-            android:layout_marginTop="@dimen/ds_space_6"
-            android:background="@drawable/ds_accent_button"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="24dp"
+            android:background="@drawable/ds_accent_button_privacy"
+            android:fontFamily="@font/manrope"
             android:gravity="center"
             android:text="@string/privacy_accept"
             android:textColor="@color/ds_on_accent"
+            android:textFontWeight="700"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/swAnalytics" />
+            app:layout_constraintTop_toBottomOf="@id/clAnalytics" />
+
+        <!--
+          The full policy, as published for the store. A promise the app makes is worth reading in
+          full, and the design puts the link on this screen rather than only in the listing.
+        -->
+        <TextView
+            android:id="@+id/tvPolicy"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="24dp"
+            android:background="?attr/selectableItemBackground"
+            android:fontFamily="@font/manrope"
+            android:gravity="center"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="@string/privacy_policy_link"
+            android:textColor="@color/ds_text_quiet"
+            android:textFontWeight="600"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvAccept"
+            tools:ignore="TextContrastCheck" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
