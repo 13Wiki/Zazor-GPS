@@ -115,7 +115,7 @@
     <string name="back">Назад</string>
     <string name="flash">Спалах</string>
     <string name="flip_camera">Змінити камеру</string>
-    <string name="setting_wait_fix">Попереджати про слабкий сигнал</string>
+    <string name="setting_wait_fix">Чекати точного сигналу</string>
     <string name="appearance_row_title">Вигляд на телефоні та код очищення</string>
     <string name="setting_wait_fix_subtitle">Попередити, якщо гірше ніж %1$d м</string>
     <string name="setting_off">Вимкнено</string>
@@ -168,7 +168,7 @@
     <string name="add_text">Додати текст</string>
     <string name="font">Шрифт</string>
     <string name="panorama">Панорама</string>
-    <string name="pin_code_setting">Використовувати пароль на вхід</string>
+    <string name="pin_code_setting">Код на вхід</string>
     <string name="notes_setting">Що писати на знімку</string>
     <string name="settings_group_capture">Зйомка</string>
     <string name="settings_group_protection">Захист</string>
@@ -180,7 +180,7 @@
     <string name="coordinate_format_degrees">Градуси</string>
     <string name="coordinate_format_dms">Градуси, хвилини, секунди</string>
     <string name="clear_code_setting">Задати код очищення файлів</string>
-    <string name="feedback_setting">Написати розробнику</string>
+    <string name="feedback_setting">Написати нам</string>
     <string name="support_title">Написати нам</string>
     <string name="support_send">Надіслати</string>
     <string name="support_intro">Опишіть, що не працює або чого бракує. Відповідаємо на пошту, зазвичай протягом доби.</string>

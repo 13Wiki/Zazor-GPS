@@ -109,7 +109,7 @@
     <string name="back">Back</string>
     <string name="flash">Flash</string>
     <string name="flip_camera">Switch camera</string>
-    <string name="setting_wait_fix">Warn about a weak signal</string>
+    <string name="setting_wait_fix">Wait for a tight fix</string>
     <string name="appearance_row_title">Look on the phone, and the wipe code</string>
     <string name="setting_wait_fix_subtitle">Warn when worse than %1$d m</string>
     <string name="setting_off">Off</string>
@@ -162,7 +162,7 @@
     <string name="add_text">Add text</string>
     <string name="font">Font</string>
     <string name="panorama">Panorama</string>
-    <string name="pin_code_setting">Require a passcode to open</string>
+    <string name="pin_code_setting">Passcode</string>
     <string name="notes_setting">What goes on the photo</string>
     <string name="settings_group_capture">Shooting</string>
     <string name="settings_group_protection">Protection</string>
@@ -174,7 +174,7 @@
     <string name="coordinate_format_degrees">Degrees</string>
     <string name="coordinate_format_dms">Degrees, minutes, seconds</string>
     <string name="clear_code_setting">Set a wipe code</string>
-    <string name="feedback_setting">Write to the developer</string>
+    <string name="feedback_setting">Write to us</string>
     <string name="support_title">Write to us</string>
     <string name="support_send">Send</string>
     <string name="support_intro">Describe what is broken or missing. We answer by email, usually within a day.</string>

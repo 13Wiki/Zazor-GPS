@@ -62,7 +62,7 @@ class SettingsListViewModelImpl(
         SettingRow.Item(
             type = MainSettingType.WAIT_FIX,
             titleRes = R.string.setting_wait_fix,
-            iconRes = R.drawable.ic_row_coordinates,
+            iconRes = R.drawable.ic_row_fix,
             subtitle = context.getString(
                 R.string.setting_wait_fix_subtitle,
                 appPrefs.getAccuracyThresholdMeters()
@@ -85,7 +85,8 @@ class SettingsListViewModelImpl(
         SettingRow.Item(
             type = MainSettingType.APPEARANCE,
             titleRes = R.string.appearance_row_title,
-            iconRes = R.drawable.ic_row_disguise,
+            iconRes = R.drawable.ic_row_wipe,
+            iconTintRes = R.color.ds_danger_icon,
             subtitleRes = R.string.appearance_row_subtitle
         ),
         SettingRow.Item(

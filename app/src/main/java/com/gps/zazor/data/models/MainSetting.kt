@@ -1,7 +1,9 @@
 package com.gps.zazor.data.models
 
+import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import com.gps.zazor.R
 
 enum class MainSettingType {
     PIN_CODE, NOTES, CLEAR_CODE, APPEARANCE, PRO, PRIVACY, FEEDBACK, COORDINATE_FORMAT, WAIT_FIX
@@ -26,6 +28,8 @@ sealed class SettingRow {
         val type: MainSettingType,
         @StringRes val titleRes: Int,
         @DrawableRes val iconRes: Int,
+        /** Blue for everything the app does, red for the one row that can take things away. */
+        @ColorRes val iconTintRes: Int = R.color.ds_row_icon,
         @StringRes val subtitleRes: Int? = null,
         /** A subtitle that carries a number, so it cannot be a bare string resource. */
         val subtitle: String? = null,

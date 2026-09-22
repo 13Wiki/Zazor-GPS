@@ -23,8 +23,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/ds_accent"
-        tools:src="@drawable/ic_row_lock" />
+        tools:src="@drawable/ic_row_lock"
+        tools:tint="@color/ds_row_icon" />
 
     <TextView
         android:id="@+id/tvTitle"

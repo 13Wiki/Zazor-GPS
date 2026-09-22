@@ -120,7 +120,7 @@
     <string name="back">Назад</string>
     <string name="flash">Вспышка</string>
     <string name="flip_camera">Сменить камеру</string>
-    <string name="setting_wait_fix">Предупреждать о слабом сигнале</string>
+    <string name="setting_wait_fix">Ждать точный сигнал</string>
     <string name="appearance_row_title">Вид на телефоне и код очистки</string>
     <string name="setting_wait_fix_subtitle">Предупредить, если хуже %1$d м</string>
     <string name="setting_off">Выключен</string>
@@ -173,7 +173,7 @@
     <string name="add_text">Добавить текст</string>
     <string name="font">Шрифт</string>
     <string name="panorama">Панорама</string>
-    <string name="pin_code_setting">Использовать пароль на вход</string>
+    <string name="pin_code_setting">Код на вход</string>
     <string name="notes_setting">Что писать на снимке</string>
     <string name="settings_group_capture">Съёмка</string>
     <string name="settings_group_protection">Защита</string>
@@ -185,7 +185,7 @@
     <string name="coordinate_format_degrees">Градусы</string>
     <string name="coordinate_format_dms">Градусы, минуты, секунды</string>
     <string name="clear_code_setting">Задать код очистки файлов</string>
-    <string name="feedback_setting">Написать разработчику</string>
+    <string name="feedback_setting">Написать нам</string>
     <string name="support_title">Написать нам</string>
     <string name="support_send">Отправить</string>
     <string name="support_intro">Опишите, что не работает или чего не хватает. Отвечаем на почту, обычно в течение суток.</string>

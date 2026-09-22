@@ -1,5 +1,6 @@
 package com.gps.zazor.ui.settings.list
 
+import android.content.res.ColorStateList
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,7 +72,10 @@ class SettingsListAdapter(
                 )
                 findViewById<View>(R.id.vDivider).isVisible =
                     item.place == SettingRow.Place.FIRST || item.place == SettingRow.Place.MIDDLE
-                findViewById<ImageView>(R.id.ivIcon).setImageResource(item.iconRes)
+                findViewById<ImageView>(R.id.ivIcon).run {
+                    setImageResource(item.iconRes)
+                    imageTintList = ColorStateList.valueOf(context.getColor(item.iconTintRes))
+                }
                 findViewById<TextView>(R.id.tvTitle).setText(item.titleRes)
                 findViewById<TextView>(R.id.tvSubtitle).run {
                     isVisible = item.subtitleRes != null || item.subtitle != null

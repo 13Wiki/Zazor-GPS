@@ -54,6 +54,8 @@
     <color name="ds_surface_whisper">#0DFFFFFF</color>
     <color name="ds_surface_card_soft">#12FFFFFF</color>
     <color name="ds_text_chip">#D9FFFFFF</color>
+    <!-- A settings row's icon: lighter than the accent, so a list of them does not shout. -->
+    <color name="ds_row_icon">#5CA4FF</color>
     <!--
       Frosted rather than painted: the mode in use is a translucent capsule that lets the frame
       show through it, lit a little more at the top than at the bottom.
